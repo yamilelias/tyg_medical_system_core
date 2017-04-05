@@ -1,6 +1,6 @@
 {
-  "name": "flat-admin-bs3",
-  "description": "Free flat-design administrator bootstrap templates for bootstrap3 in both static html / angularjs version",
+  "name": "tyg-medical-system",
+  "description": "System designed for TyG Medical to be used for a communication and inventory system using Flat Admin template.",
   "keywords": "bootstrap templates admin flat",
   "homepage": "https://github.com/tui2tone/flat-admin-bootstrap-templates",
   "author": {

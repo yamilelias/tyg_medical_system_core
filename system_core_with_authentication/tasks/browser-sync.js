@@ -19,6 +19,6 @@ gulp.task('browser-sync', () => {
 });
 
 gulp.task("refresh", (cb) => {
-  return gulp.src("./src/app.js")
+  return gulp.src("./wwwroot/app.js")
     .pipe(server.stream())
 })
