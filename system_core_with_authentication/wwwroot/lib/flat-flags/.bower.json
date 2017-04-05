@@ -1,0 +1,36 @@
+{
+  "name": "flat-flags",
+  "description": "Flat flags css icons",
+  "main": "less/main.less",
+  "authors": [
+    "Luis Hdez <luis.munoz.hdez@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "flags",
+    "flat",
+    "flags",
+    "flag",
+    "icons",
+    "css",
+    "flags"
+  ],
+  "moduleType": [],
+  "homepage": "https://github.com/wobblecode/flat-flags.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "8fcc5b176b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8fcc5b176b0afba078ac59ac4f1a1675d04e5bca"
+  },
+  "_source": "https://github.com/wobblecode/flat-flags.git",
+  "_target": "*",
+  "_originalSource": "flat-flags"
+}
