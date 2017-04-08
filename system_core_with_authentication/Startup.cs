@@ -40,11 +40,14 @@ namespace system_core_with_authentication
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
+            /*services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                */
+            services.AddDbContext<CoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<CoreContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
@@ -55,7 +58,7 @@ namespace system_core_with_authentication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, CoreContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -83,6 +86,7 @@ namespace system_core_with_authentication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            context.Database.EnsureCreated();
         }
     }
 }
