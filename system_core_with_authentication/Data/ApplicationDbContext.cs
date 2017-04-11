@@ -10,10 +10,10 @@ namespace system_core_with_authentication.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        { }
+
+        public DbSet<TyGUser> TyGUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
