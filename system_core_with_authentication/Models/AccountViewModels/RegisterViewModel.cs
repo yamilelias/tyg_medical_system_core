@@ -25,5 +25,24 @@ namespace system_core_with_authentication.Models.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
+        [Display(Name = "Name(s)")]
+        [MaxLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Paternal Name")]
+        [MaxLength(50)]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Maternal Name")]
+        [MaxLength(50)]
+        public string SecondLastName { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Telephone { get; set; }
+
     }
 }

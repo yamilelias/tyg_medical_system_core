@@ -14,7 +14,7 @@ namespace system_core_with_authentication.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public string SecondLastName { get; set; }
-        public int Telephone { get; set; }
+        public string Telephone { get; set; }
 
     }
 }
