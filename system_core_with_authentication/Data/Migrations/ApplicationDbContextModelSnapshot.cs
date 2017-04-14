@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using system_core_with_authentication.Data;
 
 namespace system_core_with_authentication.Data.Migrations
 {
@@ -15,25 +13,27 @@ namespace system_core_with_authentication.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc3")
+                .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
+                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -105,8 +105,6 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -127,7 +125,8 @@ namespace system_core_with_authentication.Data.Migrations
 
             modelBuilder.Entity("system_core_with_authentication.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -135,7 +134,7 @@ namespace system_core_with_authentication.Data.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -144,10 +143,10 @@ namespace system_core_with_authentication.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
 
@@ -160,7 +159,7 @@ namespace system_core_with_authentication.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
@@ -172,6 +171,206 @@ namespace system_core_with_authentication.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.LocationSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Friday");
+
+                    b.Property<int>("IdLocation");
+
+                    b.Property<int>("IdUser");
+
+                    b.Property<int?>("LocationId");
+
+                    b.Property<string>("Monday");
+
+                    b.Property<string>("Saturday");
+
+                    b.Property<string>("Sunday");
+
+                    b.Property<string>("Thursday");
+
+                    b.Property<string>("Tuesday");
+
+                    b.Property<int?>("UserId");
+
+                    b.Property<string>("Wednesday");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LocationSchedule");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Medicament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Content");
+
+                    b.Property<int>("Counter");
+
+                    b.Property<string>("Description");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medicament");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.RepositionStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("IdLocation");
+
+                    b.Property<int>("IdRequest");
+
+                    b.Property<int?>("LocationId");
+
+                    b.Property<int?>("RequestId");
+
+                    b.Property<bool>("Solved");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("RepositionStock");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.RepositionStockDetailed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CurrentStock");
+
+                    b.Property<int>("IdMedicament");
+
+                    b.Property<int>("IdRepositionStock");
+
+                    b.Property<int?>("MedicamentId");
+
+                    b.Property<int?>("RepositionStockId");
+
+                    b.Property<int>("RequestStock");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicamentId");
+
+                    b.HasIndex("RepositionStockId");
+
+                    b.ToTable("RepositionStockDetailed");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Request", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("IdUser");
+
+                    b.Property<int>("IdUserApproved");
+
+                    b.Property<string>("Note");
+
+                    b.Property<int?>("UserApprovedId");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserApprovedId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Requests");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Stock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Expiration");
+
+                    b.Property<int>("MedicamentId");
+
+                    b.Property<int>("Total");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicamentId");
+
+                    b.ToTable("Stock");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Email");
+
+                    b.Property<DateTime>("EntryDate");
+
+                    b.Property<byte[]>("Image");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<string>("SecondLastName");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -208,6 +407,58 @@ namespace system_core_with_authentication.Data.Migrations
                     b.HasOne("system_core_with_authentication.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.LocationSchedule", b =>
+                {
+                    b.HasOne("system_core_with_authentication.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.HasOne("system_core_with_authentication.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.RepositionStock", b =>
+                {
+                    b.HasOne("system_core_with_authentication.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.HasOne("system_core_with_authentication.Models.Request", "Request")
+                        .WithMany()
+                        .HasForeignKey("RequestId");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.RepositionStockDetailed", b =>
+                {
+                    b.HasOne("system_core_with_authentication.Models.Medicament", "Medicament")
+                        .WithMany()
+                        .HasForeignKey("MedicamentId");
+
+                    b.HasOne("system_core_with_authentication.Models.RepositionStock", "RepositionStock")
+                        .WithMany()
+                        .HasForeignKey("RepositionStockId");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Request", b =>
+                {
+                    b.HasOne("system_core_with_authentication.Models.User", "UserApproved")
+                        .WithMany()
+                        .HasForeignKey("UserApprovedId");
+
+                    b.HasOne("system_core_with_authentication.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("system_core_with_authentication.Models.Stock", b =>
+                {
+                    b.HasOne("system_core_with_authentication.Models.Medicament", "Medicament")
+                        .WithMany("Stocks")
+                        .HasForeignKey("MedicamentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
