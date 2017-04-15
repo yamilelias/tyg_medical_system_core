@@ -1,0 +1,47 @@
+@model system_core_with_authentication.Models.RepositionStockDetailed
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>RepositionStockDetailed</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.IdRepositionStock)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdRepositionStock)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdMedicament)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdMedicament)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentStock)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CurrentStock)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestStock)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequestStock)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>
