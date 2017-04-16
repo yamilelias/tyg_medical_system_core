@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -43,6 +44,35 @@ namespace system_core_with_authentication.Models.AccountViewModels
         [Required]
         [MaxLength(20)]
         public string Telephone { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Role")]
+        [UIHint("List")]
+        public List<SelectListItem> Roles { get; set; }
+        public string Role { get; set; }
+
+        public RegisterViewModel()
+        {
+            Roles = new List<SelectListItem>();
+            Roles.Add(new SelectListItem()
+            {
+                Value = "1",
+                Text = "Admin"
+            }
+                );
+            Roles.Add(new SelectListItem()
+            {
+                Value = "2",
+                Text = "Supervisor"
+            }
+                );
+            Roles.Add(new SelectListItem()
+            {
+                Value = "3",
+                Text = "User"
+            }
+                );
+        }
 
     }
 }

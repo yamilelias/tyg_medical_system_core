@@ -95,6 +95,11 @@ namespace system_core_with_authentication
             await CreateRoles(serviceProvider);
         }
 
+        /*
+         * THIS METHOD CREATES THE THREE USER ROLES
+         * A DEFAULT ADMIN ACCOUNT IS GIVEN THE ADMIN ROLE
+         * 
+         */
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -110,6 +115,13 @@ namespace system_core_with_authentication
                     result = await roleManager.CreateAsync(new IdentityRole(rolesName));
                 }
             }
+
+            /* 
+             * THE ID OF THE ADMIN MUST BE CHANGED MANUALLY
+             * IF THE DATABASE IS ERASEN
+             */
+            var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
+            await userManager.AddToRoleAsync(user, "Admin");
         }
     }
 }
