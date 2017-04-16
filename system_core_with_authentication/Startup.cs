@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace system_core_with_authentication
 {
@@ -58,7 +59,7 @@ namespace system_core_with_authentication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -87,7 +88,28 @@ namespace system_core_with_authentication
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            
+
             context.Database.EnsureCreated();
+
+            await CreateRoles(serviceProvider);
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] rolesNames = { "Admin", "Supervisor", "User" };
+            IdentityResult result;
+
+            foreach (var rolesName in rolesNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(rolesName);
+                if (!roleExist)
+                {
+                    result = await roleManager.CreateAsync(new IdentityRole(rolesName));
+                }
+            }
         }
     }
 }
