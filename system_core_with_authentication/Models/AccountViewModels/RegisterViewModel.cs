@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using system_core_with_authentication.Data;
 
 namespace system_core_with_authentication.Models.AccountViewModels
 {
@@ -54,24 +55,22 @@ namespace system_core_with_authentication.Models.AccountViewModels
         public RegisterViewModel()
         {
             Roles = new List<SelectListItem>();
-            Roles.Add(new SelectListItem()
+            
+        }
+
+        public void getRoles (ApplicationDbContext _context)
+        {
+            var roles = from r in _context.identityRole select r;
+            var listRole = roles.ToList();
+            foreach (var Data in listRole)
             {
-                Value = "1",
-                Text = "Admin"
+                Roles.Add(new SelectListItem()
+                {
+                    Value = Data.Id,
+                    Text = Data.Name
+                });
             }
-                );
-            Roles.Add(new SelectListItem()
-            {
-                Value = "2",
-                Text = "Supervisor"
-            }
-                );
-            Roles.Add(new SelectListItem()
-            {
-                Value = "3",
-                Text = "User"
-            }
-                );
+
         }
 
     }

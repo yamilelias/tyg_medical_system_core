@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Models.AccountViewModels;
 using system_core_with_authentication.Services;
+using system_core_with_authentication.Data;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -24,6 +25,7 @@ namespace system_core_with_authentication.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -31,7 +33,8 @@ namespace system_core_with_authentication.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +42,7 @@ namespace system_core_with_authentication.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -99,6 +103,7 @@ namespace system_core_with_authentication.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             RegisterViewModel R = new RegisterViewModel();
+            R.getRoles(_context);
             ViewData["ReturnUrl"] = returnUrl;
             return View(R);
         }
@@ -115,6 +120,7 @@ namespace system_core_with_authentication.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, LastName = model.LastName, SecondLastName = model.SecondLastName, Telephone = model.Telephone };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _userManager.AddToRoleAsync(user, model.Role);
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713

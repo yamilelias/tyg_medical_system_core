@@ -14,6 +14,7 @@ namespace system_core_with_authentication.Data
         { }
 
         public DbSet<TyGUser> TyGUser { get; set; }
+        public DbSet<IdentityRole> identityRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
