@@ -1,8 +1,32 @@
-﻿var list;
-var finalButton = "<input type=\"submit\" value=\"Aceptar\" class=\"btn btn-default\" onclick=\"sendList() \" autocomplete=\"off\" />";
+﻿var list = JSON.parse(getCookie("lista"));
+if (list.length > 0) {
+    displayList();
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
 function addToList(y) {
-
     if (list == null) {
         list = new Array();
     }
@@ -26,6 +50,7 @@ function addToList(y) {
         }
     }
 
+    setCookie("lista", JSON.stringify(list), 1);
 }
 
 function stockInList(y) {
@@ -67,6 +92,7 @@ function removeItem(y) {
 }
 
 function displayList() {
+    var finalButton = "<input type=\"submit\" value=\"Aceptar\" class=\"btn btn-default\" onclick=\"sendList() \" autocomplete=\"off\" />";
     var s = "<table class=\"table\"><thead><tr><th>Total</th><th>Caducidad</th><th>Medicamento</th><th>Salida</th><th></th></tr></thead><tbody>";
             for (var x = 0; x < list.length; x++) {
                 s += "<tr>";
@@ -89,14 +115,9 @@ function sendList() {
         data: postDataList,
         traditional:true,
         dataType: "json",
-        //contentType: "application/json; charset=utf-8",
-        //success: function (data) {
-        //    // do what ever you want with the server response
-        //    alert("success ");
-        //},
-        //error: function () {
-        //    // error handling
-        //    alert("error");
-        //}
+        success: function (data) {
+            setCookie("lista", JSON.stringify([]), 1);
+            location.reload();
+        }
     });
 }

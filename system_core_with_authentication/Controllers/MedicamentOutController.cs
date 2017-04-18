@@ -64,7 +64,7 @@ namespace system_core_with_authentication.Controllers
 
             }
 
-            return RedirectToAction("Index","Stocks");
+            return Json(new {success=true });
         }
 
 
