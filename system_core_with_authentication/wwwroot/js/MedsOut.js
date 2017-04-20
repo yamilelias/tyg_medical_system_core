@@ -84,11 +84,11 @@ function removeItem(y) {
         if (list[x].Id == y)
             list.splice(x, 1);
     }
-    if (list.length == 0) {
+    if (list.length == 0) 
         document.getElementById("lista").innerHTML = "";
-    }
     else
         displayList();
+    setCookie("lista", JSON.stringify(list), 1);
 }
 
 function displayList() {

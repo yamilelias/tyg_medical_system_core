@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using system_core_with_authentication.Data;
 
-namespace system_core_with_authentication.Data.Migrations
+namespace system_core_with_authentication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170410002003_algo")]
-    partial class algo
+    [Migration("20170420223127_date")]
+    partial class date
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,13 +235,15 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<int>("Counter");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<double>("Price");
 
                     b.Property<int>("Priority");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Type")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

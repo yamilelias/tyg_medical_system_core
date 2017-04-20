@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using system_core_with_authentication.Data;
 
-namespace system_core_with_authentication.Data.Migrations
+namespace system_core_with_authentication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -234,13 +234,15 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<int>("Counter");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<double>("Price");
 
                     b.Property<int>("Priority");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Type")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
