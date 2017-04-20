@@ -65,25 +65,68 @@ namespace system_core_with_authentication.Controllers
             return View(applicationUser);
         }
 
-        // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<List<ApplicationUser>> EditAjax(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            if (applicationUser == null)
-            {
-                return NotFound();
-            }
-            return View(applicationUser);
+            List<ApplicationUser> user = new List<ApplicationUser>();
+            var appUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            user.Add(appUser);
+            return user;
         }
+
+        public async Task<String> EditUserAjax(string id, string email, string phoneNumber, string userName,
+            int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lockoutEnabled, DateTimeOffset lockoutEnd,
+            string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp,
+            bool twoFactorEnabled, string name, string lastName, string secondLastName, string telephone, ApplicationUser applicationUser)
+        {
+            applicationUser = new ApplicationUser
+            {
+                Id = id,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                UserName = userName,
+                AccessFailedCount = accessFailedCount,
+                ConcurrencyStamp = concurrencyStamp,
+                EmailConfirmed = emailConfirmed,
+                LockoutEnabled = lockoutEnabled,
+                LockoutEnd = lockoutEnd,
+                NormalizedEmail = normalizedEmail,
+                NormalizedUserName = normalizedUserName,
+                PasswordHash = passwordHash,
+                PhoneNumberConfirmed = phoneNumberConfirmed,
+                SecurityStamp = securityStamp,
+                TwoFactorEnabled = twoFactorEnabled,
+                Name = name,
+                LastName = lastName,
+                SecondLastName = secondLastName,
+                Telephone = telephone
+            };
+
+            _context.Update(applicationUser);
+            await _context.SaveChangesAsync();
+            return "Save";
+        }
+
+        // GET: Users/Edit/5
+        //public async Task<IActionResult> Edit(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+        //    if (applicationUser == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(applicationUser);
+        //}
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)

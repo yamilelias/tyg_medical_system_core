@@ -30,9 +30,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Telephone)
-                </th>
             <th></th>
         </tr>
     </thead>
@@ -58,10 +55,7 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Telephone)
-            </td>
-            <td>
-                <a asp-action="Edit" class="btn btn-default" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Edit" data-toggle="modal" data-target="#myModal" class="btn btn-default" onclick="getDataAjax('@item.Id','Users/EditAjax')">Edit</a> |
                 <a asp-action="Details" class="btn btn-info" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -69,3 +63,75 @@
 }
     </tbody>
 </table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="EditAjax">
+                    <div class="form-horizontal">
+                       
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" for="Id" name="Id" />
+
+                        <div class="form-group">
+                            <label for="Name" class="col-md-2 control-label">Name</label>
+                            <div class="col-md-10">
+                                <input name="Name" for="Name" id="Name" class="form-control" />
+                      
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="LastName" class="col-md-2 control-label">Paternal Name</label>
+                            <div class="col-md-10">
+                                <input for="LastName" name="LastName" id="LastName" class="form-control" />
+                     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="SecondLastName" class="col-md-2 control-label">Maternal Name</label>
+                            <div class="col-md-10">
+                                <input for="SecondLastName" name="SecondLastName" id="SecondLastName" class="form-control" />
+                           
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Telephone" class="col-md-2 control-label">Telephone</label>
+                            <div class="col-md-10">
+                                <input for="Telephone" name="Telephone" id="Telephone" class="form-control" />
+                            
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="UserName" class="col-md-2 control-label">Username</label>
+                            <div class="col-md-10">
+                                <input for="UserName" name="UserName"  id="UserName" class="form-control" />
+                           
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email" class="col-md-2 control-label">Email</label>
+                            <div class="col-md-10">
+                                <input for="Email" name="Email" id="Email" class="form-control" />
+                              
+                            </div>
+                        </div>
+                      
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" onclick="setDataUser('Users/EditUserAjax')" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
