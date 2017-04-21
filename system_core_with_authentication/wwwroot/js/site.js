@@ -3,6 +3,7 @@ $('#myModal').on('shown.bs.modal', function () {
     $('#Name').focus()
 })
 
+var j = 0;
 var items;
 var id;
 var email;
@@ -23,6 +24,9 @@ var name;
 var lastName;
 var secondLastName;
 var telephone;
+var selectRole;
+var role;
+
 
 function getDataAjax(id, action)
 {
@@ -37,7 +41,15 @@ function getDataAjax(id, action)
 }
 
 function OnSuccess(response) {
+
     items = response;
+    j = 0;
+    for (var i = 0; i < 3; i++)
+    {
+        var x = document.getElementById("select");
+        x.remove(i);
+    }
+
     $.each(items, function (index, val) {
         $('input[name=Id]').val(val.id);
         $('input[name=Name]').val(val.name);
@@ -46,6 +58,8 @@ function OnSuccess(response) {
         $('input[name=Telephone]').val(val.telephone);
         $('input[name=UserName]').val(val.userName);
         $('input[name=Email]').val(val.email);
+        document.getElementById("select").options[0] = new Option(val.role, val.roleId);
+
     });
 }
 
@@ -58,6 +72,9 @@ function setDataUser(action) {
     telephone = $(' input[name=Telephone]')[0].value;
     userName = $(' input[name=UserName]')[0].value;
     email = $(' input[name=Email]')[0].value;
+    role = document.getElementById("select");
+    selectRole = role.options[role.selectedIndex].text;
+
 
     $.each(items, function (index, val) {
 
@@ -111,7 +128,7 @@ function setDataUser(action) {
                                     data: {
                                         id, email, phoneNumber, userName, accessFailedCount, concurrencyStamp, emailConfirmed, lockoutEnabled, lockoutEnd,
                                         normalizedEmail, normalizedUserName, passwordHash, phoneNumberConfirmed, securityStamp, twoFactorEnabled, name, lastName,
-                                        secondLastName, telephone
+                                        secondLastName, telephone, selectRole
                                     },
                                     success: function (response)
                                     {
@@ -122,4 +139,22 @@ function setDataUser(action) {
                                     }
                                 })
                             }
+}
+
+function getRolesAjax(action) {
+    $.ajax({
+
+        type: "POST",
+        url: action,
+        data: {},
+        success: function (response) {
+            if (j == 0) {
+                for (var i = 0; i < response.length; i++)
+                {
+                    document.getElementById("select").options[i] = new Option(response[i].text, response[i].value);
+                }
+                j = 1;
+            }
+        }
+    });
 }

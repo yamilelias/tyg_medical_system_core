@@ -149,7 +149,7 @@ namespace system_core_with_authentication.Controllers
         public async Task<String> EditUserAjax(string id, string email, string phoneNumber, string userName,
             int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lockoutEnabled, DateTimeOffset lockoutEnd,
             string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp,
-            bool twoFactorEnabled, string name, string lastName, string secondLastName, string telephone, ApplicationUser applicationUser)
+            bool twoFactorEnabled, string name, string lastName, string secondLastName, string telephone, string selectRole, ApplicationUser applicationUser)
         {
             applicationUser = new ApplicationUser
             {
@@ -176,8 +176,35 @@ namespace system_core_with_authentication.Controllers
 
             _context.Update(applicationUser);
             await _context.SaveChangesAsync();
+
+            if (selectRole != "No role")
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                userRole = await _usersRole.getRole(_userManager, _roleManager, id);
+                if (userRole[0].Text != "No role")
+                {
+                    await _userManager.RemoveFromRoleAsync(user, userRole[0].Text);
+                }
+
+                if (selectRole == "No role")
+                {
+                    selectRole = "User";
+                }
+
+                var result = await _userManager.AddToRoleAsync(user, selectRole);
+
+            }
+
             return "Save";
         }
+
+        public async Task<List<SelectListItem>> RolesAjax()
+        {
+            List<SelectListItem> rolesList = new List<SelectListItem>();
+            rolesList = _usersRole.getRoles(_roleManager);
+            return rolesList;
+        }
+
 
         // GET: Users/Edit/5
         //public async Task<IActionResult> Edit(string id)
