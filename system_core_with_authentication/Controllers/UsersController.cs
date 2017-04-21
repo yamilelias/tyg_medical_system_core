@@ -7,22 +7,59 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace system_core_with_authentication.Controllers
 {
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        UserManager<ApplicationUser> _userManager;
+        RoleManager<IdentityRole> _roleManager;
+        UsersRoles _usersRole;
+        public List<SelectListItem> userRole;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager) 
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _usersRole = new UsersRoles();
+            userRole = new List<SelectListItem>();
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ApplicationUser.ToListAsync());
+            var ID = "";
+            string role;
+            List<Users> user = new List<Users>();
+            var appUser = await _context.ApplicationUser.ToListAsync();
+
+            foreach (var Data in appUser)
+            {
+                ID = Data.Id;
+                userRole = await _usersRole.getRole(_userManager, _roleManager, ID);
+
+                user.Add(new Users()
+                {
+                    Id = Data.Id,
+                    UserName = Data.UserName,
+                    PhoneNumber = Data.PhoneNumber,
+                    Email = Data.Email,
+                    Name = Data.Name,
+                    LastName = Data.LastName,
+                    SecondLastName = Data.SecondLastName,
+                    Telephone = Data.Telephone,
+                    Role = userRole[0].Text
+                });
+            }
+
+            return View(user.ToList());
+
+            //return View(await _context.ApplicationUser.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -65,14 +102,50 @@ namespace system_core_with_authentication.Controllers
             return View(applicationUser);
         }
 
-        public async Task<List<ApplicationUser>> EditAjax(string id)
+        public async Task<List<Users>> EditAjax(string id)
         {
-            List<ApplicationUser> user = new List<ApplicationUser>();
+           
+            List<Users> user = new List<Users>();
             var appUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            user.Add(appUser);
+            userRole = await _usersRole.getRole(_userManager, _roleManager, id);
+
+            user.Add(new Users()
+            {
+                Id = appUser.Id,
+                UserName = appUser.UserName,
+                PhoneNumber = appUser.PhoneNumber,
+                Email = appUser.Email,
+                Role = userRole[0].Text,
+                RoleId = userRole[0].Value,
+                AccessFailedCount = appUser.AccessFailedCount,
+                ConcurrencyStamp = appUser.ConcurrencyStamp,
+                EmailConfirmed = appUser.EmailConfirmed,
+                LockoutEnabled = appUser.LockoutEnabled,
+                LockoutEnd = appUser.LockoutEnd,
+                NormalizedEmail = appUser.NormalizedEmail,
+                NormalizedUserName = appUser.NormalizedUserName,
+                PasswordHash = appUser.PasswordHash,
+                PhoneNumberConfirmed = appUser.PhoneNumberConfirmed,
+                SecurityStamp = appUser.SecurityStamp,
+                TwoFactorEnabled = appUser.TwoFactorEnabled,
+                Name = appUser.Name,
+                LastName = appUser.LastName,
+                SecondLastName = appUser.SecondLastName,
+                Telephone = appUser.Telephone,
+            });
+
             return user;
+
+            /*
+             * LEGACY CODE - KEPT FOR FUTURE REFERENCES
+             */
+
+            //List<ApplicationUser> user = new List<ApplicationUser>();
+            //var appUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            //user.Add(appUser);
         }
 
+        [HttpPost]
         public async Task<String> EditUserAjax(string id, string email, string phoneNumber, string userName,
             int accessFailedCount, string concurrencyStamp, bool emailConfirmed, bool lockoutEnabled, DateTimeOffset lockoutEnd,
             string normalizedEmail, string normalizedUserName, string passwordHash, bool phoneNumberConfirmed, string securityStamp,

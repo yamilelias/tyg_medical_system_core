@@ -1,4 +1,4 @@
-@model IEnumerable<system_core_with_authentication.Models.ApplicationUser>
+@model IEnumerable<system_core_with_authentication.Models.Users>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,19 +16,19 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    Paternal Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.SecondLastName)
+                    Maternal Name
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Telephone)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.UserName)
+                    @Html.DisplayNameFor(model => model.Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Email)
+                    @Html.DisplayNameFor(model => model.Role)
                 </th>
             <th></th>
         </tr>
@@ -49,10 +49,10 @@
                 @Html.DisplayFor(modelItem => item.Telephone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td>
                 <a asp-action="Edit" data-toggle="modal" data-target="#myModal" class="btn btn-default" onclick="getDataAjax('@item.Id','Users/EditAjax')">Edit</a> |
