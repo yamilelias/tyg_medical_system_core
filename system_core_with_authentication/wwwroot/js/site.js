@@ -47,7 +47,7 @@ function OnSuccess(response) {
     for (var i = 0; i < 3; i++)
     {
         var x = document.getElementById("select");
-        x.remove(i);
+        //x.remove(i);
     }
 
     $.each(items, function (index, val) {
@@ -61,6 +61,11 @@ function OnSuccess(response) {
         document.getElementById("select").options[0] = new Option(val.role, val.roleId);
 
     });
+
+    //var x = document.getElementById("select").selectedIndex;
+    //var y = document.getElementById("option");   
+
+    //y[x].defaultSelected;
 }
 
 function setDataUser(action) {
