@@ -1,0 +1,69 @@
+﻿@model IEnumerable<system_core_with_authentication.Models.Medicament>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Reposicion de Medicamentos</h2>
+
+<form asp-controller="Requests" asp-action="CreateReposition" method="get">
+    <p>
+        Medicamento: <input class="form-control" type="text" name="SearchString">
+        <input type="submit" value="Filtrar" class="btn btn-default" />
+    </p>
+</form>
+<input type="hidden" value="@User.Identity.Name" id="username">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+
+            <th>
+                Cantidad Actual
+            </th>
+            <th>
+                Cantidad a Solicitar
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <input class="form-control" type="text" id="actualQuantity-@item.Id" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" id="requestQuantity-@item.Id" />
+                </td>
+                <td>
+                    <a class="btn btn-default" onclick="AddToRepositionList(@item.Id)">Agregar</a>
+                    <input type="hidden" value="@item.Description" id="description-@item.Id">
+                    <input type="hidden" value="@item.Content" id="content-@item.Id">
+                    <input type="hidden" value="@item.Type" id="type-@item.Id">
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="lista"></div>
+<br/><br /><br />
+<a class="btn btn-info" asp-controller="Requests" asp-action="Index">Back</a>
+<script src="~/js/Reposition.js"></script> 

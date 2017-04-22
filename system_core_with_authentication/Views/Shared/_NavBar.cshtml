@@ -1,0 +1,9 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+<li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+<li><a asp-area="" asp-controller="Medicaments" asp-action="Index">Medicamentos</a></li>
+<li><a asp-area="" asp-controller="MedicamentOut" asp-action="Index">Salida de Medicamentos</a></li>
+<li><a asp-area="" asp-controller="Requests" asp-action="Index">Solicitud</a></li>
+}
