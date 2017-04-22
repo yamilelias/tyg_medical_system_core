@@ -92,7 +92,7 @@ namespace system_core_with_authentication
 
             context.Database.EnsureCreated();
 
-            await CreateRoles(serviceProvider);
+            //await CreateRoles(serviceProvider);
         }
 
         /*

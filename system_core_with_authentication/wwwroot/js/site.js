@@ -139,7 +139,7 @@ function setDataUser(action) {
                                     {
                                         if (response == "Save")
                                         {
-                                            window.location.href = "http://localhost:49956/Users";
+                                            window.location.href = "http://localhost:49957/Users";
                                         }
                                     }
                                 })
