@@ -1,4 +1,4 @@
-import $ from 'jquery';
+var jquery = require('jquery');
 
 let timeout = null
 

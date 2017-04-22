@@ -53,7 +53,7 @@ gulp.task("js:watch", function() {
 
 
 gulp.task("build:js", function() {
-    return build('./wwwroot/app.js', false, './wwwroot/assets/js/');
+    return build('./wwwroot/app.js', false, './wwwroot/js/');
 });
 
 //gulp.task("build:angularjs:js", function() {
