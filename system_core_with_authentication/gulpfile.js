@@ -22,10 +22,11 @@ const tarks = requireDir("./tasks");
 //    return runSequence('build:clean', /*'build:html',*/ 'build:sass', 'build:fonts', 'build:image', 'build:assets', 'build:vendor', 'build:js', /*'build:angularjs', 'build:demo'*/);
 //})
 
-gulp.task('dev', () => {
-  return runSequence('clean', 'sass', 'fonts','image', 'assets', 'vendor', 'js:watch','browser-sync','watch');
-});
+// Uncomment this and the respective classes if needed
+//gulp.task('dev', () => {
+//  return runSequence('clean', 'sass', 'fonts','image', 'assets', 'vendor', 'js:watch','browser-sync','watch');
+//});
 
 gulp.task('build', () => {
-    return runSequence('build:clean', 'build:sass', 'build:fonts', 'build:image', 'build:assets', 'build:vendor', 'build:js');
+    return runSequence('build:clean', 'build:sass', 'build:fonts', 'build:image', 'build:flags', 'build:vendor', 'build:js');
 });
