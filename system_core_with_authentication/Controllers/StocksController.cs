@@ -65,7 +65,7 @@ namespace system_core_with_authentication.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Id", stock.MedicamentId);
+            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Description", stock.MedicamentId);
             return View(stock);
         }
 
@@ -82,7 +82,7 @@ namespace system_core_with_authentication.Controllers
             {
                 return NotFound();
             }
-            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Id", stock.MedicamentId);
+            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Description", stock.MedicamentId);
             return View(stock);
         }
 
@@ -118,7 +118,7 @@ namespace system_core_with_authentication.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Id", stock.MedicamentId);
+            ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Description", stock.MedicamentId);
             return View(stock);
         }
 

@@ -12,15 +12,18 @@ namespace system_core_with_authentication.Models
     {
         [Key]
         public int Id { get; set; }
+
         [DisplayName("Fecha")]
         public DateTime Date { get; set; }
         [DisplayName("Notas")]
         public string Note { get; set; }
-        [ForeignKey("IdUser")]
-        public int IdUser { get; set; }
+
         public virtual User User { get; set;}
-        [ForeignKey("IdUserApproved")]
+
+
+
+        /*[ForeignKey("IdUserApproved")]
         public int IdUserApproved { get; set; }
-        public virtual User UserApproved {get;set;}
+        public virtual User UserApproved {get;set;}*/
     }
 }

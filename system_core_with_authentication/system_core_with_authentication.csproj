@@ -14,8 +14,10 @@
 
   <ItemGroup>
     <Content Include="wwwroot\js\MedsOut.js" />
+    <Content Include="wwwroot\js\Reposition.js" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.6.12" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />

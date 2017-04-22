@@ -42,6 +42,7 @@ namespace system_core_with_authentication.Controllers
         //[httppost]
         public ActionResult MedicamentOut(string values)
         {
+
             JArray array = JArray.Parse(values);
             foreach (JObject obj in array.Children<JObject>())
             {

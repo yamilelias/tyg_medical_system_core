@@ -12,12 +12,15 @@ namespace system_core_with_authentication.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public int Total { get; set; }
+
         [Required]
         [DisplayName("Caducidad")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Expiration { get; set; }
+
         [Required]
         [DisplayName("Medicamento")]
         public int MedicamentId { get; set; }

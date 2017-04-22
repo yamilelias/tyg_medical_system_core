@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
+using Newtonsoft.Json.Linq;
 using system_core_with_authentication.Models;
 
 namespace system_core_with_authentication.Controllers
@@ -16,138 +15,70 @@ namespace system_core_with_authentication.Controllers
 
         public RequestsController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
-        // GET: Requests
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Requests.ToListAsync());
-        }
-
-        // GET: Requests/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var request = await _context.Requests
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            return View(request);
-        }
-
-        // GET: Requests/Create
-        public IActionResult Create()
+        public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Requests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Note,IdUser,IdUserApproved")] Request request)
+        public ActionResult CreateReposition(string searchString)
         {
-            if (ModelState.IsValid)
+            var medicaments = _context.Medicaments.Select(m=>m) ;
+
+            if (!String.IsNullOrEmpty(searchString))
             {
-                _context.Add(request);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                medicaments = medicaments.Where(m => m.Description.Contains(searchString));
             }
-            return View(request);
+            return View(medicaments.ToList());
         }
 
-        // GET: Requests/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult SaveReposition(string values,string username)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Request _request = new Request();
+            RepositionStock _repositionStock = new RepositionStock();
+            _repositionStock.Request = _request;
 
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
-            return View(request);
-        }
+            List<RepositionStockDetailed> medicamentsList = new List<RepositionStockDetailed>();
 
-        // POST: Requests/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Note,IdUser,IdUserApproved")] Request request)
-        {
-            if (id != request.Id)
+            JArray array = JArray.Parse(values);
+            foreach (JObject obj in array.Children<JObject>())
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                
+                int actualQuantity = 0;
+                int requestQuantity = 0;
+                int ID = 0;
+                foreach (JProperty singleProp in obj.Properties())
                 {
-                    _context.Update(request);
-                    await _context.SaveChangesAsync();
+                    string name = singleProp.Name;
+                    string value = singleProp.Value.ToString();
+
+                    if (name.Equals("ActualQuantity"))
+                        actualQuantity = Int32.Parse(value);
+                    if (name.Equals("RequestQuantity"))
+                        requestQuantity = Int32.Parse(value);
+                    if(name.Equals("Id"))
+                        ID = Int32.Parse(value);
+
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RequestExists(request.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+
+
+                RepositionStockDetailed _repositionStockDetailed = new RepositionStockDetailed();
+                _repositionStockDetailed.CurrentStock = actualQuantity;
+                _repositionStockDetailed.RequestStock = requestQuantity;
+                _repositionStockDetailed.RepositionStock = _repositionStock;
+                _repositionStockDetailed.Medicament = _context.Medicaments.Where(i=>i.Id==ID).FirstOrDefault();
+                _context.RepositionStockDetailed.Add(_repositionStockDetailed);
+
+                medicamentsList.Add(_repositionStockDetailed);
+                _repositionStock.rpd = medicamentsList;
+
             }
-            return View(request);
-        }
-
-        // GET: Requests/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var request = await _context.Requests
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            return View(request);
-        }
-
-        // POST: Requests/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var request = await _context.Requests.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Requests.Remove(request);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        private bool RequestExists(int id)
-        {
-            return _context.Requests.Any(e => e.Id == id);
+            _context.Requests.Add(_request);
+            _context.RepositionStocks.Add(_repositionStock);
+            _context.SaveChanges();
+            return Json(new { success = true });
         }
     }
 }

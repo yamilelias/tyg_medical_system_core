@@ -12,13 +12,13 @@ namespace system_core_with_authentication.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("IdRequest")]
-        public int IdRequest { get; set; }
+
         public virtual Request Request {get;set;}
-        [ForeignKey("IdLocation")]
-        public int IdLocation { get; set; }
+
         public virtual Location Location { get; set; }
         [DisplayName("Resuelto")]
         public bool Solved { get; set; }
+
+        public ICollection<RepositionStockDetailed> rpd { get; set; }
     }
 }

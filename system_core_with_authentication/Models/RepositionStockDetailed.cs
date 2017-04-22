@@ -13,18 +13,14 @@ namespace system_core_with_authentication.Models
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("IdRepositionStock")]
-        public int IdRepositionStock { get; set; }
         public virtual RepositionStock RepositionStock { get; set; }
 
-        [ForeignKey("IdMedicament")]
-        public int IdMedicament { get; set; }
         public virtual Medicament Medicament { get; set; }
 
-        [DisplayName("Stock Actual")]
+        [DisplayName("Cantidad actual")]
         public int CurrentStock { get; set; }
 
-        [DisplayName("Stock Pedido")]
+        [DisplayName("Cantidad a pedir")]
         public int RequestStock {get;set;}
     }
 }

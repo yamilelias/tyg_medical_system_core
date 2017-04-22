@@ -35,5 +35,7 @@ namespace system_core_with_authentication.Models
         [DisplayName("Imagen")]
         public byte[] Image { get; set; }
 
+        public ICollection<Request> Request { get; set; }
+        public ICollection<LocationSchedule> ls { get; set; }
     }
 }
