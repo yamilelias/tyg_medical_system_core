@@ -10,10 +10,11 @@ namespace system_core_with_authentication.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        { }
+
+        public DbSet<TyGUser> TyGUser { get; set; }
+        public DbSet<IdentityRole> identityRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,5 +23,7 @@ namespace system_core_with_authentication.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<system_core_with_authentication.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
