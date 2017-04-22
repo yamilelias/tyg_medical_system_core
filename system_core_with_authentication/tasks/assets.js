@@ -1,6 +1,6 @@
 'use strict';
 
-import gulp from 'gulp';
+var gulp = require('gulp');
 
 gulp.task("assets", ["assets:flags"])
 

@@ -1,8 +1,8 @@
 'use strict';
 
-import gulp from 'gulp';
-import fileinclude from 'gulp-file-include';
-import htmlhint from "gulp-htmlhint";
+var gulp = require('gulp');
+var fileinclude = require('gulp-file-include');
+var htmlhint = require("gulp-htmlhint");
 
 gulp.task('html', () => {
   return gulp.src(['src/html/**/*.html', '!src/html/include/*.html'])

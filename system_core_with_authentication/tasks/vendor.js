@@ -1,7 +1,7 @@
 'use strict';
 
-import gulp from "gulp";
-import concat from "gulp-concat";
+var gulp = require('gulp');
+var concat = require("gulp-concat");
 
 const jsLibs = [
   'bower_components/jquery/dist/jquery.js',

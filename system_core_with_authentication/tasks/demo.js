@@ -1,15 +1,15 @@
 'use strict';
 
-import gulp from 'gulp';
-import sass from 'gulp-sass';
-import postcss from 'gulp-postcss';
-import source from 'vinyl-source-stream';
-import notify from 'gulp-notify';
-import plumber from 'gulp-plumber';
-import concat from 'gulp-concat';
-import autoprefixer from 'autoprefixer';
-import stripCssComments from 'gulp-strip-css-comments';
-import htmlhint from "gulp-htmlhint";
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var postcss = require('gulp-postcss');
+var source = require('vinyl-source-stream');
+var notify = require('gulp-notify');
+var plumber = require('gulp-plumber');
+var concat = require('gulp-concat');
+var autoprefixer = require('autoprefixer');
+var stripCssComments = require( 'gulp-strip-css-comments');
+var htmlhint = require("gulp-htmlhint");
 
 
 gulp.task("demo", ["demo:sass", "demo:html", "demo:watch"]);

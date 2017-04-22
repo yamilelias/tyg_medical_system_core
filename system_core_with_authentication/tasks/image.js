@@ -1,7 +1,7 @@
 'use strict';
 
-import gulp from "gulp";
-import imagemin from 'gulp-imagemin';
+var gulp = require('gulp');
+var imagemin = require('gulp-imagemin');
 
 gulp.task('image', function () {
   return gulp.src('./wwwroot/images/**/*')

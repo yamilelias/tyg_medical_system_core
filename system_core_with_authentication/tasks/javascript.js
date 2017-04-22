@@ -1,9 +1,9 @@
-import gulp from 'gulp';
-import browserify from 'browserify';
-import babelify from 'babelify';
-import source from 'vinyl-source-stream';
-import watchify from 'watchify';
-import gutil from 'gulp-util';
+var gulp = require('gulp');
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var watchify = require('watchify');
+var gutil = require('gulp-util');
 
 function build(file, watch, dest) {
   var props = {

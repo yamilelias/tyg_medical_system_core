@@ -1,5 +1,5 @@
-import gulp from 'gulp';
-import runSequence from 'run-sequence';
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
 
 gulp.task("watch", () => {
     gulp.watch(["./wwwroot/**/*.sass"], ["sass", "refresh"])

@@ -1,9 +1,9 @@
 'use strict';
 
-import gulp from 'gulp';
-import fileinclude from 'gulp-file-include';
-import templateCache from 'gulp-angular-templatecache';
-import htmlhint from "gulp-htmlhint";
+var gulp = require('gulp');
+var fileinclude = require('gulp-file-include');
+var templateCache = require('gulp-angular-templatecache');
+var htmlhint = require('gulp-htmlhint');
 
 gulp.task('angularjs:html', () => {
   /* Template */

@@ -1,7 +1,7 @@
 'use strict';
 
-import gulp from 'gulp';
-import browserSync from 'browser-sync';
+var gulp = require('gulp');
+var browserSync =require('browser-sync');
 
 const SERVE_CONFIG = {
   port: 3400,
