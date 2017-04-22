@@ -27,6 +27,13 @@ namespace TYG_Medical_System_Core.Controllers
             return View();
         }
 
+        public IActionResult Salida()
+        {
+            ViewData["Message"] = "Salida de inventario";
+
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View();

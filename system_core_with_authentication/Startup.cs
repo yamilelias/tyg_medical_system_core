@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace system_core_with_authentication
 {
@@ -40,6 +41,9 @@ namespace system_core_with_authentication
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            /*services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -55,7 +59,7 @@ namespace system_core_with_authentication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -83,6 +87,41 @@ namespace system_core_with_authentication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
+
+            context.Database.EnsureCreated();
+
+            //await CreateRoles(serviceProvider);
+        }
+
+        /*
+         * THIS METHOD CREATES THE THREE USER ROLES
+         * A DEFAULT ADMIN ACCOUNT IS GIVEN THE ADMIN ROLE
+         * 
+         */
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] rolesNames = { "Admin", "Supervisor", "User" };
+            IdentityResult result;
+
+            foreach (var rolesName in rolesNames)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(rolesName);
+                if (!roleExist)
+                {
+                    result = await roleManager.CreateAsync(new IdentityRole(rolesName));
+                }
+            }
+
+            /* 
+             * THE ID OF THE ADMIN MUST BE CHANGED MANUALLY
+             * IF THE DATABASE IS ERASEN
+             */
+            var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
+            await userManager.AddToRoleAsync(user, "Admin");
         }
     }
 }
