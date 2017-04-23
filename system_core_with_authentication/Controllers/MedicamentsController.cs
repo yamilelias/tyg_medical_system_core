@@ -108,7 +108,7 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Content,Type,Price,Priority,Counter")] Medicament medicament)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Content,Type,Price,Priority,Counter,MedicamentImage,ImageFile")] Medicament medicament, IFormFile imageFile)
         {
             if (id != medicament.Id)
             {
@@ -117,6 +117,23 @@ namespace system_core_with_authentication.Controllers
 
             if (ModelState.IsValid)
             {
+
+                if (imageFile != null)
+                {
+                    string uploadPath = Path.Combine(_environment.WebRootPath, "images", "uploads");
+                    Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                    string fileName = Path.GetFileName(imageFile.FileName);
+
+                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fs);
+                    }
+
+                    medicament.MedicamentImage = fileName;
+
+                }
+
                 try
                 {
                     _context.Update(medicament);
