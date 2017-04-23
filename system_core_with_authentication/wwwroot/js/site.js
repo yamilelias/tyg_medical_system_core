@@ -61,11 +61,6 @@ function OnSuccess(response) {
         document.getElementById("select").options[0] = new Option(val.role, val.roleId);
 
     });
-
-    //var x = document.getElementById("select").selectedIndex;
-    //var y = document.getElementById("option");   
-
-    //y[x].defaultSelected;
 }
 
 function setDataUser(action) {
@@ -139,7 +134,8 @@ function setDataUser(action) {
                                     {
                                         if (response == "Save")
                                         {
-                                            window.location.href = "http://localhost:49957/Users";
+                                            //window.location.href = "http://localhost:49957/Users";
+                                            window.location.href = window.location.pathname();
                                         }
                                     }
                                 })
