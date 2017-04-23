@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var requireDir = require('require-dir');
 var runSequence = require('run-sequence');
 
-const tarks = requireDir("./tasks");
+const tasks = requireDir("./tasks");
 
 //gulp.task('angularjs', () => {
 //  return runSequence('angularjs:html', 'angularjs:js:watch', 'angularjs:watch')

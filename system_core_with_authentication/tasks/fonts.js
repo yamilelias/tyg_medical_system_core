@@ -1,8 +1,8 @@
 var gulp = require("gulp")
 
 const fonts = {
-  'font-awesome': 'node_modules/font-awesome/fonts/*',
-  'ionicons': 'node_modules/ionicons/dist/fonts/*'
+  'font-awesome': '~/node_modules/font-awesome/fonts/*',
+  'ionicons': '~/node_modules/ionicons/dist/fonts/*'
 }
 
 //gulp.task('fonts', ['fonts:font-awesome']);

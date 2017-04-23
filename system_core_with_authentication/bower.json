@@ -20,6 +20,7 @@
     "devbridge-autocomplete": "^1.2.26",
     "perfect-scrollbar": "^0.6.12",
     "highlightjs-line-numbers.js": "^1.1.0",
-    "angular-datatables": "^0.5.5"
+    "angular-datatables": "^0.5.5",
+    "ionicons-min": "^2.0.1"
   }
 }
