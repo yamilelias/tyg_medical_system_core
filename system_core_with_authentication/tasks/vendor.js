@@ -90,13 +90,13 @@ gulp.task('build:vendor', ['build:vendor:js', 'build:vendor:css'/*, 'build:vendo
 gulp.task('build:vendor:js', function () {
   return gulp.src(jsLibs)
     .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('wwwroot/assets/js'))
+    .pipe(gulp.dest('wwwroot/js'))
 });
 
 gulp.task('build:vendor:css', function () {
   return gulp.src(cssLibs)
     .pipe(concat('vendor.css'))
-    .pipe(gulp.dest('wwwroot/assets/css'))
+    .pipe(gulp.dest('wwwroot/css'))
 });
 
 //gulp.task('build:vendor:angularjs', function () {
