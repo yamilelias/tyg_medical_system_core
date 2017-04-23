@@ -8,7 +8,7 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/main.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,56 +19,318 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+    <div class="app app-default">
+
+        <!-- Side bar menu -->
+        <aside class="app-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand" href="#"><span class="highlight">Flat v3</span> Admin</a>
+                <button type="button" class="sidebar-toggle">
+                    <i class="fa fa-times"></i>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">system_core_with_authentication</a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+            <div class="sidebar-menu">
+                <ul class="sidebar-nav">
+                    <li class="active">
+                        <a href="./index.html">
+                            <div class="icon">
+                                <i class="fa fa-tasks" aria-hidden="true"></i>
+                            </div>
+                            <div class="title">Dashboard</div>
+                        </a>
+                    </li>
+                    <li class="@@menu.messaging">
+                        <a href="./messaging.html">
+                            <div class="icon">
+                                <i class="fa fa-comments" aria-hidden="true"></i>
+                            </div>
+                            <div class="title">Messaging</div>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <div class="icon">
+                                <i class="fa fa-file-o" aria-hidden="true"></i>
+                            </div>
+                            <div class="title">Pages</div>
+                        </a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>
+                                <li><a href="./pages/form.html">Form</a></li>
+                                <li><a href="./pages/profile.html">Profile</a></li>
+                                <li><a href="./pages/search.html">Search</a></li>
+                                <li class="line"></li>
+                                <li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Landing</li>
+                                <!-- <li><a href="./pages/landing.html">Landing</a></li> -->
+                                <li><a href="./pages/login.html">Login</a></li>
+                                <li><a href="./pages/register.html">Register</a></li>
+                                <!-- <li><a href="./pages/404.html">404</a></li> -->
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
+            </div>
+            <div class="sidebar-footer">
+                <ul class="menu">
+                    <li>
+                        <a href="/" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li><a href="#"><span class="flag-icon flag-icon-th flag-icon-squared"></span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <script type="text/ng-template" id="sidebar-dropdown.tpl.html">
+            <div class="dropdown-background">
+                <div class="bg"></div>
+            </div>
+            <div class="dropdown-container">
+                {{list}}
+            </div>
+        </script>
+        
+        <!-- App Body -->
+        <div class="app-container">
+            <!-- Top navbar menu -->
+            <nav class="navbar navbar-default" id="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-collapse collapse in">
+                        <ul class="nav navbar-nav navbar-mobile">
+                            <li>
+                                <button type="button" class="sidebar-toggle">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                            </li>
+                            <li class="logo">
+                                <a class="navbar-brand" href="#"><span class="highlight">Flat v3</span> Admin</a>
+                            </li>
+                            <li>
+                                <button type="button" class="navbar-toggle">
+                                    <img class="profile-img" src="./assets/images/profile.png">
+                                </button>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li class="navbar-title">Dashboard</li>
+                            <li class="navbar-search hidden-sm">
+                                <input id="search" type="text" placeholder="Search..">
+                                <button class="btn-search"><i class="fa fa-search"></i></button>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown notification">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <div class="icon"><i class="fa fa-shopping-basket" aria-hidden="true"></i></div>
+                                    <div class="title">New Orders</div>
+                                    <div class="count">0</div>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li class="dropdown-header">Ordering</li>
+                                        <li class="dropdown-empty">No New Ordered</li>
+                                        <li class="dropdown-footer">
+                                            <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="dropdown notification warning">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <div class="icon"><i class="fa fa-comments" aria-hidden="true"></i></div>
+                                    <div class="title">Unread Messages</div>
+                                    <div class="count">99</div>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li class="dropdown-header">Message</li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-warning pull-right">10</span>
+                                                <div class="message">
+                                                    <img class="profile" src="https://placehold.it/100x100">
+                                                    <div class="content">
+                                                        <div class="title">"Payment Confirmation.."</div>
+                                                        <div class="description">Alan Anderson</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-warning pull-right">5</span>
+                                                <div class="message">
+                                                    <img class="profile" src="https://placehold.it/100x100">
+                                                    <div class="content">
+                                                        <div class="title">"Hello World"</div>
+                                                        <div class="description">Marco  Harmon</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-warning pull-right">2</span>
+                                                <div class="message">
+                                                    <img class="profile" src="https://placehold.it/100x100">
+                                                    <div class="content">
+                                                        <div class="title">"Order Confirmation.."</div>
+                                                        <div class="description">Brenda Lawson</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-footer">
+                                            <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="dropdown notification danger">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <div class="icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
+                                    <div class="title">System Notifications</div>
+                                    <div class="count">10</div>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li class="dropdown-header">Notification</li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-danger pull-right">8</span>
+                                                <div class="message">
+                                                    <div class="content">
+                                                        <div class="title">New Order</div>
+                                                        <div class="description">$400 total</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-danger pull-right">14</span>
+                                                Inbox
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-danger pull-right">5</span>
+                                                Issues Report
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-footer">
+                                            <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="dropdown profile">
+                                <a href="/html/pages/profile.html" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img class="profile-img" src="./assets/images/profile.png">
+                                    <div class="title">Profile</div>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="profile-info">
+                                        <h4 class="username">Scott White</h4>
+                                    </div>
+                                    <ul class="action">
+                                        <li>
+                                            <a href="#">
+                                                Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-danger pull-right">5</span>
+                                                My Inbox
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Setting
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Floating Button -->
+            <div class="btn-floating" id="help-actions">
+                <div class="btn-bg"></div>
+                <button type="button" class="btn btn-default btn-toggle" data-toggle="toggle" data-target="#help-actions">
+                    <i class="icon fa fa-plus"></i>
+                    <span class="help-text">Shortcut</span>
+                </button>
+                <div class="toggle-content">
+                    <ul class="actions">
+                        <li><a href="#">Website</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Issues</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- App Content -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="card card-banner no-br">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <div class="title">Top Sale Today</div>
+                                </div>
+                                <ul class="card-action">
+                                    <li>
+                                        <a href="/">
+                                            <i class="fa fa-refresh"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                <hr />
+                <footer>
+                    <p>&copy; 2017 - system_core_with_authentication</p>
+                </footer>
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - system_core_with_authentication</p>
-        </footer>
     </div>
+        <environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>
 
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
+        @RenderSection("Scripts", required: false)
 </body>
 </html>
