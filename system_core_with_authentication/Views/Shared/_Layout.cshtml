@@ -1,6 +1,8 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
+    // This switch is to set the active class in the sidebar menu
     switch ((string)ViewBag.Menu)
     {
         case "Dashboard":
@@ -12,6 +14,19 @@
         case "Contact":
             ViewBag.ContactActive = "active";
             break;
+        case "User":
+            ViewBag.UsersActive = "active";
+            break;
+    }
+
+    // Display most requested Item
+    if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
+    {
+        Html.RenderPartial("MostRequestedItem");
+    }
+    else
+    {
+
     }
 }
 <!DOCTYPE html>
@@ -91,6 +106,14 @@
                             </ul>
                         </div>
                     </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="@ViewBag.UsersActive">
+                            <a asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                        </li>
+                    }
+
+                    @await Html.PartialAsync("_LoginPartial")
                 </ul>
             </div>
             <div class="sidebar-footer">
