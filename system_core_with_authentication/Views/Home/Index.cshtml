@@ -1,108 +1,174 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
+    ViewBag.Menu = "Dashboard";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+@*<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-banner card-chart card-green no-br">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="title">REFRESH INFO</div>
+                </div>
+                <ul class="card-action">
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
+            <div class="card-body">
+                <div class="ct-chart-sale"></div>
             </div>
         </div>
     </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
+</div>*@
 
 <div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518004">Bower</a> for managing client-side libraries</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a class="card card-banner card-green-light">
+            <div class="card-body">
+                <i class="icon fa fa-shopping-basket fa-4x"></i>
+                <div class="content">
+                    <div class="title">Budget</div>
+                    <div class="value"><span class="sign">$</span>420</div>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699318">Add client packages using Bower.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a class="card card-banner card-blue-light">
+            <div class="card-body">
+                <i class="icon fa fa-hand-paper-o fa-4x"></i>
+                <div class="content">
+                    <div class="title">Requests</div>
+                    <div class="value"><span class="sign"></span>2453</div>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a class="card card-banner card-yellow-light">
+            <div class="card-body">
+                <i class="icon fa fa-user fa-4x"></i>
+                <div class="content">
+                    <div class="title">Users</div>
+                    <div class="value"><span class="sign"></span>50</div>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="col-md-3">
-        <h2>Run & Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">Last Requests</div>
+                <ul class="card-action">
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body no-padding table-responsive">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>Products</th>
+                            <th class="right">Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MicroSD 64Gb</td>
+                            <td class="right">12</td>
+                            <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Complete</span></span></td>
+                        </tr>
+                        <tr>
+                            <td>MiniPC i5</td>
+                            <td class="right">5</td>
+                            <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
+                        </tr>
+                        <tr>
+                            <td>Mountain Bike</td>
+                            <td class="right">1</td>
+                            <td><span class="badge badge-info badge-icon"><i class="fa fa-credit-card" aria-hidden="true"></i><span>Confirm Payment</span></span></td>
+                        </tr>
+                        <tr>
+                            <td>Notebook</td>
+                            <td class="right">10</td>
+                            <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
+                        </tr>
+                        <tr>
+                            <td>Raspberry Pi2</td>
+                            <td class="right">6</td>
+                            <td><span class="badge badge-primary badge-icon"><i class="fa fa-truck" aria-hidden="true"></i><span>Shipped</span></span></td>
+                        </tr>
+                        <tr>
+                            <td>Flashdrive 128Mb</td>
+                            <td class="right">40</td>
+                            <td><span class="badge badge-info badge-icon"><i class="fa fa-credit-card" aria-hidden="true"></i><span>Confirm Payment</span></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card card-tab card-mini">
+            <div class="card-header">
+                <ul class="nav nav-tabs tab-stats">
+                    <li role="tab1" class="active">
+                        <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Browsers</a>
+                    </li>
+                    <li role="tab2">
+                        <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">OS</a>
+                    </li>
+                    <li role="tab2">
+                        <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">More</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab1">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="chart ct-chart-browser ct-perfect-fourth"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="chart-label">
+                                <li class="ct-label ct-series-a">Google Chrome</li>
+                                <li class="ct-label ct-series-b">Firefox</li>
+                                <li class="ct-label ct-series-c">Safari</li>
+                                <li class="ct-label ct-series-d">IE</li>
+                                <li class="ct-label ct-series-e">Opera</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab2">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="chart ct-chart-os ct-perfect-fourth"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="chart-label">
+                                <li class="ct-label ct-series-a">iOS</li>
+                                <li class="ct-label ct-series-b">Android</li>
+                                <li class="ct-label ct-series-c">Windows</li>
+                                <li class="ct-label ct-series-d">OSX</li>
+                                <li class="ct-label ct-series-e">Linux</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="tab3">
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,4 +1,19 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
+@{
+    switch ((string)ViewBag.Menu)
+    {
+        case "Dashboard":
+            ViewBag.DashboardActive = "active";
+            break;
+        case "About":
+            ViewBag.AboutActive = "active";
+            break;
+        case "Contact":
+            ViewBag.ContactActive = "active";
+            break;
+    }
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +24,17 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/main.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/ionicons-min/css/ionicons.min.css" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/main.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/ionicons-min/css/ionicons.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
@@ -31,28 +51,30 @@
             </div>
             <div class="sidebar-menu">
                 <ul class="sidebar-nav">
-                    <li class="active">
-                        <a href="./index.html">
+                    <li class="@ViewBag.DashboardActive">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
                             <div class="icon">
                                 <i class="fa fa-tasks" aria-hidden="true"></i>
                             </div>
                             <div class="title">Dashboard</div>
                         </a>
                     </li>
-                    <li class="@@menu.messaging">
-                        <a href="./messaging.html">
+                    <!-- TODO: Change this to an existing module -->
+                    <li class="@ViewBag.AboutActive">
+                        <a asp-area="" asp-controller="Home" asp-action="About">
                             <div class="icon">
-                                <i class="fa fa-comments" aria-hidden="true"></i>
+                                <i class="fa fa-pagelines" aria-hidden="true"></i>
                             </div>
-                            <div class="title">Messaging</div>
+                            <div class="title">About</div>
                         </a>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <!-- TODO: Change this to an existing module -->
+                    <li class="dropdown @ViewBag.ContactActive">
+                        <a asp-area="" asp-controller="Home" asp-action="Contact" class="dropdown-toggle" data-toggle="dropdown">
                             <div class="icon">
-                                <i class="fa fa-file-o" aria-hidden="true"></i>
+                                <i class="fa fa-address-book-o" aria-hidden="true"></i>
                             </div>
-                            <div class="title">Pages</div>
+                            <div class="title">Contact</div>
                         </a>
                         <div class="dropdown-menu">
                             <ul>
@@ -114,11 +136,11 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-left">
-                            <li class="navbar-title">Dashboard</li>
-                            <li class="navbar-search hidden-sm">
+                            <li class="navbar-title">@ViewData["Title"]</li>
+                            @*<li class="navbar-search hidden-sm">
                                 <input id="search" type="text" placeholder="Search..">
                                 <button class="btn-search"><i class="fa fa-search"></i></button>
-                            </li>
+                            </li>*@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown notification">
@@ -228,7 +250,7 @@
                             </li>
                             <li class="dropdown profile">
                                 <a href="/html/pages/profile.html" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img class="profile-img" src="./assets/images/profile.png">
+                                    <img class="profile-img" src="http://placehold.it/50x50">
                                     <div class="title">Profile</div>
                                 </a>
                                 <div class="dropdown-menu">
@@ -283,7 +305,8 @@
             </div>
 
             <!-- App Content -->
-                <div class="row">
+            @RenderBody()
+                @*<div class="row">
                     <div class="col-xs-12">
                         <div class="card card-banner no-br">
                             <div class="card-header">
@@ -303,17 +326,21 @@
                             </div>
                         </div>
                     </div>
-                <hr />
-                <footer>
-                    <p>&copy; 2017 - system_core_with_authentication</p>
-                </footer>
-            </div>
+                </div>*@
+        </div>
+        <div class="app-footer">
+            <hr />
+            <footer style="text-align:right; padding-right:20px;">
+                <p>&copy; 2017 - TyG Medical</p>
+            </footer>
         </div>
     </div>
         <environment names="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
             <script src="~/js/site.js" asp-append-version="true"></script>
+            <script type="text/javascript" src="~/js/vendor.js"></script>
+            <script type="text/javascript" src="~/js/app.js"></script>
         </environment>
         <environment names="Staging,Production">
             <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -329,6 +356,8 @@
                     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
             </script>
             <script src="~/js/site.min.js" asp-append-version="true"></script>
+            <script type="text/javascript" src="~/js/vendor.js"></script>
+            <script type="text/javascript" src="~/js/app.js"></script>
         </environment>
 
         @RenderSection("Scripts", required: false)
