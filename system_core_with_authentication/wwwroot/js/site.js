@@ -200,7 +200,7 @@ function logoutUser(action) {
         url: action,
         data: {},
         success: function (response) {
-            alert('jalo putos');
+       
         }
     });
 }

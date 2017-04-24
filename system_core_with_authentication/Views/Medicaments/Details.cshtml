@@ -4,51 +4,79 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-xs-4 small">
+        <div class="card card-table">
+            <div class="container">
 
-<div>
-    <h4>Medicament</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Priority)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Counter)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Counter)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                <div>
+                    <h4>Details of @Html.DisplayFor(model => model.Description)</h4>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Content)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Content)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Type)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Priority)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Priority)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Counter)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Counter)
+                        </dd>
+                        <dt>
+                            Image
+                        </dt>
+                    
+                            
+                       
+                    </dl>
+                </div>
+
+                <br />  
+
+                <div>
+                    <img src="~/images/uploads/@Html.DisplayFor(model => model.MedicamentImage)"
+                         style="max-height:150px; max-width:150px; margin-left:80px;" />
+                </div>
+
+                <br /><br />
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+
+    <a asp-action="Index" class="btn btn-info btn-xs" style="margin-left:50px;">Back to Index</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success btn-xs" style="margin-left:90px; width:100px;">Edit</a>
+
+                </div>
+

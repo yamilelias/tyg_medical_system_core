@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using system_core_with_authentication.Models.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize(Roles = "Admin,Supervisor")]
     public class MedicamentOutController : Controller
     {
         private readonly ApplicationDbContext _context;

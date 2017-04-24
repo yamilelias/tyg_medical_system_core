@@ -1,48 +1,64 @@
 @model IEnumerable<system_core_with_authentication.Models.Stock>
 
 @{
-    ViewData["Title"] = "Stocks";
+    ViewData["Title"] = "Index of Stocks";
     ViewBag.Menu = "Stocks";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <a style="margin-left:40px;" asp-action="Create" class="btn btn-success btn-xs"> Create Stock </a>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Total)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Expiration)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Medicament)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Expiration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medicament.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+    <a style="margin-left:40px;" asp-area="" asp-controller="Medicaments" asp-action="Index" class="btn btn-info btn-xs">Go to Medicaments</a>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-banner card-table">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Total)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Expiration)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Medicament)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Expiration)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Medicament.Description)
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-xs" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a class="btn btn-info btn-xs" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                <a class="btn btn-danger btn-xs" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            </div>
+        </div>
+    </div>
+
+
+            
