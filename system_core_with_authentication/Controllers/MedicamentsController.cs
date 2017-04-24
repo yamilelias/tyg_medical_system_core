@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace system_core_with_authentication.Controllers
 {
     public class MedicamentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _environment;
 
-        public MedicamentsController(ApplicationDbContext context)
+        public MedicamentsController(ApplicationDbContext context, IHostingEnvironment environment)
         {
-            _context = context;    
+            _context = context;
+            _environment = environment;
         }
 
         // GET: Medicaments
@@ -54,10 +59,27 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Content,Type,Price,Priority,Counter")] Medicament medicament)
+        public async Task<IActionResult> Create([Bind("Id,Description,Content,Type,Price,Priority,Counter,MinimumStock,MedicamentImage,ImageFile")] Medicament medicament, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
+
+                if (imageFile != null)
+                {
+                    string uploadPath = Path.Combine(_environment.WebRootPath, "images", "uploads");
+                    Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                    string fileName = Path.GetFileName(imageFile.FileName);
+
+                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fs);
+                    }
+
+                    medicament.MedicamentImage = fileName;
+
+                }
+
                 _context.Add(medicament);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -86,7 +108,7 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Content,Type,Price,Priority,Counter")] Medicament medicament)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Content,Type,Price,Priority,Counter,MedicamentImage,ImageFile")] Medicament medicament, IFormFile imageFile)
         {
             if (id != medicament.Id)
             {
@@ -95,6 +117,23 @@ namespace system_core_with_authentication.Controllers
 
             if (ModelState.IsValid)
             {
+
+                if (imageFile != null)
+                {
+                    string uploadPath = Path.Combine(_environment.WebRootPath, "images", "uploads");
+                    Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                    string fileName = Path.GetFileName(imageFile.FileName);
+
+                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fs);
+                    }
+
+                    medicament.MedicamentImage = fileName;
+
+                }
+
                 try
                 {
                     _context.Update(medicament);

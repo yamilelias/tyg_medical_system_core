@@ -18,6 +18,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.6.12" />
+    <PackageReference Include="Hangfire" Version="1.6.12" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.12" />
+    <PackageReference Include="MailKit" Version="1.16.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.1" />
@@ -39,6 +42,9 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\images\uploads\" />
   </ItemGroup>
 
 </Project>

@@ -63,6 +63,23 @@ namespace system_core_with_authentication.Controllers
             {
                 _context.Add(stock);
                 await _context.SaveChangesAsync();
+
+                // Check Minimum stock
+                // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
+                if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId))
+                {
+                    var sum = _context.Stocks.Where(e => e.MedicamentId == stock.MedicamentId)
+                                                .Sum(e => e.Total);
+
+                    if (sum >= _context.Medicaments.Where(e => e.Id == stock.MedicamentId).Select(e => e.MinimumStock).FirstOrDefault())
+                    {
+                        var toRemove = _context.MedicamentsBelowThreshold.FirstOrDefault(m => m.MedicamentId == stock.MedicamentId);
+                        _context.MedicamentsBelowThreshold.Remove(toRemove);
+                        _context.SaveChanges();
+
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
             ViewData["MedicamentId"] = new SelectList(_context.Medicaments, "Id", "Description", stock.MedicamentId);

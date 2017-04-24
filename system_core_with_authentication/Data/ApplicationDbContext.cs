@@ -17,6 +17,7 @@ namespace system_core_with_authentication.Data
         public DbSet<IdentityRole> identityRole { get; set; }
 
         public DbSet<Medicament> Medicaments { get; set; }
+        public DbSet<MedicamentBelowThreshold> MedicamentsBelowThreshold { get; set; }
         public DbSet<Stock> Stocks { get; set; }
 
         public DbSet<RepositionStock> RepositionStocks { get; set; }
