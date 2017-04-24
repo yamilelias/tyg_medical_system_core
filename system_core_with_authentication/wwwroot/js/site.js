@@ -40,6 +40,17 @@ function getDataAjax(id, action)
     })
 }
 
+function getDataAjaxDetail(id, action) {
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: { id },
+        success: function (response) {
+            OnSuccessDetail(response);
+        }
+    })
+}
+
 function OnSuccess(response) {
 
     items = response;
@@ -47,7 +58,7 @@ function OnSuccess(response) {
     for (var i = 0; i < 3; i++)
     {
         var x = document.getElementById("select");
-        //x.remove(i);
+        x.remove(i);
     }
 
     $.each(items, function (index, val) {
@@ -61,11 +72,28 @@ function OnSuccess(response) {
         document.getElementById("select").options[0] = new Option(val.role, val.roleId);
 
     });
+}
 
-    //var x = document.getElementById("select").selectedIndex;
-    //var y = document.getElementById("option");   
+function OnSuccessDetail(response) {
 
-    //y[x].defaultSelected;
+    items = response;
+    j = 0;
+    for (var i = 0; i < 3; i++) {
+        var x = document.getElementById("select");
+        x.remove(i);
+    }
+
+    $.each(items, function (index, val) {
+        $('input[name=Id]').val(val.id);
+        $('label[name=Name]').val(val.name);
+        $('input[name=LastName]').val(val.lastName);
+        $('input[name=SecondLastName]').val(val.secondLastName);
+        $('input[name=Telephone]').val(val.telephone);
+        $('input[name=UserName]').val(val.userName);
+        $('input[name=Email]').val(val.email);
+        document.getElementById("select").options[0] = new Option(val.role, val.roleId);
+
+    });
 }
 
 function setDataUser(action) {
@@ -137,9 +165,10 @@ function setDataUser(action) {
                                     },
                                     success: function (response)
                                     {
+                                        //TODO: change window location
                                         if (response == "Save")
                                         {
-                                            window.location.href = "http://localhost:49957/Users";
+                                            window.location.href = "http://localhost:49956/Users";  
                                         }
                                     }
                                 })
@@ -160,6 +189,18 @@ function getRolesAjax(action) {
                 }
                 j = 1;
             }
+        }
+    });
+}
+
+function logoutUser(action) {
+    $.ajax({
+
+        type: "POST",
+        url: action,
+        data: {},
+        success: function (response) {
+            alert('jalo putos');
         }
     });
 }

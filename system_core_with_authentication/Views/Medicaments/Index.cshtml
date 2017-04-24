@@ -1,7 +1,8 @@
 @model IEnumerable<system_core_with_authentication.Models.Medicament>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Medicaments";
+    ViewBag.Menu = "Medicaments";
 }
 
 <h2>Index</h2>
@@ -30,6 +31,10 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Priority)
                 </th>
+
+                <th>
+                    Image
+                </th>
                
             <th></th>
         </tr>
@@ -52,7 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Priority)
             </td>
-            
+            <td>
+                <img src="~/images/uploads/@item.MedicamentImage" class="medicamentImage"/>
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

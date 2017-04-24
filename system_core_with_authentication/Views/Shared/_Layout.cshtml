@@ -1,5 +1,35 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@inject SignInManager<ApplicationUser> SignInManager
+
+@** TODO: Define logic in LoginPartial**@
+@*@await Html.PartialAsync("_LoginPartial")*@
+
+@{
+    @using Microsoft.AspNetCore.Identity
+    @using system_core_with_authentication.Models
+
+    @inject SignInManager<ApplicationUser> SignInManager
+
+    var userLoggedIn = false;
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        userLoggedIn = true;
+    }
+    else
+    {
+        userLoggedIn = false;
+    }
+
+    // Display most requested Item
+    if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
+    {
+        //Html.RenderPartial("MostRequestedItem");
+    }
+    else
+    {
+
+    }
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,71 +39,144 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/main.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/ionicons-min/css/ionicons.min.css" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/main.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/ionicons-min/css/ionicons.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">system_core_with_authentication</a>
+    <div class="app app-default">
+
+        @if (true)
+        {
+            <!-- Side bar menu -->
+            @await Html.PartialAsync("_SideBar")
+
+            <script type="text/ng-template" id="sidebar-dropdown.tpl.html">
+                <div class="dropdown-background">
+                    <div class="bg"></div>
+                </div>
+                <div class="dropdown-container">
+                    {{list}}
+                </div>
+            </script>
+
+            <!-- App Body -->
+            <div class="app-container">
+                <!-- Top navbar menu -->
+                @await Html.PartialAsync("_NavBar")
+
+                <!-- Floating Button -->
+                <div class="btn-floating" id="help-actions">
+                    <div class="btn-bg"></div>
+                    <button type="button" class="btn btn-default btn-toggle" data-toggle="toggle" data-target="#help-actions">
+                        <i class="icon fa fa-plus"></i>
+                        <span class="help-text">Shortcut</span>
+                    </button>
+                    <div class="toggle-content">
+                        <ul class="actions">
+                            <li><a href="#">Website</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Issues</a></li>
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- App Content -->
+                @RenderBody()
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
-            }
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
+            <div class="app-footer">
+                <hr />
+                <footer style="text-align:right; padding-right:20px;">
+                    <p>&copy; 2017 - TyG Medical</p>
+                </footer>
             </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - system_core_with_authentication</p>
-        </footer>
+        }
+        else
+        {
+            <div class="app-container app-login">
+                <div class="flex-center">
+                    <div class="app-header"></div>
+                    <div class="app-body">
+                        <div class="loader-container text-center">
+                            <div class="icon">
+                                <div class="sk-folding-cube">
+                                    <div class="sk-cube1 sk-cube"></div>
+                                    <div class="sk-cube2 sk-cube"></div>
+                                    <div class="sk-cube4 sk-cube"></div>
+                                    <div class="sk-cube3 sk-cube"></div>
+                                </div>
+                            </div>
+                            <div class="title">Logging in...</div>
+                        </div>
+                        <div class="app-block">
+                            <div class="app-form">
+                                <div class="form-header">
+                                    <div class="app-brand"><span class="highlight">TyG Medical</span> Admin</div>
+                                </div>
+                                <form action="/" method="POST">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon2">
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+                                    </div>
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-success btn-submit" value="Login">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-footer" hidden>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        }
     </div>
+        <environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script type="text/javascript" src="~/js/vendor.js"></script>
+            <script type="text/javascript" src="~/js/app.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+            <script type="text/javascript" src="~/js/vendor.js"></script>
+            <script type="text/javascript" src="~/js/app.js"></script>
+        </environment>
 
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
+        @RenderSection("Scripts", required: false)
 </body>
 </html>
