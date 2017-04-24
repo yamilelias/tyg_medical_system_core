@@ -13,8 +13,6 @@ namespace system_core_with_authentication.Models
         [Key]
         public int Id { get; set; }
 
-        public virtual RepositionStock RepositionStock { get; set; }
-
         public virtual Medicament Medicament { get; set; }
 
         [DisplayName("Cantidad actual")]

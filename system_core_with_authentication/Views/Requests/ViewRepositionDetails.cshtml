@@ -1,0 +1,49 @@
+@model system_core_with_authentication.Models.RepositionStock
+
+@{
+    ViewData["Title"] = "ViewRepositionDetails";
+}
+
+<h2>Solicitud de Medicamentos</h2>
+
+Usuario: @Html.DisplayFor(model=>Model.Request.User)
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Medicamento
+            </th>
+            <th>
+                Cantidad Actual
+            </th>
+            <th>
+                Cantidad Solicitada
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+            
+                        @foreach (var a in Model.RepositionStockDetailed)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => a.Medicament.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.CurrentStock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.RequestStock)
+                                </td>
+                            </tr>
+                        }
+           
+    </tbody>
+</table>
+<div>
+    <a asp-action="ShowAllRequests">Back to List</a>
+</div>
+

@@ -34,11 +34,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-            @if (SignInManager.IsSignedIn(User))
+            @if (User.IsInRole("Admin"))
             {
                 <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                <li><a asp-area="" asp-controller="Medicaments" asp-action="Index">Medicamentos</a></li>
+                <li><a asp-area="" asp-controller="MedicamentOut" asp-action="Index">Salida de Medicamentos</a></li>
+
+            }
+            @if (User.IsInRole("User")|| User.IsInRole("Admin"))
+            {
+                <li><a asp-area="" asp-controller="Requests" asp-action="Index">Request</a></li>
+
             }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

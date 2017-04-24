@@ -1,0 +1,73 @@
+@model system_core_with_authentication.Models.RepositionStock
+
+@{
+    ViewData["Title"] = "ChangeSolved";
+}
+
+<h2>Solicitud de Medicamentos</h2>
+Usuario: @Html.DisplayFor(model => Model.Request.User)
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Medicamento
+            </th>
+            <th>
+                Cantidad Actual
+            </th>
+            <th>
+                Cantidad Solicitada
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+            @foreach (var a in Model.RepositionStockDetailed)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => a.Medicament.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => a.CurrentStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => a.RequestStock)
+                    </td>
+                </tr>
+            }
+
+    </tbody>
+</table>
+
+
+
+<form asp-action="ChangeSolved">
+    <div class="form-horizontal">
+        <h4>RepositionStock</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Solved" />
+                    <label asp-for="Solved"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="ShowAllRequests">Back to List</a>
+</div>
+

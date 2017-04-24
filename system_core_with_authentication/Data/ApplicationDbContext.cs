@@ -40,6 +40,7 @@ namespace system_core_with_authentication.Data
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Location>().ToTable("Location");
             modelBuilder.Entity<LocationSchedule>().ToTable("LocationSchedule");
+            //modelBuilder.Entity<Request>().ToTable("Request");
         }
 
         public DbSet<system_core_with_authentication.Models.ApplicationUser> ApplicationUser { get; set; }

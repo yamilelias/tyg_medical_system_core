@@ -18,10 +18,7 @@ namespace system_core_with_authentication.Models
         [DisplayName("Notas")]
         public string Note { get; set; }
 
-        public virtual User User { get; set;}
-
-
-
+        public string User { get; set; }
         /*[ForeignKey("IdUserApproved")]
         public int IdUserApproved { get; set; }
         public virtual User UserApproved {get;set;}*/

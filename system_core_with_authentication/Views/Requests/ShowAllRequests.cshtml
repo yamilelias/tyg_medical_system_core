@@ -1,0 +1,54 @@
+@model IEnumerable<system_core_with_authentication.Models.RepositionStock>
+
+@{
+    ViewData["Title"] = "ShowAllRequests";
+}
+
+<h2>View</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    Fecha
+                </th>
+                <th>
+                    Notas
+                </th>
+            <th>
+                Resuelto
+            </th>
+            <th>
+                Usuario
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved" asp-route-id="@item.Id">Cambiar</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request.User)
+            </td>
+            <td>
+                <form asp-controller="Requests" asp-action="ViewRepositionDetails" method="get">
+                    <input class="form-control" type="hidden" value="@item.Request.Id" name="RepositionStockId" id="id">
+                        <input type="submit" value="Ver detalles" class="btn btn-default" />
+                </form>
+            </td>
+        </tr>
+}
+
+    </tbody>
+</table>

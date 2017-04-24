@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using system_core_with_authentication.Data;
 using Newtonsoft.Json.Linq;
 using system_core_with_authentication.Models;
+using Microsoft.EntityFrameworkCore;
+using system_core_with_authentication.Models.ViewModels;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -37,6 +39,8 @@ namespace system_core_with_authentication.Controllers
         public ActionResult SaveReposition(string values,string username)
         {
             Request _request = new Request();
+            _request.User = username;
+            _request.Date = DateTime.UtcNow;
             RepositionStock _repositionStock = new RepositionStock();
             _repositionStock.Request = _request;
 
@@ -67,18 +71,43 @@ namespace system_core_with_authentication.Controllers
                 RepositionStockDetailed _repositionStockDetailed = new RepositionStockDetailed();
                 _repositionStockDetailed.CurrentStock = actualQuantity;
                 _repositionStockDetailed.RequestStock = requestQuantity;
-                _repositionStockDetailed.RepositionStock = _repositionStock;
                 _repositionStockDetailed.Medicament = _context.Medicaments.Where(i=>i.Id==ID).FirstOrDefault();
                 _context.RepositionStockDetailed.Add(_repositionStockDetailed);
 
                 medicamentsList.Add(_repositionStockDetailed);
-                _repositionStock.rpd = medicamentsList;
+                _repositionStock.RepositionStockDetailed = medicamentsList;
 
             }
             _context.Requests.Add(_request);
             _context.RepositionStocks.Add(_repositionStock);
             _context.SaveChanges();
             return Json(new { success = true });
+        }
+
+        public ActionResult ShowAllRequests()
+        {
+            var x = _context.RepositionStocks.Include(r => r.Request).ToList();
+
+            return View(x);
+        }
+        public ActionResult ViewRepositionDetails(int RepositionStockId)
+        {
+            var x = _context.RepositionStocks.Include(r => r.Request).Include(r=>r.RepositionStockDetailed).ThenInclude(m=>m.Medicament).Where(i=>i.Id==RepositionStockId).ToList().FirstOrDefault();
+            return View(x);
+        }
+
+        public ActionResult ChangeSolved(int? id)
+        {
+            var x = _context.RepositionStocks.Include(r => r.Request).Include(r => r.RepositionStockDetailed).ThenInclude(m => m.Medicament).Where(m => m.Id == id).ToList().FirstOrDefault();
+            return View(x);
+        }
+
+        [HttpPost]
+        public ActionResult ChangeSolved(RepositionStock repositionStock)
+        {
+            _context.Update(repositionStock);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
         }
     }
 }

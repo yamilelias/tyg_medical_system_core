@@ -91,8 +91,9 @@ namespace system_core_with_authentication
             
 
             context.Database.EnsureCreated();
-
-            //await CreateRoles(serviceProvider);
+            /*context.ApplicationUser.Add(new ApplicationUser());
+            context.SaveChanges();*/
+            await CreateRoles(serviceProvider);
         }
 
         /*
@@ -120,8 +121,8 @@ namespace system_core_with_authentication
              * THE ID OF THE ADMIN MUST BE CHANGED MANUALLY
              * IF THE DATABASE IS ERASEN
              */
-            var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
-            await userManager.AddToRoleAsync(user, "Admin");
+            //var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
+            //await userManager.AddToRoleAsync(user, "Admin");
         }
     }
 }
