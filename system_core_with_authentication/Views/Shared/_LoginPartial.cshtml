@@ -5,3 +5,17 @@ Pseudocode:
         Render._Layout.cshtml
     else
         Redirect.To.LogInPage*@
+
+@*@using Microsoft.AspNetCore.Identity
+@using system_core_with_authentication.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @ViewBag.UserLoggedIn = false;
+}
+else
+{
+    @ViewBag.UserLoggedIn = false;
+}*@

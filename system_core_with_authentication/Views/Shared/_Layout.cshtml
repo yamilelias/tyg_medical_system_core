@@ -1,9 +1,25 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 
 @** TODO: Define logic in LoginPartial**@
-@await Html.PartialAsync("_LoginPartial")
+@*@await Html.PartialAsync("_LoginPartial")*@
 
 @{
+    @using Microsoft.AspNetCore.Identity
+    @using system_core_with_authentication.Models
+
+    @inject SignInManager<ApplicationUser> SignInManager
+
+    var userLoggedIn = false;
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        userLoggedIn = true;
+    }
+    else
+    {
+        userLoggedIn = false;
+    }
+
     // Display most requested Item
     if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
     {
@@ -41,70 +57,100 @@
 <body>
     <div class="app app-default">
 
-        <!-- Side bar menu -->
-        @await Html.PartialAsync("_SideBar")
+        @if (userLoggedIn)
+        {
+            <!-- Side bar menu -->
+            @await Html.PartialAsync("_SideBar")
 
-        <script type="text/ng-template" id="sidebar-dropdown.tpl.html">
-            <div class="dropdown-background">
-                <div class="bg"></div>
-            </div>
-            <div class="dropdown-container">
-                {{list}}
-            </div>
-        </script>
-        
-        <!-- App Body -->
-        <div class="app-container">
-            <!-- Top navbar menu -->
-            @await Html.PartialAsync("_NavBar")
-
-            <!-- Floating Button -->
-            <div class="btn-floating" id="help-actions">
-                <div class="btn-bg"></div>
-                <button type="button" class="btn btn-default btn-toggle" data-toggle="toggle" data-target="#help-actions">
-                    <i class="icon fa fa-plus"></i>
-                    <span class="help-text">Shortcut</span>
-                </button>
-                <div class="toggle-content">
-                    <ul class="actions">
-                        <li><a href="#">Website</a></li>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Issues</a></li>
-                        <li><a href="#">About</a></li>
-                    </ul>
+            <script type="text/ng-template" id="sidebar-dropdown.tpl.html">
+                <div class="dropdown-background">
+                    <div class="bg"></div>
                 </div>
-            </div>
+                <div class="dropdown-container">
+                    {{list}}
+                </div>
+            </script>
 
-            <!-- App Content -->
-            @RenderBody()
-                @*<div class="row">
-                    <div class="col-xs-12">
-                        <div class="card card-banner no-br">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <div class="title">Top Sale Today</div>
+            <!-- App Body -->
+            <div class="app-container">
+                <!-- Top navbar menu -->
+                @await Html.PartialAsync("_NavBar")
+
+                <!-- Floating Button -->
+                <div class="btn-floating" id="help-actions">
+                    <div class="btn-bg"></div>
+                    <button type="button" class="btn btn-default btn-toggle" data-toggle="toggle" data-target="#help-actions">
+                        <i class="icon fa fa-plus"></i>
+                        <span class="help-text">Shortcut</span>
+                    </button>
+                    <div class="toggle-content">
+                        <ul class="actions">
+                            <li><a href="#">Website</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Issues</a></li>
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- App Content -->
+                @RenderBody()
+            </div>
+            <div class="app-footer">
+                <hr />
+                <footer style="text-align:right; padding-right:20px;">
+                    <p>&copy; 2017 - TyG Medical</p>
+                </footer>
+            </div>
+        }
+        else
+        {
+            <div class="app-container app-login">
+                <div class="flex-center">
+                    <div class="app-header"></div>
+                    <div class="app-body">
+                        <div class="loader-container text-center">
+                            <div class="icon">
+                                <div class="sk-folding-cube">
+                                    <div class="sk-cube1 sk-cube"></div>
+                                    <div class="sk-cube2 sk-cube"></div>
+                                    <div class="sk-cube4 sk-cube"></div>
+                                    <div class="sk-cube3 sk-cube"></div>
                                 </div>
-                                <ul class="card-action">
-                                    <li>
-                                        <a href="/">
-                                            <i class="fa fa-refresh"></i>
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
-                            <div class="card-body">
-                                @RenderBody()
+                            <div class="title">Logging in...</div>
+                        </div>
+                        <div class="app-block">
+                            <div class="app-form">
+                                <div class="form-header">
+                                    <div class="app-brand"><span class="highlight">TyG Medical</span> Admin</div>
+                                </div>
+                                <form action="/" method="POST">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon2">
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+                                    </div>
+                                    <div class="text-center">
+                                        <input type="submit" class="btn btn-success btn-submit" value="Login">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div>*@
-        </div>
-        <div class="app-footer">
-            <hr />
-            <footer style="text-align:right; padding-right:20px;">
-                <p>&copy; 2017 - TyG Medical</p>
-            </footer>
-        </div>
+                    <div class="app-footer" hidden>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        }
     </div>
         <environment names="Development">
             <script src="~/lib/jquery/dist/jquery.js"></script>
