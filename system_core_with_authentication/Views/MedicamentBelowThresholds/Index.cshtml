@@ -1,4 +1,4 @@
-@model IEnumerable<system_core_with_authentication.Models.MedicamentBelowThreshold>
+@model IEnumerable<system_core_with_authentication.Models.ViewModels.MedicamentTresholdViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.MedicamentId)
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CurrentStock)
@@ -22,7 +22,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MedicamentId)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CurrentStock)

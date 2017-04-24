@@ -31,7 +31,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Priority)
                 </th>
-
+                <th>
+                    @Html.DisplayNameFor(model => model.MinimumStock)
+                </th>
                 <th>
                     Image
                 </th>
@@ -56,6 +58,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinimumStock)
             </td>
             <td>
                 <img src="~/images/uploads/@item.MedicamentImage" class="medicamentImage"/>

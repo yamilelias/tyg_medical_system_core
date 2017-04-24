@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Treshold_Mail;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Data;
+using system_core_with_authentication.Models.ViewModels;
 
 namespace Treshold_Mail.Controllers
 {
@@ -21,9 +22,21 @@ namespace Treshold_Mail.Controllers
         }
 
         // GET: MedicamentBelowThresholds
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.MedicamentsBelowThreshold.ToListAsync());
+            var m = _context.MedicamentsBelowThreshold.ToList();
+            List<MedicamentTresholdViewModel> meds = new List<MedicamentTresholdViewModel>();
+            m.ForEach(e => {
+                meds.Add(new MedicamentTresholdViewModel() {
+                    Id = e.Id,
+                    Name = _context.Medicaments.Where(f => f.Id == e.MedicamentId)
+                                               .Select(f => f.Description)
+                                                .FirstOrDefault(),
+                    CurrentStock = e.CurrentStock
+                });
+            });
+
+            return View(meds);
         }
 
 
