@@ -192,3 +192,15 @@ function getRolesAjax(action) {
         }
     });
 }
+
+function logoutUser(action) {
+    $.ajax({
+
+        type: "POST",
+        url: action,
+        data: {},
+        success: function (response) {
+            alert('jalo putos');
+        }
+    });
+}

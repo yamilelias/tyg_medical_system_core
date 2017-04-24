@@ -1,4 +1,12 @@
-﻿@if (User.Identity.IsAuthenticated)
+﻿@using Microsoft.AspNetCore.Identity
+@using system_core_with_authentication.Models
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (User.Identity.IsAuthenticated)
 {
     <nav class="navbar navbar-default" id="navbar">
         <div class="container-fluid">
@@ -136,34 +144,24 @@
                             <img class="profile-img" src="http://placehold.it/50x50">
                             <div class="title">Profile</div>
                         </a>
-                        <div class="dropdown-menu">
-                            <div class="profile-info">
-                                <h4 class="username">Scott White</h4>
+                        <form method="post" asp-controller="Account" asp-action="Logout" id="logoutForm">
+                            <div class="dropdown-menu">
+                                <div class="profile-info">
+                                    <h4 class="username">@UserManager.GetUserName(User)</h4>
+                                </div>
+
+                                <ul class="action">
+                                    <li>
+                                        <a style="padding-left: 30px;" method="post" asp-action="Details" asp-controller="Users" asp-route-id="@UserManager.GetUserId(User)"> Profile </a>
+                                    </li>
+
+                                    <li>
+                                        <button class="btn btn-link pull-left" type="submit" value="Logout">Logout</button>
+                                    </li>
+                                </ul>
+
                             </div>
-                            <ul class="action">
-                                <li>
-                                    <a href="#">
-                                        Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="badge badge-danger pull-right">5</span>
-                                        My Inbox
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Setting
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        </form>
                     </li>
                 </ul>
             </div>
