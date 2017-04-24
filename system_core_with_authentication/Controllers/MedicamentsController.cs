@@ -59,7 +59,7 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Content,Type,Price,Priority,Counter,MedicamentImage,ImageFile")] Medicament medicament, IFormFile imageFile)
+        public async Task<IActionResult> Create([Bind("Id,Description,Content,Type,Price,Priority,Counter,MinimumStock,MedicamentImage,ImageFile")] Medicament medicament, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {

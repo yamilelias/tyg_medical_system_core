@@ -1,0 +1,36 @@
+@model IEnumerable<system_core_with_authentication.Models.MedicamentBelowThreshold>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedicamentId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CurrentStock)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicamentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentStock)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

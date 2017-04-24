@@ -10,16 +10,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using system_core_with_authentication.Models.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Treshold_Mail.Mail;
 
 namespace system_core_with_authentication.Controllers
 {
     public class MedicamentOutController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMail MailService;
 
-        public MedicamentOutController(ApplicationDbContext context)
+        public MedicamentOutController(ApplicationDbContext context, IMail MailService)
         {
             _context = context;
+            this.MailService = MailService;
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -42,12 +45,13 @@ namespace system_core_with_authentication.Controllers
         //[httppost]
         public ActionResult MedicamentOut(string values)
         {
-
             JArray array = JArray.Parse(values);
+            Dictionary<int, int> ToCheckMini = new Dictionary<int, int>();
             foreach (JObject obj in array.Children<JObject>())
             {
                 int id = 0;
-                int quantity= 0;
+                int quantity = 0;
+
                 foreach (JProperty singleProp in obj.Properties())
                 {
                     string name = singleProp.Name;
@@ -60,12 +64,44 @@ namespace system_core_with_authentication.Controllers
                 }
                 Stock item = _context.Stocks.FirstOrDefault(s => s.Id == id);
                 item.Total = item.Total - quantity;
+                ToCheckMini.Add(item.MedicamentId, item.Total);
                 _context.Update(item);
                 _context.SaveChanges();
 
             }
+            // ToDo - Add Async method to check current stock
+            //Task taskA = Task.Run(() => {
+            Dictionary<String, int> belowThreshold = new Dictionary<String, int>();
+            ToCheckMini.ToList().ForEach(e => {
+                var medId = e.Key;
 
-            return Json(new {success=true });
+                var sumTotal = _context.Stocks.Where(f => f.MedicamentId == medId)
+                                              .Sum(f => f.Total);
+                if (sumTotal <= e.Value)
+                {
+                    // Below Threshold
+                    var name = _context.Medicaments.Where(a => a.Id == medId)
+                                                   .Select(a => a.Description)
+                                                   .FirstOrDefault();
+                    belowThreshold.Add(name, sumTotal);
+                    _context.MedicamentsBelowThreshold.Add(new MedicamentBelowThreshold()
+                    {
+                        MedicamentId = e.Key,
+                        CurrentStock = e.Value
+                    });
+                    _context.SaveChanges();
+                }
+            });
+            String medicineToSupply = "";
+            foreach (KeyValuePair<String, int> x in belowThreshold.ToList())
+            {
+                medicineToSupply += $"Medicina: {x.Key}, Stock actual: {x.Value} \n";
+            }
+            MailService.SendToAdmin("Se necesita resuplir los siguientes medicamentos \n" +
+                                    medicineToSupply, "Medicamentos para resuplir");
+            //});
+            // taskA.Wait();
+            return Json(new { success = true });
         }
 
 
