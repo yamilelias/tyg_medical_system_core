@@ -77,7 +77,7 @@
             @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Supervisor")))
             {
             <li class="dropdown @ViewBag.StocksActive">
-                <a asp-area="" asp-controller="Medicaments" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
+                <a asp-area="" asp-controller="Stocks" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
                     <div class="icon">
                         <i class="fa fa-archive" aria-hidden="true"></i>
                     </div>
