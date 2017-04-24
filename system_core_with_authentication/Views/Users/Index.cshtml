@@ -1,0 +1,147 @@
+@model IEnumerable<system_core_with_authentication.Models.Users>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.Menu = "User";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    Paternal Name
+                </th>
+                <th>
+                    Maternal Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telephone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                <a asp-action="Edit" data-toggle="modal" data-target="#myModal" class="btn btn-default" onclick="getDataAjax('@item.Id','Users/EditAjax')">Edit</a> |
+                <a asp-action="Details" class="btn btn-info" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="EditAjax">
+                    <div class="form-horizontal">
+                       
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input type="hidden" for="Id" name="Id" />
+
+                        <div class="form-group">
+                            <label for="Name" class="col-md-2 control-label">Name</label>
+                            <div class="col-md-10">
+                                <input name="Name" for="Name" id="Name" class="form-control" />
+                      
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="LastName" class="col-md-2 control-label">Paternal Name</label>
+                            <div class="col-md-10">
+                                <input for="LastName" name="LastName" id="LastName" class="form-control" />
+                     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="SecondLastName" class="col-md-2 control-label">Maternal Name</label>
+                            <div class="col-md-10">
+                                <input for="SecondLastName" name="SecondLastName" id="SecondLastName" class="form-control" />
+                           
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Telephone" class="col-md-2 control-label">Telephone</label>
+                            <div class="col-md-10">
+                                <input for="Telephone" name="Telephone" id="Telephone" class="form-control" />
+                            
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="UserName" class="col-md-2 control-label">Username</label>
+                            <div class="col-md-10">
+                                <input for="UserName" name="UserName"  id="UserName" class="form-control" />
+                           
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email" class="col-md-2 control-label">Email</label>
+                            <div class="col-md-10">
+                                <input for="Email" name="Email" id="Email" class="form-control" />
+                              
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Roles" class="col-md-2 control-label">Roles</label>
+                            <div class="col-md-10">
+                                <select id='select' class="form-control" onclick='getRolesAjax("Users/RolesAjax");' >
+                                    <option value='0'>Seleccione un rol</option>
+                                </select>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" onclick="setDataUser('Users/EditUserAjax')" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
