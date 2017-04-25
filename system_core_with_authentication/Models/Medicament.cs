@@ -33,6 +33,9 @@ namespace system_core_with_authentication.Models
 
         public virtual ICollection<Stock> Stocks { get; set; }
 
+        [DisplayName("Stock Mínimo")]
+        public int MinimumStock { get; set; }
+
 
     }
 }

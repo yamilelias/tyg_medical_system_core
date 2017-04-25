@@ -13,6 +13,9 @@ using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
 using Microsoft.AspNetCore.Identity;
+using Treshold_Mail.Scheduler;
+using Hangfire;
+using Treshold_Mail.Mail;
 
 namespace system_core_with_authentication
 {
@@ -46,10 +49,17 @@ namespace system_core_with_authentication
                 */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfire(options =>
+                        options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            
+
+            services.AddTransient<IMail, MailService>();
+
 
             services.AddMvc();
 
@@ -76,7 +86,7 @@ namespace system_core_with_authentication
             }
 
             app.UseStaticFiles();
-
+            app.UseHangfireServer();
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
@@ -93,8 +103,8 @@ namespace system_core_with_authentication
             DbInitializer.Initialize(context);
 
             await CreateRoles(serviceProvider);
+            HangfireScheduler.Init(app);
 
-            
         }
 
         /*
