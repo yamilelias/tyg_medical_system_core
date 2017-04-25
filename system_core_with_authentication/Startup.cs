@@ -101,9 +101,9 @@ namespace system_core_with_authentication
             context.Database.EnsureCreated();
 
             DbInitializer.Initialize(context);
-
-            await CreateRoles(serviceProvider);
             HangfireScheduler.Init(app);
+            await CreateRoles(serviceProvider);
+            
 
         }
 
