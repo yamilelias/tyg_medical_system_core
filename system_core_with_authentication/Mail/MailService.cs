@@ -43,7 +43,8 @@ namespace Treshold_Mail.Mail
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("TyG SysAdmin", "hostmaster@arturozamora.net"));
 
-            emails.ForEach(e => {
+            emails.ForEach(e =>
+            {
                 message.To.Add(new MailboxAddress($"{e.Name} {e.LastName}", $"{e.Email}"));
             });
             message.Subject = subject;

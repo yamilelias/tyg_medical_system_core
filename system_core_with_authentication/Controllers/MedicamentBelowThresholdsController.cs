@@ -47,15 +47,21 @@ namespace Treshold_Mail.Controllers
             {
                 return NotFound();
             }
-
+            
             var medicamentBelowThreshold = await _context.MedicamentsBelowThreshold
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (medicamentBelowThreshold == null)
             {
                 return NotFound();
             }
-
-            return View(medicamentBelowThreshold);
+            var medicamentViewModel = new MedicamentTresholdViewModel() {
+                Id = medicamentBelowThreshold.Id,
+                Name = _context.Medicaments.Where(f => f.Id == medicamentBelowThreshold.MedicamentId)
+                                               .Select(f => f.Description)
+                                                .FirstOrDefault(),
+                CurrentStock = medicamentBelowThreshold.CurrentStock
+            };
+            return View(medicamentViewModel);
         }
 
         // POST: MedicamentBelowThresholds/Delete/5
