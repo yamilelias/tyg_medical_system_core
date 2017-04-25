@@ -106,20 +106,20 @@
                     <div class="form-header">
                         <div class="app-brand"><span class="highlight">TyG Medical</span> Admin</div>
                     </div>
-                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                             </span>
-                            <input asp-for="Email" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                            <input asp-for="Email" class="form-control" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">
                                 <i class="fa fa-key" aria-hidden="true"></i>
                             </span>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+                            <input asp-for="Password" class="form-control" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-group">
                             <div class="text-center">
-                                <button class="btn btn-success btn-submit" >Log in</button>
+                                <button type="submit" class="btn btn-success btn-submit">Log in</button>
                             </div>
                         </div>
                         <div class="form-group">
