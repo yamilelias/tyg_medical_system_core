@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using system_core_with_authentication.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;

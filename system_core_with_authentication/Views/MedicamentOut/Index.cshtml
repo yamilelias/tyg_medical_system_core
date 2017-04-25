@@ -1,62 +1,72 @@
 @model IEnumerable<system_core_with_authentication.Models.Stock>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Requested Medicament";
 }
 
-<h2>Salida de Medicamento</h2>
+<div class="row">
+    <div class="col-lg-12 small">
+        <div class="card card-table">
+            <div class="container">
 
-<form asp-controller="MedicamentOut" asp-action="Index" method="get">
-    <p>
-        Medicamento: <input class="form-control" type="text" name="SearchString">
-        <input type="submit" value="Filtrar" class="btn btn-default"/>
-    </p>
-</form>
+                <form asp-controller="MedicamentOut" asp-action="Index" method="get">
+                    <p>
+                        <h4> Medicament:</h4> <input style="width:1050px;" class="form-control" type="text" name="SearchString">
+                        <input type="submit" value="Filtrar" class="btn btn-default" />
+                    </p>
+                </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Expiration)
-            </th>
-            <th>
-                Medicamento
-            </th>
-            <th>
-                Salida
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Expiration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Medicament.Description)
-                </td>
-                <td>
-                    <input class="form-control" type="text" name="quantity" id="quantity-@item.Id" />
-                    <input type="hidden" value="@item.Id" name="id" id="id">
-                    <input type="hidden" value="@item.Medicament.Description" name="description" id="description-@item.Id">
-                    <input type="hidden" value="@item.Total" name="total" id="total-@item.Id">
-                    <input type="hidden" value="@item.Expiration" name="expiration" id="expiration-@item.Id">
-                    <input type="submit" value="Agregar a lista" class="btn btn-default" onclick="addToList(@item.Id)" autocomplete="off" />
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                <table class="table" style="width:1050px;">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                Expiration Date
+                            </th>
+                            <th>
+                                Medicament
+                            </th>
+                            <th>
+                                Outcoming Quantity
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Total)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Expiration)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Medicament.Description)
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text" name="quantity" id="quantity-@item.Id" />
+                                    <input type="hidden" value="@item.Id" name="id" id="id">
+                                    <input type="hidden" value="@item.Medicament.Description" name="description" id="description-@item.Id">
+                                    <input type="hidden" value="@item.Total" name="total" id="total-@item.Id">
+                                    <input type="hidden" value="@item.Expiration" name="expiration" id="expiration-@item.Id">
+                                    <input type="submit" value="Agregar a lista" class="btn btn-default" onclick="addToList(@item.Id)" autocomplete="off" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
-<div id="lista"></div>
-<div id="debug"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script src="~/js/MedsOut.js"></script> 
+                
+
+                <div id="lista"></div>
+                <div id="debug"></div>
+
+                <script src="~/js/MedsOut.js"></script>

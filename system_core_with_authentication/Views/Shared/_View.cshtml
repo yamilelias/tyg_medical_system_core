@@ -1,0 +1,43 @@
+﻿<!-- Side bar menu -->
+@await Html.PartialAsync("_SideBar")
+
+<script type="text/ng-template" id="sidebar-dropdown.tpl.html">
+    <div class="dropdown-background">
+        <div class="bg"></div>
+    </div>
+    <div class="dropdown-container">
+        {{list}}
+    </div>
+</script>
+
+<!-- App Body -->
+<div class="app-container">
+    <!-- Top navbar menu -->
+    @await Html.PartialAsync("_NavBar")
+
+    <!-- Floating Button -->
+    <div class="btn-floating" id="help-actions">
+        <div class="btn-bg"></div>
+        <button type="button" class="btn btn-default btn-toggle" data-toggle="toggle" data-target="#help-actions">
+            <i class="icon fa fa-plus"></i>
+            <span class="help-text">Shortcut</span>
+        </button>
+        <div class="toggle-content">
+            <ul class="actions">
+                <li><a href="#">Website</a></li>
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">Issues</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- App Content -->
+    @RenderBody()
+</div>
+<div class="app-footer">
+    <hr />
+    <footer style="text-align:right; padding-right:20px;">
+        <p>&copy; 2017 - TyG Medical</p>
+    </footer>
+</div>

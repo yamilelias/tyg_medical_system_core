@@ -1,20 +1,19 @@
-@model system_core_with_authentication.Models.ApplicationUser
+﻿@model system_core_with_authentication.Models.ApplicationUser
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Profile";
 }
-
 
 <div class="row">
     <div class="col-xs-4 small">
         <div class="card card-table">
             <div class="container">
 
-                <h4> Details for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) </h4>
+                <h4> Your Information </h4>
 
                 <dl>
                     <dt>
-                       Name
+                        Name
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.Name)
@@ -29,7 +28,7 @@
                         Maternal Name
                     </dt>
                     <dd>
-                       @Html.DisplayFor(model => model.SecondLastName)
+                        @Html.DisplayFor(model => model.SecondLastName)
                     </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.Telephone)
@@ -51,27 +50,20 @@
                     </dd>
 
                 </dl>
-               
-               
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 
-                        <a asp-action="Index" class="btn btn-info btn-xs">Back to Index</a>
 
-                    </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 
-                
+                    <a style="margin-left:50px;" asp-action="Index" asp-controller="Home" class="btn btn-info">Back to Dashboard</a>
 
                 </div>
+
+
+
+            </div>
 
             <br />
 
         </div>
     </div>
 </div>
-
-
-
-
-        
- 
-

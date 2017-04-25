@@ -98,7 +98,7 @@ function removeItem(y) {
 
 function displayList() {
     var finalButton = "<input type=\"submit\" value=\"Aceptar\" class=\"btn btn-default\" onclick=\"sendRepositionList() \" autocomplete=\"off\" />";
-    var s = "<table class=\"table\"><thead><tr><th>Descripcion</th><th>Contenido</th><th>Tipo</th><th>Cantidad Actual</th><th>Cantidad a Solicitar</th></tr></thead><tbody>";
+    var s = "<table class=\"table\"><thead><tr><th>Description</th><th>Content</th><th>Type</th><th>Inventory Quantity</th><th>Requested Quantity</th></tr></thead><tbody>";
     for (var x = 0; x < list.length; x++) {
         s += "<tr>";
         s += "<td>" + list[x].Description + "</td><td>" + list[x].Content + "</td><td>" + list[x].Type + "</td><td>" + list[x].ActualQuantity + "</td><td>" + list[x].RequestQuantity + "</td>"+
@@ -106,7 +106,7 @@ function displayList() {
         s += "</tr>";
     }
     s += "</tbody></table > ";
-    document.getElementById("lista").innerHTML = "<h2>Lista</h2>" + s + finalButton;
+    document.getElementById("lista").innerHTML = "<h2>List of Medicaments</h2>" + s + finalButton;
 }
 
 function sendRepositionList() {

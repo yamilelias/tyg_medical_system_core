@@ -88,18 +88,20 @@ namespace system_core_with_authentication
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
-
             context.Database.EnsureCreated();
 
-            //await CreateRoles(serviceProvider);
+            DbInitializer.Initialize(context);
+
+            await CreateRoles(serviceProvider);
+
+            
         }
 
         /*
          * THIS METHOD CREATES THE THREE USER ROLES
          * A DEFAULT ADMIN ACCOUNT IS GIVEN THE ADMIN ROLE
-         * 
          */
+
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -116,12 +118,14 @@ namespace system_core_with_authentication
                 }
             }
 
-            /* 
-             * THE ID OF THE ADMIN MUST BE CHANGED MANUALLY
-             * IF THE DATABASE IS ERASEN
+            /*
+             * THE DEFAULT ADMIN ACCOUNT
+             * WILL BE ASSIGNED THE ADMIN ROLE
              */
-            var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
+
+            var user = await userManager.FindByIdAsync("1");
             await userManager.AddToRoleAsync(user, "Admin");
         }
+
     }
 }
