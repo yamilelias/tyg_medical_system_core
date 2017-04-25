@@ -24,6 +24,12 @@
         </div>
     </div>
 </div>*@
+@if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
+{
+    Html.RenderPartial("MostRequestedItem");
+                //Html.RenderPartial("~/Views/Home/MostRequestedItem.cshtml");}
+                //Html.RenderPartial("~/Views/Home/LowStock.cshtml");}
+            }
 
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">

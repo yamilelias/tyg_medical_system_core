@@ -66,8 +66,12 @@ namespace system_core_with_authentication.Controllers
                         ID = Int32.Parse(value);
 
                 }
+                //Add to medicament counter
+                Medicament med = _context.Medicaments.Where(i => i.Id == ID).FirstOrDefault();
+                med.Counter += requestQuantity;
+                _context.Medicaments.Update(med);
 
-
+                //Create RepositionStockDetailed
                 RepositionStockDetailed _repositionStockDetailed = new RepositionStockDetailed();
                 _repositionStockDetailed.CurrentStock = actualQuantity;
                 _repositionStockDetailed.RequestStock = requestQuantity;
