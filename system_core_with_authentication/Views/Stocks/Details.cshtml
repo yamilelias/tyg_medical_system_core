@@ -4,33 +4,44 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-xs-4 small">
+        <div class="card card-table">
+            <div class="container">
 
-<div>
-    <h4>Stock</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Expiration)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Expiration)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Medicament)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Medicament.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                <div>
+
+                    <br />
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Total)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Total)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Expiration)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Expiration)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Medicament)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Medicament.Description)
+                        </dd>
+                    </dl>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+               
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <a class="btn btn-info btn-xs" style="margin-left:70px; width:100px;" asp-action="Index">Back to List</a>
+                    <a class="btn btn-success btn-xs" style="margin-left:80px;" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+                </div>

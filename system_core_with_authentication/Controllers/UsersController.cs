@@ -4,14 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -76,6 +79,25 @@ namespace system_core_with_authentication.Controllers
             {
                 return NotFound();
             }
+
+            return View(applicationUser);
+        }
+
+        // GET: Users/Profile/5
+        [AllowAnonymous]
+        public async Task<IActionResult> Profile(string id)
+        {
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            var applicationUser = await _context.ApplicationUser
+                .SingleOrDefaultAsync(m => m.Id == id);
+            //if (applicationUser == null)
+            //{
+            //    return NotFound();
+            //}
 
             return View(applicationUser);
         }
