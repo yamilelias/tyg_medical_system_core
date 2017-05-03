@@ -1,64 +1,101 @@
 @model IEnumerable<system_core_with_authentication.Models.Medicament>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Medicaments";
+    ViewBag.Menu = "Medicaments";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <a style="margin-left:40px;" asp-action="Create" class="btn btn-success btn-xs"> Create Medicament </a>
 
-<p>
-    <a asp-action="Create">Crear Medicamento</a>
-</p>
-<p>
-    <a asp-area="" asp-controller="Stocks" asp-action="Index">Stocks</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Priority)
-                </th>
-               
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
+
+    <a style="margin-left:40px;" asp-area="" asp-controller="Stocks" asp-action="Index" class="btn btn-info btn-xs">Go to Stocks</a>
+</div>
+
+
+<br />
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-banner card-table">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Content)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Priority)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MinimumStock)
+                        </th>
+                        <th>
+                            Image
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MinimumStock)
+                            </td>
+                            <td>
+                                <img src="~/images/uploads/@item.MedicamentImage" 
+                                     
+                                     style="max-height:150px; max-width:150px;" />
+                            </td>
+                            <td>
+                                <a asp-action="Edit" style="width:70px;" class="btn btn-default btn-xs" asp-route-id="@item.Id">Edit</a> 
+
+                                <br />
+
+                                <a asp-action="Details" style="width:70px;" class="btn btn-info btn-xs" asp-route-id="@item.Id">Details</a> 
+                                
+                                <br />
+                                <a asp-action="Delete" style="width:70px;" class="btn btn-danger btn-xs" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            </div>
+        </div>
+    </div>
+
             
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+               
+            
+            

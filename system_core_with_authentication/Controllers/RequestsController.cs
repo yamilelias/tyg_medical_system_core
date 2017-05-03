@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using system_core_with_authentication.Data;
 using Newtonsoft.Json.Linq;
 using system_core_with_authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    
     public class RequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +25,7 @@ namespace system_core_with_authentication.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,Supervisor,User")]
         public ActionResult CreateReposition(string searchString)
         {
             var medicaments = _context.Medicaments.Select(m=>m) ;
@@ -34,6 +37,7 @@ namespace system_core_with_authentication.Controllers
             return View(medicaments.ToList());
         }
 
+        [Authorize(Roles = "Admin,Supervisor,User")]
         public ActionResult SaveReposition(string values,string username)
         {
             Request _request = new Request();

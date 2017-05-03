@@ -13,6 +13,9 @@ using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
 using Microsoft.AspNetCore.Identity;
+using Treshold_Mail.Scheduler;
+using Hangfire;
+using Treshold_Mail.Mail;
 
 namespace system_core_with_authentication
 {
@@ -46,10 +49,17 @@ namespace system_core_with_authentication
                 */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfire(options =>
+                        options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            
+
+            services.AddTransient<IMail, MailService>();
+
 
             services.AddMvc();
 
@@ -76,7 +86,7 @@ namespace system_core_with_authentication
             }
 
             app.UseStaticFiles();
-
+            app.UseHangfireServer();
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
@@ -88,18 +98,20 @@ namespace system_core_with_authentication
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
-
             context.Database.EnsureCreated();
 
-            //await CreateRoles(serviceProvider);
+            DbInitializer.Initialize(context);
+
+            await CreateRoles(serviceProvider);
+            HangfireScheduler.Init(app);
+
         }
 
         /*
          * THIS METHOD CREATES THE THREE USER ROLES
          * A DEFAULT ADMIN ACCOUNT IS GIVEN THE ADMIN ROLE
-         * 
          */
+
         private async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -116,12 +128,14 @@ namespace system_core_with_authentication
                 }
             }
 
-            /* 
-             * THE ID OF THE ADMIN MUST BE CHANGED MANUALLY
-             * IF THE DATABASE IS ERASEN
+            /*
+             * THE DEFAULT ADMIN ACCOUNT
+             * WILL BE ASSIGNED THE ADMIN ROLE
              */
-            var user = await userManager.FindByIdAsync("c99ceccb-b6ff-480c-9ccb-a92abaee5f8e");
+
+            var user = await userManager.FindByIdAsync("1");
             await userManager.AddToRoleAsync(user, "Admin");
         }
+
     }
 }

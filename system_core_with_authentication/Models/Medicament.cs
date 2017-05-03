@@ -27,6 +27,15 @@ namespace system_core_with_authentication.Models
         [DisplayName("Prioridad")]
         public int Priority { get; set; }
         public int Counter { get; set; }
+        
+        [DisplayName("Imagen del Medicamento")]
+        public string MedicamentImage { get; set; }
+
         public virtual ICollection<Stock> Stocks { get; set; }
+
+        [DisplayName("Stock Mínimo")]
+        public int MinimumStock { get; set; }
+
+
     }
 }

@@ -27,5 +27,6 @@ namespace system_core_with_authentication.Models
 
         [ForeignKey("MedicamentId")]
         public Medicament Medicament { get; set; }
+
     }
 }
