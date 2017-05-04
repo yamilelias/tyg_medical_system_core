@@ -38,39 +38,13 @@ namespace system_core_with_authentication.Controllers
             {
                 list.Add(_context.Medicaments.Where(a => a.Id == item.med.Id).FirstOrDefault());
             }
-            var list2 = list.Distinct();
-            vhvm.MedicamentHigh = list2.ToList();
-
-            //-----
-            //ViewBag.a = new SelectList(list, "Description", "Content", "Type","Price");
+            var list2 = list.Take(10).Distinct();
+            vhvm.MedicamentLow = list2.ToList();
 
             //Most requested
             var x = _context.Medicaments.ToList().OrderByDescending(m => m.Counter).Take(10);
-            vhvm.MedicamentLow = x.ToList();
+            vhvm.MedicamentHigh = x.ToList();
             return View(vhvm);
-        }
-
-        public IActionResult LowStock()
-        {
-            //MBT.currentStock / medicament.Where(a.ID=mtb.Id)minimumStock *100
-
-            //var y = _context.MedicamentsBelowThreshold.Where(a=>a.MedicamentId==);
-
-            var x = _context.MedicamentsBelowThreshold.Join(
-                _context.Medicaments,
-                mbt => mbt.MedicamentId,
-                med => med.Id,
-                (mbt,med) => new { mbt,med}
-               );
-            x.ToList().OrderByDescending(m=>m.mbt.CurrentStock/m.med.MinimumStock*100);
-
-            List<Medicament> list = new List<Medicament>();
-            foreach (var item in x)
-            {
-                list.Add(_context.Medicaments.Where(a => a.Id==item.med.Id).FirstOrDefault());
-            }
-            //var list = _context.MedicamentsBelowThreshold.OrderBy(a => a.CurrentStock).ToList();
-            return View(list.Distinct());
         }
 
         public IActionResult About()

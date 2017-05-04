@@ -37,10 +37,11 @@ namespace system_core_with_authentication.Controllers
             return View(medicaments.ToList());
         }
         [Authorize(Roles = "Admin,Supervisor,User")]
-        public ActionResult SaveReposition(string values,string username)
+        public ActionResult SaveReposition(string values,string username, string notes)
         {
             Request _request = new Request();
             _request.User = username;
+            _request.Note = notes;
             _request.Date = DateTime.UtcNow;
             RepositionStock _repositionStock = new RepositionStock();
             _repositionStock.Request = _request;
@@ -91,7 +92,7 @@ namespace system_core_with_authentication.Controllers
 
         public ActionResult ShowAllRequests()
         {
-            var x = _context.RepositionStocks.Include(r => r.Request).ToList();
+            var x = _context.RepositionStocks.Include(r => r.Request).OrderByDescending(r=>r.Request.Date).ToList();
 
             return View(x);
         }

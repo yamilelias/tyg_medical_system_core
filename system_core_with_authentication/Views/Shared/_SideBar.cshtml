@@ -44,13 +44,21 @@
             </li>
             @if (SignInManager.IsSignedIn(User))
             {
-            <li class="@ViewBag.RequestsActive">
-                <a asp-area="" asp-controller="Requests" asp-action="Index">
+            <li class="dropdown @ViewBag.RequestsActive">
+                <a asp-area="" asp-controller="Requests" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
                     <div class="icon">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </div>
                     <div class="title">Requests</div>
                 </a>
+                <div class="dropdown-menu">
+                    <ul>
+                        @* Use this li class if a section is needed *@
+                        @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
+                        <li><a asp-controller="Requests" asp-action="ShowAllRequests">Mostrar todos</a></li>
+                        <li><a asp-controller="Requests" asp-action="Index"> Crear nueva solicitud</a></li>
+                    </ul>
+                </div>
             </li>
             }
 
@@ -67,9 +75,9 @@
                     <ul>
                         @* Use this li class if a section is needed *@
                         @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
-                        <li><a asp-controller="Medicaments" asp-action="Index">Show All</a></li>
-                        <li><a asp-controller= "Medicaments" asp-action= "Create" > Create New</a></li>
-                        <li><a asp-controller="MedicamentOut" asp-action="Index"> Requested Medicaments</a></li>
+                        <li><a asp-controller="Medicaments" asp-action="Index">Mostrar todos</a></li>
+                        <li><a asp-controller= "Medicaments" asp-action= "Create" > Crear nuevo</a></li>
+                        <li><a asp-controller="MedicamentOut" asp-action="Index"> Salida de Medicamentos</a></li>
                     </ul>
                 </div>
             </li>
@@ -87,8 +95,8 @@
                     <ul>
                         @* Use this li class if a section is needed *@
                         @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
-                        <li><a asp-controller="Stocks" asp-action="Index">Show All</a></li>
-                        <li><a asp-controller="Stocks" asp-action="Create">Create New</a></li>
+                        <li><a asp-controller="Stocks" asp-action="Index">Mostrar todos</a></li>
+                        <li><a asp-controller="Stocks" asp-action="Create">Crear nuevos</a></li>
                     </ul>
                 </div>
             </li>
