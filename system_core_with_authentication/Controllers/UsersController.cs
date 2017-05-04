@@ -11,6 +11,9 @@ using system_core_with_authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -18,18 +21,23 @@ namespace system_core_with_authentication.Controllers
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _environment;
+
         UserManager<ApplicationUser> _userManager;
         RoleManager<IdentityRole> _roleManager;
         UsersRoles _usersRole;
+
         public List<SelectListItem> userRole;
 
         public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager) 
+            RoleManager<IdentityRole> roleManager, IHostingEnvironment environment) 
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _usersRole = new UsersRoles();
+            _environment = environment;
+
             userRole = new List<SelectListItem>();
         }
 
@@ -37,7 +45,6 @@ namespace system_core_with_authentication.Controllers
         public async Task<IActionResult> Index()
         {
             var ID = "";
-            string role;
             List<Users> user = new List<Users>();
             var appUser = await _context.ApplicationUser.ToListAsync();
 
@@ -56,13 +63,12 @@ namespace system_core_with_authentication.Controllers
                     LastName = Data.LastName,
                     SecondLastName = Data.SecondLastName,
                     Telephone = Data.Telephone,
-                    Role = userRole[0].Text
+                    Role = userRole[0].Text,
+                    UserImage = Data.UserImage
                 });
             }
 
             return View(user.ToList());
-
-            //return View(await _context.ApplicationUser.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -113,10 +119,27 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount,ImageFile")] ApplicationUser applicationUser, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
+
+                if (imageFile != null)
+                {
+                    string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
+                    Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                    string fileName = Path.GetFileName(imageFile.FileName);
+
+                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fs);
+                    }
+
+                    applicationUser.UserImage = fileName;
+
+                }
+
                 _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -229,26 +252,17 @@ namespace system_core_with_authentication.Controllers
 
 
         // GET: Users/Edit/5
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(string id)
+        {
+            var applicationUser = await _context.ApplicationUser
+                .SingleOrDefaultAsync(m => m.Id == id);
 
-        //    var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-        //    if (applicationUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(applicationUser);
-        //}
+            return View(applicationUser);
+        }
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)

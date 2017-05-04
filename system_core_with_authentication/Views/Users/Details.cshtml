@@ -1,5 +1,8 @@
 @model system_core_with_authentication.Models.ApplicationUser
 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Details";
 }
@@ -8,7 +11,7 @@
 <div class="row">
     <div class="col-xs-4 small">
         <div class="card card-table">
-            <div class="container">
+            <div class="card-body">
 
                 <h4> Details for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) </h4>
 
@@ -53,9 +56,11 @@
                 </dl>
                
                
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-actions no-color">
 
                         <a asp-action="Index" class="btn btn-info btn-xs">Back to Index</a>
+
+                        <a asp-action="Edit"  asp-controller="Users" class="btn btn-default btn-xs pull-right" asp-route-id="@UserManager.GetUserId(User)"> Full Edit </a>
 
                     </div>
 

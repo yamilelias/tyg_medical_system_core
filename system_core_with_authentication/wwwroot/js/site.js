@@ -26,6 +26,7 @@ var secondLastName;
 var telephone;
 var selectRole;
 var role;
+var userImage;
 
 
 function getDataAjax(id, action)

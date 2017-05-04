@@ -8,7 +8,7 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>ApplicationUser</h4>
+        <h4>Full Edit for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) @Html.DisplayFor(model => model.SecondLastName) </h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -18,6 +18,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="LastName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -25,6 +26,7 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="SecondLastName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -32,6 +34,7 @@
                 <span asp-validation-for="SecondLastName" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="Telephone" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -39,6 +42,7 @@
                 <span asp-validation-for="Telephone" class="text-danger"></span>
             </div>
         </div>
+
     <input type="hidden" asp-for="Id" />
         <div class="form-group">
             <label asp-for="UserName" class="col-md-2 control-label"></label>
@@ -47,6 +51,7 @@
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group">
             <label asp-for="Email" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -54,6 +59,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

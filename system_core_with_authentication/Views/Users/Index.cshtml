@@ -21,6 +21,9 @@
                 <thead>
                     <tr>
                         <th>
+                            Identification
+                        </th>
+                        <th>
                             Full Name
                         </th>
                         <th>
@@ -39,6 +42,11 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                <img src="~/users/uploads/@item.UserImage" 
+                                
+                                style="max-height:100px; max-width:100px;">
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.LastName) @Html.DisplayFor(modelItem => item.SecondLastName)
                             </td>
@@ -79,7 +87,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit User</h4>
+                <h4 class="modal-title" id="myModalLabel">Quick Edit</h4>
             </div>
             <div class="modal-body">
 
@@ -142,6 +150,8 @@
                                 </select>
                             </div>
                         </div>
+
+                        <br />
                       
                     </div>
                 </form>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -52,13 +53,16 @@ namespace system_core_with_authentication.Models.AccountViewModels
         public List<SelectListItem> Roles { get; set; }
         public string Role { get; set; }
 
+        [Display(Name = "User Image")]
+        public IFormFile UserImage { get; set; }
+
         public RegisterViewModel()
         {
             Roles = new List<SelectListItem>();
-            
+
         }
 
-        public void getRoles (ApplicationDbContext _context)
+        public void getRoles(ApplicationDbContext _context)
         {
             var roles = from r in _context.identityRole select r;
             var listRole = roles.ToList();
@@ -75,3 +79,4 @@ namespace system_core_with_authentication.Models.AccountViewModels
 
     }
 }
+

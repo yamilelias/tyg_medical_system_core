@@ -13,6 +13,9 @@ using system_core_with_authentication.Models;
 using system_core_with_authentication.Models.AccountViewModels;
 using system_core_with_authentication.Services;
 using system_core_with_authentication.Data;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -26,6 +29,7 @@ namespace system_core_with_authentication.Controllers
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _environment;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -34,7 +38,7 @@ namespace system_core_with_authentication.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            ApplicationDbContext context)
+            ApplicationDbContext context, IHostingEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,6 +47,7 @@ namespace system_core_with_authentication.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _context = context;
+            _environment = environment;
         }
 
         //
@@ -113,12 +118,29 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, IFormFile imageFile, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
+            string fileName = "";
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, LastName = model.LastName, SecondLastName = model.SecondLastName, Telephone = model.Telephone };
+
+                if (imageFile != null)
+                {
+                    string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
+                    Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                    fileName = Path.GetFileName(imageFile.FileName);
+
+                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fs);
+                    }
+                }
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, LastName = model.LastName, SecondLastName = model.SecondLastName, Telephone = model.Telephone, UserImage = fileName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, model.Role);
                 if (result.Succeeded)
