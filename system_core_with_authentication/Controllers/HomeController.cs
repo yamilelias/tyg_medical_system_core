@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using system_core_with_authentication.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -8,7 +8,7 @@
     ViewData["Title"] = "Log in";
 }
 
-@*<div class="row">
+<div class="row">
     <div class="col-md-8">
         <section>
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
@@ -84,9 +84,9 @@
             }
         </section>
     </div>
-</div>*@
+</div>
 
-<div class="app-container app-login">
+@*<div class="app-container app-login">
     <div class="flex-center">
         <div class="app-header"></div>
         <div class="app-body">
@@ -149,7 +149,84 @@
         <div class="app-footer">
         </div>
     </div>
+</div>*@
+
+<div class="app-container app-login">
+    <div class="flex-center">
+        <div class="app-header"></div>
+        <div class="app-body">
+            <div class="loader-container text-center">
+                <div class="icon">
+                    <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                    </div>
+                </div>
+                <div class="title">Logging in...</div>
+            </div>
+            <div class="app-block">
+                <div class="app-form">
+                    <div class="form-header">
+                        <div class="app-brand"><span class="highlight">TyG Medical</span> Admin</div>
+                    </div>
+                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <hr />
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <span class="input-group-addon" id="basic-addon1">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </span>
+                                <input asp-for="Email" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <span class="input-group-addon" id="basic-addon2">
+                                    <i class="fa fa-key" aria-hidden="true"></i>
+                                </span>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    <label asp-for="RememberMe">
+                                        <input asp-for="RememberMe" />
+                                        @Html.DisplayNameFor(m => m.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-submit">Log in</button>
+                            </div>
+                        </div>
+                        <p>
+                            <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                        </p>
+                        <p>
+                            <a asp-action="ForgotPassword">Forgot your password?</a>
+                        </p>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="app-footer">
+        </div>
+    </div>
 </div>
+
+
+
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
