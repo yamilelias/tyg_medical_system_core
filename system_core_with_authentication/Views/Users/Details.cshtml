@@ -5,8 +5,8 @@
 
 @{
     ViewData["Title"] = "Details";
+    ViewBag.Menu = "User";
 }
-
 
 <div class="row">
     <div class="col-xs-4 small">
@@ -60,7 +60,7 @@
 
                         <a asp-action="Index" class="btn btn-info btn-xs">Back to Index</a>
 
-                        <a asp-action="Edit"  asp-controller="Users" class="btn btn-default btn-xs pull-right" asp-route-id="@UserManager.GetUserId(User)"> Full Edit </a>
+                        <a asp-action="Edit"  asp-controller="Users" class="btn btn-default btn-xs pull-right" asp-route-id="@Model.Id"> Full Edit </a>
 
                     </div>
 

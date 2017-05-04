@@ -274,11 +274,32 @@ namespace system_core_with_authentication.Controllers
 
             if (ModelState.IsValid)
             {
+
+                /*
                 try
                 {
+                    
+                    if (imageFile != null)
+                    {
+                        string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
+                        Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                        string fileName = Path.GetFileName(imageFile.FileName);
+
+                        using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fs);
+                        }
+
+                        applicationUser.UserImage = fileName;
+
+                    } */
+
                     _context.Update(applicationUser);
                     await _context.SaveChangesAsync();
-                }
+
+                    /*
+                } 
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
@@ -289,7 +310,8 @@ namespace system_core_with_authentication.Controllers
                     {
                         throw;
                     }
-                }
+                } */
+
                 return RedirectToAction("Index");
             }
             return View(applicationUser);
@@ -298,7 +320,7 @@ namespace system_core_with_authentication.Controllers
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
+            if ((id == null) || (id == "1"))
             {
                 return NotFound();
             }

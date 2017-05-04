@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using system_core_with_authentication.Models
 
+@*
+
+TODO: Change placeholder image to actual user image.
+
+*@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -18,11 +23,11 @@
                         </button>
                     </li>
                     <li class="logo">
-                        <a class="navbar-brand" href="#"><span class="highlight">Flat v3</span> Admin</a>
+                        <a class="navbar-brand" href="#"><span class="highlight">TyG Medical</span></a>
                     </li>
                     <li>
                         <button type="button" class="navbar-toggle">
-                            <img class="profile-img" src="./assets/images/profile.png">
+                            <img class="profile-img" src="~/users/uploads/@UserManager.GetUserId(User)/photo.png">
                         </button>
                     </li>
                 </ul>
@@ -141,7 +146,7 @@
                     </li>
                     <li class="dropdown profile">
                         <a href="/html/pages/profile.html" class="dropdown-toggle" data-toggle="dropdown">
-                            <img class="profile-img" src="http://placehold.it/50x50">
+                            <img class="profile-img" src="~/users/uploads/@UserManager.GetUserId(User)/photo.png">
                             <div class="title">Profile</div>
                         </a>
                         <form method="post" asp-controller="Account" asp-action="Logout" id="logoutForm">

@@ -90,9 +90,10 @@ namespace system_core_with_authentication
 
             context.Database.EnsureCreated();
 
-            DbInitializer.Initialize(context);
 
-            await CreateRoles(serviceProvider);
+
+            //DbInitializer.Initialize(context);
+            //await CreateRoles(serviceProvider);
 
             
         }
@@ -123,8 +124,15 @@ namespace system_core_with_authentication
              * WILL BE ASSIGNED THE ADMIN ROLE
              */
 
-            var user = await userManager.FindByIdAsync("1");
-            await userManager.AddToRoleAsync(user, "Admin");
+             var user = new ApplicationUser
+                {
+                    Id = "1",
+                    UserName = "asti@asti.com",
+                    Email = "asti@asti.com"
+                };
+
+             var result2 = await userManager.CreateAsync(user, "Asti2017.");
+             await userManager.AddToRoleAsync(user, "Admin");
         }
 
     }
