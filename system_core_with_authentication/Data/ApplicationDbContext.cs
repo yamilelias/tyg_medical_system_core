@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Models;
+using system_core_with_authentication.Models.Alerts;
 
 namespace system_core_with_authentication.Data
 {
@@ -28,6 +29,8 @@ namespace system_core_with_authentication.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationSchedule> LocationSchedules { get; set; }
 
+        public DbSet<AlertSettings> AlertSettings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -41,6 +44,7 @@ namespace system_core_with_authentication.Data
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Location>().ToTable("Location");
             modelBuilder.Entity<LocationSchedule>().ToTable("LocationSchedule");
+            modelBuilder.Entity<AlertSettings>().ToTable("AlertSettings");
         }
 
         public DbSet<system_core_with_authentication.Models.ApplicationUser> ApplicationUser { get; set; }

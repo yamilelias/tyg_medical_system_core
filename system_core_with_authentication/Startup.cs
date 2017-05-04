@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Identity;
 using Treshold_Mail.Scheduler;
 using Hangfire;
 using Treshold_Mail.Mail;
+using system_core_with_authentication.Models.Alerts;
+using system_core_with_authentication.Scheduler;
 
 namespace system_core_with_authentication
 {
@@ -65,7 +67,8 @@ namespace system_core_with_authentication
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>(); 
+            services.AddTransient<IScheduler, SchedulerOptions>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +91,7 @@ namespace system_core_with_authentication
             app.UseStaticFiles();
             app.UseHangfireServer();
             app.UseIdentity();
+            app.UseDeveloperExceptionPage();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

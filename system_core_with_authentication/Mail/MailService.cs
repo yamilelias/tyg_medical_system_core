@@ -36,9 +36,29 @@ namespace Treshold_Mail.Mail
         public void SendToAdmin(string body, string subject)
         {
             var adminRole = _roleManager.Roles.Where(e => e.Name == "Admin").FirstOrDefault();
-            var supervisorRole = _roleManager.Roles.Where(e => e.Name == "Supervisor").FirstOrDefault();
+          
             var emails = _userManager.Users.Where(e => e.Roles.Select(r => r.RoleId).Contains(adminRole.Id)).ToList();
-            emails.Concat(_userManager.Users.Where(e => e.Roles.Select(r => r.RoleId).Contains(supervisorRole.Id)).ToList());
+            
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("TyG SysAdmin", "hostmaster@arturozamora.net"));
+
+            emails.ForEach(e =>
+            {
+                message.To.Add(new MailboxAddress($"{e.Name} {e.LastName}", $"{e.Email}"));
+            });
+            message.Subject = subject;
+            message.Body = new TextPart("plain")
+            {
+                Text = body
+            };
+            SendEmail(message);
+        }
+
+        public void SendToSupervisor(string body, string subject)
+        {
+            var supervisorRole = _roleManager.Roles.Where(e => e.Name == "Supervisor").FirstOrDefault();
+            var emails = _userManager.Users.Where(e => e.Roles.Select(r => r.RoleId).Contains(supervisorRole.Id)).ToList();
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("TyG SysAdmin", "hostmaster@arturozamora.net"));
