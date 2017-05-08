@@ -23,8 +23,12 @@
                             <th>
                                 Precio
                             </th>
-
-                            <th></th>
+                            <th>
+                                Prioridad
+                            </th>
+                            <th>
+                                # Pedidos
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +49,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Priority)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Counter)
                                 </td>
                             </tr>
                         }
@@ -78,6 +85,15 @@
                             <th>
                                 Precio
                             </th>
+                            <th>
+                                Prioridad
+                            </th>
+                            <th>
+                                Stock minimo
+                            </th>
+                            <th>
+                                Stock total actual
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,19 +101,25 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
+                                    @Html.DisplayFor(modelItem => item.medicament.Description)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Content)
+                                    @Html.DisplayFor(modelItem => item.medicament.Content)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Type)
+                                    @Html.DisplayFor(modelItem => item.medicament.Type)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Price)
+                                    @Html.DisplayFor(modelItem => item.medicament.Price)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Priority)
+                                    @Html.DisplayFor(modelItem => item.medicament.Priority)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.medicament.MinimumStock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.sumTotal)
                                 </td>
                             </tr>
                         }

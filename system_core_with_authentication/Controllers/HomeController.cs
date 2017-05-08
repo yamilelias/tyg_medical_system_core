@@ -33,13 +33,21 @@ namespace system_core_with_authentication.Controllers
                );
             y.ToList().OrderByDescending(m => m.mbt.CurrentStock / m.med.MinimumStock * 100);
 
-            List<Medicament> list = new List<Medicament>();
+            List<MedicamentWithTotalStock> list = new List<MedicamentWithTotalStock>();
             foreach (var item in y)
             {
-                list.Add(_context.Medicaments.Where(a => a.Id == item.med.Id).FirstOrDefault());
+                MedicamentWithTotalStock m = new MedicamentWithTotalStock();
+                m.medicament = _context.Medicaments.Where(a => a.Id == item.med.Id).FirstOrDefault();
+                m.sumTotal = _context.Stocks.Where(f => f.MedicamentId == item.med.Id)
+                                              .Sum(f => f.Total);
+                list.Add(m);
             }
             var list2 = list.Take(10).Distinct();
+
             vhvm.MedicamentLow = list2.ToList();
+
+
+
 
             //Most requested
             var x = _context.Medicaments.ToList().OrderByDescending(m => m.Counter).Take(10);

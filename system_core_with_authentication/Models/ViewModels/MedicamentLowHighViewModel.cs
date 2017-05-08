@@ -7,7 +7,7 @@ namespace system_core_with_authentication.Models.ViewModels
 {
     public class MedicamentLowHighViewModel
     {
-        public List<Medicament> MedicamentLow { get; set; }
+        public List<MedicamentWithTotalStock> MedicamentLow { get; set; }
         public List<Medicament> MedicamentHigh { get; set; }
     }
 }

@@ -85,13 +85,24 @@ namespace system_core_with_authentication.Controllers
                     var name = _context.Medicaments.Where(a => a.Id == medId)
                                                    .Select(a => a.Description)
                                                    .FirstOrDefault();
-                    belowThreshold.Add(name, sumTotal);
-                    _context.MedicamentsBelowThreshold.Add(new MedicamentBelowThreshold()
+
+                    var alreadyInList = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key).FirstOrDefault();
+                    if (alreadyInList == null)
                     {
-                        MedicamentId = e.Key,
-                        CurrentStock = e.Value
-                    });
-                    _context.SaveChanges();
+                        belowThreshold.Add(name, sumTotal);
+                        _context.MedicamentsBelowThreshold.Add(new MedicamentBelowThreshold()
+                        {
+                            MedicamentId = e.Key,
+                            CurrentStock = e.Value
+                        });
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        MedicamentBelowThreshold medbelow = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key).FirstOrDefault();
+                        medbelow.CurrentStock = e.Value;
+                        _context.SaveChanges();
+                    }
                 }
             });
             String medicineToSupply = "";
