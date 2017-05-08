@@ -92,19 +92,44 @@ namespace system_core_with_authentication.Controllers
 
         public ActionResult ShowAllRequests()
         {
-            var x = _context.RepositionStocks.Include(r => r.Request).OrderByDescending(r=>r.Request.Date).ToList();
+            var x = _context.RepositionStocks.Include(r => r.Request)
+                                             .OrderByDescending(r=>r.Request.Date)
+                                             .ToList();
 
             return View(x);
         }
         public ActionResult ViewRepositionDetails(int RepositionStockId)
         {
-            var x = _context.RepositionStocks.Include(r => r.Request).Include(r=>r.RepositionStockDetailed).ThenInclude(m=>m.Medicament).Where(i=>i.Id==RepositionStockId).ToList().FirstOrDefault();
-            return View(x);
+            var x = _context.RepositionStocks.Include(r => r.Request)
+                                             .Include(r => r.RepositionStockDetailed)
+                                             .ThenInclude(m => m.Medicament)
+                                             .Where(i => i.Id == RepositionStockId)
+                                             .ToList()
+                                             .FirstOrDefault();
+            double Totalcost=0;
+            double costPerOrder = 0;
+            foreach (var item in x.RepositionStockDetailed)
+            {
+                costPerOrder = item.RequestStock * item.Medicament.Price;
+                
+                Totalcost += costPerOrder;
+            }
+
+            RepositionStockDetailedWithCostViewModel rsdwc = new RepositionStockDetailedWithCostViewModel();
+            rsdwc.RsList = x;
+            rsdwc.cost = Totalcost;
+
+            return View(rsdwc);
         }
 
         public ActionResult ChangeSolved(int? id)
         {
-            var x = _context.RepositionStocks.Include(r => r.Request).Include(r => r.RepositionStockDetailed).ThenInclude(m => m.Medicament).Where(m => m.Id == id).ToList().FirstOrDefault();
+            var x = _context.RepositionStocks.Include(r => r.Request)
+                                             .Include(r => r.RepositionStockDetailed)
+                                             .ThenInclude(m => m.Medicament)
+                                             .Where(m => m.Id == id)
+                                             .ToList()
+                                             .FirstOrDefault();
             return View(x);
         }
 

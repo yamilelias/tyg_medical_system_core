@@ -25,28 +25,25 @@ namespace system_core_with_authentication.Controllers
         public IActionResult Index()
         {
             MedicamentLowHighViewModel vhvm = new MedicamentLowHighViewModel();
-            var y = _context.MedicamentsBelowThreshold.Join(
-                _context.Medicaments,
-                mbt => mbt.MedicamentId,
-                med => med.Id,
-                (mbt, med) => new { mbt, med }
-               );
-            y.ToList().OrderByDescending(m => m.mbt.CurrentStock / m.med.MinimumStock * 100);
+
+            var y = _context.MedicamentsBelowThreshold.ToList();
 
             List<MedicamentWithTotalStock> list = new List<MedicamentWithTotalStock>();
+
             foreach (var item in y)
             {
                 MedicamentWithTotalStock m = new MedicamentWithTotalStock();
-                m.medicament = _context.Medicaments.Where(a => a.Id == item.med.Id).FirstOrDefault();
-                m.sumTotal = _context.Stocks.Where(f => f.MedicamentId == item.med.Id)
+                m.medicament = _context.Medicaments.Where(a => a.Id == item.MedicamentId).FirstOrDefault();
+                m.sumTotal = _context.Stocks.Where(f => f.MedicamentId == item.MedicamentId)
                                               .Sum(f => f.Total);
+                var minstock = m.medicament.MinimumStock;
+                var sum = m.sumTotal;
+                var percent = (double) sum / (double) minstock * 100;
+                m.percentage = percent;
                 list.Add(m);
             }
-            var list2 = list.Take(10).Distinct();
 
-            vhvm.MedicamentLow = list2.ToList();
-
-
+            vhvm.MedicamentLow = list.OrderBy(a=>(Convert.ToDouble(a.sumTotal)/ Convert.ToDouble(a.medicament.MinimumStock))*100).Take(10).ToList();
 
 
             //Most requested

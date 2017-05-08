@@ -63,13 +63,18 @@
 </div>
 
 
-
 <div class="row">
     <div class="col-xs-12">
         <div class="card card-table">
             <div class="container">
                 <h2>Medicamentos con menos Stock</h2>
 
+                @if (Model.MedicamentLow.Count == 0)
+                {
+                    <h6>Se tiene suficiente por el momento.</h6>
+
+                }
+                else {
                 <table class="table">
                     <thead>
                         <tr>
@@ -92,7 +97,10 @@
                                 Stock minimo
                             </th>
                             <th>
-                                Stock total actual
+                                Stock Total Actual
+                            </th>
+                            <th>
+                                %
                             </th>
                         </tr>
                     </thead>
@@ -121,10 +129,14 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.sumTotal)
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.percentage)
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                }
             </div>
         </div>
     </div>

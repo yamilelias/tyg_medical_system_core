@@ -1,4 +1,4 @@
-@model system_core_with_authentication.Models.RepositionStock
+@model system_core_with_authentication.Models.ViewModels.RepositionStockDetailedWithCostViewModel
 
 @{
     ViewData["Title"] = "ViewRepositionDetails";
@@ -8,7 +8,7 @@
     <div class="col-xs-12">
         <div class="card card-table">
             <div class="container">
-                <h4>Usuario: @Html.DisplayFor(model => Model.Request.User)</h4>
+                <h4>Usuario: @Html.DisplayFor(model => Model.RsList.Request.User)</h4>
                 <table class="table">
                     <thead>
                         <tr>
@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var a in Model.RepositionStockDetailed)
+                        @foreach (var a in Model.RsList.RepositionStockDetailed)
                         {
                             <tr>
                                 <td>
@@ -45,6 +45,7 @@
 
                     </tbody>
                 </table>
+                <h3>El costo de esta lista es de $@Model.cost</h3>
                 </div>
             </div>
     </div>

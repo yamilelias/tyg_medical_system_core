@@ -66,7 +66,14 @@ namespace system_core_with_authentication.Controllers
                 }
                 Stock item = _context.Stocks.FirstOrDefault(s => s.Id == id);
                 item.Total = item.Total - quantity;
-                ToCheckMini.Add(item.MedicamentId, item.Total);
+                if (ToCheckMini.ContainsKey(item.MedicamentId))
+                {
+                    ToCheckMini[item.MedicamentId] += item.Total;
+                }
+                else
+                {
+                    ToCheckMini.Add(item.MedicamentId, item.Total);
+                }
                 _context.Update(item);
                 _context.SaveChanges();
 
@@ -79,14 +86,17 @@ namespace system_core_with_authentication.Controllers
 
                 var sumTotal = _context.Stocks.Where(f => f.MedicamentId == medId)
                                               .Sum(f => f.Total);
-                if (sumTotal <= e.Value)
+                var minStock = _context.Medicaments.Where(a => a.Id == medId).FirstOrDefault().MinimumStock;
+
+                if (sumTotal < minStock)
                 {
                     // Below Threshold
                     var name = _context.Medicaments.Where(a => a.Id == medId)
                                                    .Select(a => a.Description)
                                                    .FirstOrDefault();
 
-                    var alreadyInList = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key).FirstOrDefault();
+                    var alreadyInList = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key)
+                                                                          .FirstOrDefault();
                     if (alreadyInList == null)
                     {
                         belowThreshold.Add(name, sumTotal);

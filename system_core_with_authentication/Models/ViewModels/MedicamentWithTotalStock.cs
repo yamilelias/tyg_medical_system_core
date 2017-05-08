@@ -9,5 +9,6 @@ namespace system_core_with_authentication.Models.ViewModels
     {
         public Medicament medicament { get; set; }
         public int sumTotal { get; set; }
+        public double percentage { get; set; }
     }
 }
