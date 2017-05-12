@@ -15,6 +15,9 @@
   <ItemGroup>
     <Content Include="wwwroot\js\MedsOut.js" />
     <Content Include="wwwroot\js\Reposition.js" />
+    <Content Include="wwwroot\users\uploads\82597607-2128-485a-b387-35d0986bd0ce\photo.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.6.12" />

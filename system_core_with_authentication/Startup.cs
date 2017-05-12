@@ -92,8 +92,8 @@ namespace system_core_with_authentication
 
 
 
-            //DbInitializer.Initialize(context);
-            //await CreateRoles(serviceProvider);
+           // DbInitializer.Initialize(context);
+          //  await CreateRoles(serviceProvider);
 
             
         }

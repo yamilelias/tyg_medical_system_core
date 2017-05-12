@@ -7,12 +7,12 @@ namespace system_core_with_authentication.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("IdUser")]
-        public int IdUser { get; set; }
-        public virtual User User { get; set; }
+        //[ForeignKey("User")]
+        //public int IdUser { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
-        [ForeignKey("IdLocation")]
-        public int IdLocation { get; set; }
+        //[ForeignKey("Location")]
+        //public int IdLocation { get; set; }
         public virtual Location Location { get; set; }
 
         public string Monday { get; set; }
