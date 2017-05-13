@@ -3,12 +3,14 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="card card-table">
-            <div class="container">
-
-                <h2>Medicamentos más pedidos</h2>
-
-                <table class="table">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Medicamentos más pedidos
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
                     <thead>
                         <tr>
                             <th>
@@ -65,80 +67,84 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="card card-table">
-            <div class="container">
-                <h2>Medicamentos con menos Stock</h2>
-
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Medicamentos con menos Stock
+                </div>
+            </div>
                 @if (Model.MedicamentLow.Count == 0)
                 {
                     <h6>Se tiene suficiente por el momento.</h6>
 
                 }
-                else {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Descripcion
-                            </th>
-                            <th>
-                                Contenido
-                            </th>
-                            <th>
-                                Tipo
-                            </th>
-                            <th>
-                                Precio
-                            </th>
-                            <th>
-                                Prioridad
-                            </th>
-                            <th>
-                                Stock minimo
-                            </th>
-                            <th>
-                                Stock Total Actual
-                            </th>
-                            <th>
-                                %
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.MedicamentLow)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.Description)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.Content)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.Type)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.Price)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.Priority)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.medicament.MinimumStock)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.sumTotal)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.percentage)
-                                </td>
-                            </tr>
+                else
+                {
+                    <div class="card card-body no-padding">
+                        <table class="table card-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Descripcion
+                                    </th>
+                                    <th>
+                                        Contenido
+                                    </th>
+                                    <th>
+                                        Tipo
+                                    </th>
+                                    <th>
+                                        Precio
+                                    </th>
+                                    <th>
+                                        Prioridad
+                                    </th>
+                                    <th>
+                                        Stock minimo
+                                    </th>
+                                    <th>
+                                        Stock Total Actual
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.MedicamentLow)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.Content)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.Type)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.Price)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.Priority)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.medicament.MinimumStock)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.sumTotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.percentage)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        </div>
                         }
-                    </tbody>
-                </table>
-                }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
