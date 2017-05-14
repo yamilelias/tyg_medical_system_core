@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Alerts\" />
+    <Folder Include="uploads\" />
     <Folder Include="wwwroot\images\uploads\" />
   </ItemGroup>
 

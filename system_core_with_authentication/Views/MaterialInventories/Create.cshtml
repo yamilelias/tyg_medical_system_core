@@ -1,0 +1,86 @@
+@model system_core_with_authentication.Models.ViewModels.MaterialInventoryViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>MaterialInventory</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Serial" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Serial" class="form-control" />
+                <span asp-validation-for="Serial" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Note" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaintananceDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="MaintananceDate" class="form-control" />
+                <span asp-validation-for="MaintananceDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="imageupload panel panel-default" id="my-imageupload">
+            <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">Upload Image</h3>
+            </div>
+            <div class="file-tab panel-body">
+                <label class="btn btn-default btn-file">
+                    <span>Browse</span>
+                    <!-- The file is stored here. -->
+                    <input type="file" name="file">
+                </label>
+                <button type="button" class="btn btn-default">Remove</button>
+            </div>
+            <div class="url-tab panel-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Image URL">
+                </div>
+                <button type="button" class="btn btn-default">Remove</button>
+                <!-- The URL is stored here. -->
+                <input type="hidden" name="image-url">
+            </div>
+        </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/bootstrap-imageupload.min.js"></script>
+    <script>
+        $('#my-imageupload').imageupload({
+            allowedFormats: ['jpg'],
+            maxFileSizeKb: 1024
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

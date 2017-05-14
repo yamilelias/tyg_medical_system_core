@@ -31,6 +31,9 @@ namespace system_core_with_authentication.Data
 
         public DbSet<AlertSettings> AlertSettings { get; set; }
 
+        public DbSet<MaterialInventory> MaterialsInventory { get; set; }
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,6 +48,7 @@ namespace system_core_with_authentication.Data
             modelBuilder.Entity<Location>().ToTable("Location");
             modelBuilder.Entity<LocationSchedule>().ToTable("LocationSchedule");
             modelBuilder.Entity<AlertSettings>().ToTable("AlertSettings");
+            modelBuilder.Entity<MaterialInventory>().ToTable("MaterialsInventory");
         }
 
         public DbSet<system_core_with_authentication.Models.ApplicationUser> ApplicationUser { get; set; }
