@@ -40,7 +40,7 @@ function AddToRepositionList(y) {
     var actualQuantity = parseInt(document.getElementById("actualQuantity-" + y).value);
     var requestQuantity = parseInt(document.getElementById("requestQuantity-" + y).value);
 
-    if ((actualQuantity > 0) && (requestQuantity > 0)) {
+    if ((actualQuantity >= 0) && (requestQuantity > 0)) {
         if (inList == false) {
             createItem(y, description,content,type,actualQuantity,requestQuantity);
         } else if (inList == true) {

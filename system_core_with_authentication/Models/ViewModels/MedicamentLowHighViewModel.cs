@@ -9,5 +9,8 @@ namespace system_core_with_authentication.Models.ViewModels
     {
         public List<MedicamentWithTotalStock> MedicamentLow { get; set; }
         public List<Medicament> MedicamentHigh { get; set; }
+        public List<ApplicationUser> Users { get; set; }
+        public List<Request> Requests { get; set; }
+        public double sumBudget { get; set; }
     }
 }

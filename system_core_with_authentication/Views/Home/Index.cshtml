@@ -24,44 +24,9 @@
         </div>
     </div>
 </div>*@
-
-<div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <a class="card card-banner card-green-light">
-            <div class="card-body">
-                <i class="icon fa fa-shopping-basket fa-4x"></i>
-                <div class="content">
-                    <div class="title">Budget</div>
-                    <div class="value"><span class="sign">$</span>420</div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <a class="card card-banner card-blue-light" asp-controller="Requests" asp-action="Index">
-            <div class="card-body">
-                <i class="icon fa fa-list fa-4x"></i>
-                <div class="content">
-                    <div class="title">Requests</div>
-                    <div class="value"><span class="sign"></span>2453</div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <a class="card card-banner card-yellow-light" asp-controller="Users" asp-action="Index">
-            <div class="card-body">
-                <i class="icon fa fa-user fa-4x"></i>
-                <div class="content">
-                    <div class="title">Users</div>
-                    <div class="value"><span class="sign"></span>50</div>
-                </div>
-            </div>
-        </a>
-    </div>
-</div>
-@if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
+@if ((User.Identity.IsAuthenticated) && ( (User.IsInRole("Admin")) || (User.IsInRole("Supervisor"))))
 {
+    Html.RenderPartial("Summary");
     Html.RenderPartial("MostRequestedItem");
     //Html.RenderPartial("~/Views/Home/MostRequestedItem.cshtml");}
     //Html.RenderPartial("~/Views/Home/LowStock.cshtml");}

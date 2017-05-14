@@ -2,14 +2,19 @@
 
 @{
     ViewData["Title"] = "ViewRepositionDetails";
+    ViewBag.Menu = "Requests";
 }
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="card card-table">
-            <div class="container">
-                <h4>Usuario: @Html.DisplayFor(model => Model.RsList.Request.User)</h4>
-                <table class="table">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Usuario: @Html.DisplayFor(model => Model.RsList.Request.User)
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
                     <thead>
                         <tr>
                             <th>
@@ -22,7 +27,7 @@
                                 Cantidad Solicitada
                             </th>
                             <th>
-
+                                Precio
                             </th>
                         </tr>
                     </thead>
@@ -40,12 +45,15 @@
                                 <td>
                                     @Html.DisplayFor(model => a.RequestStock)
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.Medicament.Price)
+                                </td>
                             </tr>
                         }
 
                     </tbody>
                 </table>
-                <h3>El costo de esta lista es de $@Model.cost</h3>
+                <div class="col-md-offset-4 col-md-10">El costo de esta lista es de $@Model.cost</div>
                 </div>
             </div>
     </div>

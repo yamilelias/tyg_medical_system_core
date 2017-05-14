@@ -68,19 +68,7 @@ namespace system_core_with_authentication.Controllers
 
                 // Check Minimum stock
                 // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
-                if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId))
-                {
-                    var sum = _context.Stocks.Where(e => e.MedicamentId == stock.MedicamentId)
-                                                .Sum(e => e.Total);
-
-                    if (sum >= _context.Medicaments.Where(e => e.Id == stock.MedicamentId).Select(e => e.MinimumStock).FirstOrDefault())
-                    {
-                        var toRemove = _context.MedicamentsBelowThreshold.FirstOrDefault(m => m.MedicamentId == stock.MedicamentId);
-                        _context.MedicamentsBelowThreshold.Remove(toRemove);
-                        _context.SaveChanges();
-
-                    }
-                }
+                checkMedicamentBelowThershold(stock);
 
                 return RedirectToAction("Index");
             }
@@ -125,19 +113,7 @@ namespace system_core_with_authentication.Controllers
                     await _context.SaveChangesAsync();
                     // Check Minimum stock
                     // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
-                    if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId))
-                    {
-                        var sum = _context.Stocks.Where(e => e.MedicamentId == stock.MedicamentId)
-                                                    .Sum(e => e.Total);
-
-                        if (sum >= _context.Medicaments.Where(e => e.Id == stock.MedicamentId).Select(e => e.MinimumStock).FirstOrDefault())
-                        {
-                            var toRemove = _context.MedicamentsBelowThreshold.FirstOrDefault(m => m.MedicamentId == stock.MedicamentId);
-                            _context.MedicamentsBelowThreshold.Remove(toRemove);
-                            _context.SaveChanges();
-
-                        }
-                    }
+                    checkMedicamentBelowThershold(stock);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -185,6 +161,18 @@ namespace system_core_with_authentication.Controllers
             await _context.SaveChangesAsync();
             // Check Minimum stock
             // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
+            checkMedicamentBelowThershold(stock);
+
+            return RedirectToAction("Index");
+        }
+
+        private bool StockExists(int id)
+        {
+            return _context.Stocks.Any(e => e.Id == id);
+        }
+
+        public void checkMedicamentBelowThershold(Stock stock)
+        {
             if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId))
             {
                 var sum = _context.Stocks.Where(e => e.MedicamentId == stock.MedicamentId)
@@ -198,12 +186,22 @@ namespace system_core_with_authentication.Controllers
 
                 }
             }
-            return RedirectToAction("Index");
-        }
+            else
+            {
+                var sum = _context.Stocks.Where(e => e.MedicamentId == stock.MedicamentId)
+                                         .Sum(e => e.Total);
+                var minStock = _context.Medicaments.Where(e => e.Id == stock.MedicamentId).Select(e => e.MinimumStock).FirstOrDefault();
+                if (sum < minStock)
+                {
+                    MedicamentBelowThreshold toadd = new MedicamentBelowThreshold();
+                    toadd.MedicamentId = _context.Medicaments.Where(a => a.Id == stock.MedicamentId).Select(a => a.Id).FirstOrDefault();
+                    toadd.CurrentStock = sum;
+                    _context.MedicamentsBelowThreshold.Add(toadd);
+                    _context.SaveChanges();
 
-        private bool StockExists(int id)
-        {
-            return _context.Stocks.Any(e => e.Id == id);
+                }
+            }
+
         }
     }
 }

@@ -2,14 +2,19 @@
 
 @{
     ViewData["Title"] = "Modificar";
+    ViewBag.Menu = "Requests";
 }
 
 <div class="row">
     <div class="col-xs-12 small">
-        <div class="card card-table">
-            <div class="container">
-                <h4>Usuario: @Html.DisplayFor(model => Model.Request.User)</h4>
-                <table class="table">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Usuario: @Html.DisplayFor(model => Model.Request.User)
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
                     <thead>
                         <tr>
                             <th>
@@ -22,7 +27,7 @@
                                 Cantidad Solicitada
                             </th>
                             <th>
-
+                                Precio
                             </th>
                         </tr>
                     </thead>
@@ -40,11 +45,15 @@
                                 <td>
                                     @Html.DisplayFor(model => a.RequestStock)
                                 </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.Medicament.Price)
+                                </td>
                             </tr>
                         }
 
                     </tbody>
                 </table>
+                </div>
 
 
 
@@ -53,7 +62,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" />
                         <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
+                            <div class="col-md-offset-5 col-md-10">
                                 <div class="checkbox">
                                     <input asp-for="Solved" />
                                     <label asp-for="Solved"></label>
@@ -61,16 +70,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
+                            <div class="col-md-offset-5 col-md-10">
                                 <input type="submit" value="Save" class="btn btn-success" />
                             </div>
                         </div>
                     </div>
                 </form>
 
-                
-                </div>
-        </div>
+
+            </div>
     </div>
 </div>
 

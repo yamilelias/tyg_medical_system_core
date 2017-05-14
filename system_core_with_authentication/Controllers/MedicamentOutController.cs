@@ -45,7 +45,7 @@ namespace system_core_with_authentication.Controllers
         }
 
         //[httppost]
-        public ActionResult MedicamentOut(string values)
+        public IActionResult MedicamentOut(string values)
         {
             JArray array = JArray.Parse(values);
             Dictionary<int, int> ToCheckMini = new Dictionary<int, int>();

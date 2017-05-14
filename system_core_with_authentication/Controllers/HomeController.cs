@@ -40,6 +40,7 @@ namespace system_core_with_authentication.Controllers
                 var sum = m.sumTotal;
                 var percent = (double) sum / (double) minstock * 100;
                 m.percentage = percent;
+                m.budget = (m.medicament.MinimumStock - m.sumTotal) * m.medicament.Price;
                 list.Add(m);
             }
 
@@ -49,6 +50,19 @@ namespace system_core_with_authentication.Controllers
             //Most requested
             var x = _context.Medicaments.ToList().OrderByDescending(m => m.Counter).Take(10);
             vhvm.MedicamentHigh = x.ToList();
+
+            //user list
+            var usersList = _context.ApplicationUser.ToList();
+            vhvm.Users = usersList;
+
+            //request list
+            var requestsList = _context.Requests.ToList();
+            vhvm.Requests = requestsList;
+
+            //price
+            var totalBudget = vhvm.MedicamentLow.Sum(a => a.budget);
+            vhvm.sumBudget = totalBudget;
+
             return View(vhvm);
         }
 

@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Lista de todas las solicitudes";
+    ViewBag.Menu = "Requests";
 }
 
 <div class="row">
     <div class="col-xs-12">
         <div class="card card-table">
 
-                <table class="table">
+                <table class="table card-table">
                     <thead>
                         <tr>
                             <th>
@@ -22,6 +23,9 @@
                             </th>
                             <th>
                                 Usuario
+                            </th>
+                            <th>
+                                Detalles
                             </th>
                         </tr>
                     </thead>

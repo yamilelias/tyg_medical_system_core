@@ -1,6 +1,7 @@
 @model IEnumerable<system_core_with_authentication.Models.Stock>
 @{
     ViewData["Title"] = "Salida de Medicamento";
+    ViewBag.Menu = "Medicaments";
 }
 
 <div class="row">
@@ -10,7 +11,7 @@
 
                 <form asp-controller="MedicamentOut" asp-action="Index" method="get">
                     <p>
-                        <h4> Medicament:</h4> <input style="width:1050px;" class="form-control" type="text" name="SearchString">
+                        <h4> Medicamento:</h4> <input style="width:1050px;" class="form-control" type="text" name="SearchString">
                         <input type="submit" value="Filtrar" class="btn btn-default" />
                     </p>
                 </form>
@@ -22,13 +23,13 @@
                                 @Html.DisplayNameFor(model => model.Total)
                             </th>
                             <th>
-                                Expiration Date
+                                Caducidad
                             </th>
                             <th>
-                                Medicament
+                                Medicamento
                             </th>
                             <th>
-                                Outcoming Quantity
+                                Salida
                             </th>
                             <th></th>
                         </tr>

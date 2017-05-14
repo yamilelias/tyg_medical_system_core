@@ -13,7 +13,11 @@ namespace system_core_with_authentication.Models
         [Key]
         public int Id { get; set; }
 
+        public int MedicamentId { get; set; }
+
+        [ForeignKey("MedicamentId")]
         public virtual Medicament Medicament { get; set; }
+
 
         [DisplayName("Cantidad actual")]
         public int CurrentStock { get; set; }
