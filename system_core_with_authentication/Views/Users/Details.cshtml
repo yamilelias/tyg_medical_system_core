@@ -1,59 +1,139 @@
-@model system_core_with_authentication.Models.ApplicationUser
+@model system_core_with_authentication.Models.ViewModels.DetailsUserWithLocationViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+    ViewBag.Menu = "User";
 }
-
 
 <div class="row">
     <div class="col-xs-4 small">
         <div class="card card-table">
-            <div class="container">
+            <div class="card-body">
 
-                <h4> Details for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) </h4>
+                <h4> Details for @Html.DisplayFor(model => model.user.Name) @Html.DisplayFor(model => model.user.LastName) </h4>
 
                 <dl>
                     <dt>
                        Name
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Name)
+                        @Html.DisplayFor(model => model.user.Name)
                     </dd>
                     <dt>
                         Paternal Name
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.LastName)
+                        @Html.DisplayFor(model => model.user.LastName)
                     </dd>
                     <dt>
                         Maternal Name
                     </dt>
                     <dd>
-                       @Html.DisplayFor(model => model.SecondLastName)
+                       @Html.DisplayFor(model => model.user.SecondLastName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Telephone)
+                        @Html.DisplayNameFor(model => model.user.Telephone)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Telephone)
+                        @Html.DisplayFor(model => model.user.Telephone)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.UserName)
+                        @Html.DisplayNameFor(model => model.user.UserName)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.UserName)
+                        @Html.DisplayFor(model => model.user.UserName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Email)
+                        @Html.DisplayNameFor(model => model.user.Email)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Email)
+                        @Html.DisplayFor(model => model.user.Email)
                     </dd>
+                    @if (Model.ls.Count > 0)
+                    {
+                    <dd>
+                        <br />
+                        <br />
 
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Lugar
+                                </th>
+                                <th>
+                                    Lunes
+                                </th>
+                                <th>
+                                    Martes
+                                </th>
+                                <th>
+                                    Miercoles
+                                </th>
+                                <th>
+                                    Jueves
+                                </th>
+                                <th>
+                                    Viernes
+                                </th>
+                                <th>
+                                    Sabado
+                                </th>
+                                <th>
+                                    Domingo
+                                </th>
+                            </tr>
+                            @foreach (var item in Model.ls)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Location.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Monday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tuesday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Wednesday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Thursday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Friday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Saturday)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Sunday)
+                                    </td>
+                                </tr>
+
+                            }
+                        </table>
+                    </dd>
+                    } else
+                    {
+
+                        
+
+                        <dd>
+                            <br /> <br />
+                           <b> This user does not have a schedule assigned. </b> 
+                            <br />
+                            <a asp-action="Create" asp-controller="LocationSchedules"> Assign schedule.</a>
+                        </dd>
+
+                    }
                 </dl>
                
                
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-actions no-color">
 
                         <a asp-action="Index" class="btn btn-info btn-xs">Back to Index</a>
 

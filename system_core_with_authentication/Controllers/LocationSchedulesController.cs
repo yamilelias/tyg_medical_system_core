@@ -22,7 +22,7 @@ namespace system_core_with_authentication.Controllers
         // GET: LocationSchedules
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LocationSchedules.ToListAsync());
+            return View(await _context.LocationSchedules.Include(a=>a.User).Include(b=>b.Location).ToListAsync());
         }
 
         // GET: LocationSchedules/Details/5
@@ -46,6 +46,11 @@ namespace system_core_with_authentication.Controllers
         // GET: LocationSchedules/Create
         public IActionResult Create()
         {
+            var que = _context.ApplicationUser.ToList();
+
+            ViewData["User"] = new SelectList(_context.ApplicationUser, "Id", "Email");
+
+            ViewData["Location"] = new SelectList(_context.Locations, "Id", "Name");
             return View();
         }
 
@@ -54,10 +59,14 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdUser,IdLocation,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
+        public async Task<IActionResult> Create([Bind("Id,User,Location,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule, string location, string user)
         {
             if (ModelState.IsValid)
             {
+
+                locationSchedule.Location = _context.Locations.Where(a => a.Id == Int32.Parse(location)).FirstOrDefault();
+                locationSchedule.User = _context.ApplicationUser.Where(a => a.Id.Equals(user)).FirstOrDefault();
+
                 _context.Add(locationSchedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -86,7 +95,7 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdUser,IdLocation,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
         {
             if (id != locationSchedule.Id)
             {
