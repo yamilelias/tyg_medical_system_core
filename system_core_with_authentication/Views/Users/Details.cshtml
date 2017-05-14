@@ -55,6 +55,9 @@
                     @if (Model.ls.Count > 0)
                     {
                     <dd>
+                        <br />
+                        <br />
+
                         <table class="table">
                             <tr>
                                 <th>
@@ -114,6 +117,18 @@
                             }
                         </table>
                     </dd>
+                    } else
+                    {
+
+                        
+
+                        <dd>
+                            <br /> <br />
+                           <b> This user does not have a schedule assigned. </b> 
+                            <br />
+                            <a asp-action="Create" asp-controller="LocationSchedules"> Assign schedule.</a>
+                        </dd>
+
                     }
                 </dl>
                
