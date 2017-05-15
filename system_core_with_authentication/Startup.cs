@@ -107,7 +107,7 @@ namespace system_core_with_authentication
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] rolesNames = { "Admin", "Supervisor", "User" };
+            string[] rolesNames = { "Admin", "Supervisor", "Supervisor de RH", "Supervisor de Inventario" ,"Medico", "Enfermero" };
             IdentityResult result;
 
             foreach (var rolesName in rolesNames)

@@ -261,71 +261,94 @@ namespace system_core_with_authentication.Controllers
         }
 
 
-        //// GET: Users/Edit/5
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //    var applicationUser = await _context.ApplicationUser
-        //        .SingleOrDefaultAsync(m => m.Id == id);
+        // GET: Users/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            var applicationUser = await _context.ApplicationUser
+                .SingleOrDefaultAsync(m => m.Id == id);
 
-        //    return View(applicationUser);
-        //}
+            return View(applicationUser);
+        }
 
-        // POST: Users/Edit/5
+        //POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
-        //{
-        //    if (id != applicationUser.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount,ImageFile")] ApplicationUser applicationUser, IFormFile imageFile)
+        {
+            if (id != applicationUser.Id)
+            {
+                return NotFound();
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
+            if (ModelState.IsValid)
+            {
 
-                
-        //        try
-        //        {
-        //            /*
-        //            if (imageFile != null)
-        //            {
-        //                string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
-        //                Directory.CreateDirectory(Path.Combine(uploadPath));
+                try
+                {
+                    if (imageFile != null)
+                    {
+                        string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
+                        Directory.CreateDirectory(Path.Combine(uploadPath));
 
-        //                string fileName = Path.GetFileName(imageFile.FileName);
+                        string fileName = Path.GetFileName(imageFile.FileName);
 
-        //                using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
-        //                {
-        //                    await imageFile.CopyToAsync(fs);
-        //                }
+                        using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fs);
+                        }
 
-        //                applicationUser.UserImage = fileName;
+                        applicationUser.UserImage = fileName;
 
-        //            } */
+                    }
+                    else
+                    {
+                        ApplicationUser userWithImage = new ApplicationUser();
+                        userWithImage = applicationUser;
+                        userWithImage.UserImage = _context.ApplicationUser.Where(a => a.Id == applicationUser.Id).Select(a => a.UserImage).FirstOrDefault();
+                    }
 
-        //            _context.Update(applicationUser);
-        //            await _context.SaveChangesAsync();
+                    _context.Update(applicationUser);
+                    await _context.SaveChangesAsync();
 
-                    
-        //        } 
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ApplicationUserExists(applicationUser.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(applicationUser);
-        //}
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                   
+                    foreach (var entry in ex.Entries)
+                    {
+                        if (entry.Entity is ApplicationUser)
+                        {
+                            var dbEntity = _context.ApplicationUser.AsNoTracking().Single(p => p.Id == ((ApplicationUser)entry.Entity).Id);
+                            var dbEntry = _context.Entry(dbEntity);
+
+                            foreach (var property in entry.Metadata.GetProperties())
+                            {
+
+                                var proposedValue = entry.Property(property.Name).CurrentValue;
+                                var originalValue = entry.Property(property.Name).OriginalValue;
+                                var databaseValue = dbEntry.Property(property.Name).CurrentValue;
+
+                                entry.Property(property.Name).OriginalValue = dbEntry.Property(property.Name).CurrentValue;
+
+                            }
+
+                        } else
+                        {
+                            throw new NotSupportedException("Don't know how to handle concurrency conflicts for " + entry.Metadata.Name);
+                        }
+                    }
+
+                    _context.SaveChanges();
+
+                }
+
+                return RedirectToAction("Index");
+            }
+            return View(applicationUser);
+        }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string id)
