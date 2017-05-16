@@ -98,17 +98,16 @@ namespace system_core_with_authentication.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Profile(string id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
+            if (id == null)
+            {
+                return NotFound();
+            }
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
-            //if (applicationUser == null)
-            //{
-            //    return NotFound();
-            //}
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
 
             return View(applicationUser);
         }
@@ -190,14 +189,6 @@ namespace system_core_with_authentication.Controllers
             });
 
             return user;
-
-            /*
-             * LEGACY CODE - KEPT FOR FUTURE REFERENCES
-             */
-
-            //List<ApplicationUser> user = new List<ApplicationUser>();
-            //var appUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            //user.Add(appUser);
         }
 
         [HttpPost]
@@ -267,26 +258,49 @@ namespace system_core_with_authentication.Controllers
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
 
-            return View(applicationUser);
+            EditUserViewModel vm = new EditUserViewModel();
+            vm.appUser = applicationUser;
+
+            var x = _context.Roles.Select(m => new {m.Id, m.Name}).ToList();
+            var y = _context.UserRoles.Where(m => m.UserId == applicationUser.Id).Select(n => n.RoleId).FirstOrDefault();
+
+
+            foreach (var item in x)
+            {
+                if (y == item.Id)
+                    vm.role = item.Name;
+            }
+
+            return View(vm);
         }
 
         //POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount,ImageFile")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount,ImageFile")] ApplicationUser applicationUser, IFormFile imageFile)
+        public async Task<IActionResult> Edit(string id, string name, string lastName, string secondLastName, string telephone, string email, string userName, IFormFile imageFile, EditUserViewModel vm)
         {
-            if (id != applicationUser.Id)
-            {
-                return NotFound();
-            }
+            //if (id != userNew.Id)
+            //{
+            //    return NotFound();
+            //}
+
+            ApplicationUser userNew = _context.ApplicationUser.Where(m => m.Id == id).FirstOrDefault();
+
+            userNew.Name = name;
+            userNew.LastName = lastName;
+            userNew.SecondLastName = secondLastName;
+            userNew.Telephone = telephone;
+            userNew.Email = email;
+            userNew.UserName = userName;
 
             if (ModelState.IsValid)
             {
-
                 try
                 {
+
                     if (imageFile != null)
                     {
                         string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
@@ -299,20 +313,28 @@ namespace system_core_with_authentication.Controllers
                             await imageFile.CopyToAsync(fs);
                         }
 
-                        applicationUser.UserImage = fileName;
+                       userNew.UserImage = fileName;
 
                     }
                     else
                     {
                         ApplicationUser userWithImage = new ApplicationUser();
-                        userWithImage = applicationUser;
-                        userWithImage.UserImage = _context.ApplicationUser.Where(a => a.Id == applicationUser.Id).Select(a => a.UserImage).FirstOrDefault();
+                        userWithImage = userNew;
+                        userWithImage.UserImage = _context.ApplicationUser.Where(a => a.Id == userNew.Id).Select(a => a.UserImage).FirstOrDefault();
                     }
 
-                    _context.Update(applicationUser);
+                    var oldRole = _context.UserRoles.Where(m => m.UserId.Equals(userNew.Id)).FirstOrDefault();
+
+                    var newRole = _context.Roles.Where(m => m.Name.Equals(vm.role)).Select(m => m.Id).FirstOrDefault();
+
+                    var oldRoleName = _context.Roles.Where(m => m.Id.Equals(oldRole.RoleId)).Select(m => m.Name).FirstOrDefault();
+
+                    await _userManager.RemoveFromRoleAsync(userNew, oldRoleName);
+                    await _userManager.AddToRoleAsync(userNew, vm.role);
+
+                    _context.Update(userNew);
                     await _context.SaveChangesAsync();
-
-
+ 
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -347,7 +369,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(applicationUser);
+            return View(userNew);
         }
 
         // GET: Users/Delete/5
@@ -357,9 +379,9 @@ namespace system_core_with_authentication.Controllers
             {
                 return NotFound();
             }
-
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
+
             if (applicationUser == null)
             {
                 return NotFound();
@@ -373,8 +395,18 @@ namespace system_core_with_authentication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+
             var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+
+            var schedules = _context.LocationSchedules.Where(m => m.User.Email.Equals(applicationUser.Email)).ToList();
+
+            foreach (var item in schedules)
+            {
+                _context.LocationSchedules.Remove(item);
+            }
+
             _context.ApplicationUser.Remove(applicationUser);
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }

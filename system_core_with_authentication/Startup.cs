@@ -93,7 +93,7 @@ namespace system_core_with_authentication
 
 
            // DbInitializer.Initialize(context);
-          //  await CreateRoles(serviceProvider);
+          //await CreateRoles(serviceProvider);
 
             
         }
@@ -113,6 +113,7 @@ namespace system_core_with_authentication
             foreach (var rolesName in rolesNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(rolesName);
+                int id = 1;
                 if (!roleExist)
                 {
                     result = await roleManager.CreateAsync(new IdentityRole(rolesName));
