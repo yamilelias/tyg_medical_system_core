@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize(Roles = "Admin,Supervisor")]
     public class StocksController : Controller
     {
         private readonly ApplicationDbContext _context;

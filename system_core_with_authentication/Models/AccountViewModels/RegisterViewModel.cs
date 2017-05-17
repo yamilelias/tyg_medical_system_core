@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,53 +13,57 @@ namespace system_core_with_authentication.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "Name(s)")]
+        [Display(Name = "Nombre(s)")]
         [MaxLength(50)]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Paternal Name")]
+        [Display(Name = "Apellido Paterno")]
         [MaxLength(50)]
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Maternal Name")]
+        [Display(Name = "Apellido Materno")]
         [MaxLength(50)]
         public string SecondLastName { get; set; }
 
         [Required]
+        [Display(Name = "Telefono")]
         [MaxLength(20)]
         public string Telephone { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "Role")]
+        [Display(Name = "Rol:")]
         [UIHint("List")]
         public List<SelectListItem> Roles { get; set; }
         public string Role { get; set; }
 
+        [Display(Name = "Imagen de usuario:")]
+        public IFormFile UserImage { get; set; }
+
         public RegisterViewModel()
         {
             Roles = new List<SelectListItem>();
-            
+
         }
 
-        public void getRoles (ApplicationDbContext _context)
+        public void getRoles(ApplicationDbContext _context)
         {
             var roles = from r in _context.identityRole select r;
             var listRole = roles.ToList();
@@ -75,3 +80,4 @@ namespace system_core_with_authentication.Models.AccountViewModels
 
     }
 }
+

@@ -1,9 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using system_core_with_authentication.Models
 
+@*
+
+TODO: 
+
+*@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
 
 
 @if (User.Identity.IsAuthenticated)
@@ -18,11 +24,11 @@
                         </button>
                     </li>
                     <li class="logo">
-                        <a class="navbar-brand" href="#"><span class="highlight">Flat v3</span> Admin</a>
+                        <a class="navbar-brand" href="#"><span class="highlight">TyG Medical</span></a>
                     </li>
                     <li>
                         <button type="button" class="navbar-toggle">
-                            <img class="profile-img" src="./assets/images/profile.png">
+                            <img class="profile-img" src="~/users/uploads/@UserManager.GetUserId(User)/photo.png">
                         </button>
                     </li>
                 </ul>
@@ -47,7 +53,7 @@
                                 <li class="dropdown-footer">
                                     <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                 </li>
-                            </ul>
+                            </ul>  
                         </div>
                     </li>
                     <li class="dropdown notification warning">
@@ -141,7 +147,7 @@
                     </li>
                     <li class="dropdown profile">
                         <a href="/html/pages/profile.html" class="dropdown-toggle" data-toggle="dropdown">
-                            <img class="profile-img" src="http://placehold.it/50x50">
+                            <img class="profile-img" src="~/users/uploads/@UserManager.GetUserId(User)/photo.png">
                             <div class="title">Profile</div>
                         </a>
                         <form method="post" asp-controller="Account" asp-action="Logout" id="logoutForm">
@@ -152,7 +158,7 @@
 
                                 <ul class="action">
                                     <li>
-                                        <a style="padding-left: 30px;" method="post" asp-action="Details" asp-controller="Users" asp-route-id="@UserManager.GetUserId(User)"> Profile </a>
+                                        <a style="padding-left: 30px;" method="post" asp-action="Profile" asp-controller="Users" asp-route-id="@UserManager.GetUserId(User)"> Profile </a>
                                     </li>
 
                                     <li>

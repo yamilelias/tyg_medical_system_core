@@ -1,78 +1,104 @@
 @model system_core_with_authentication.Models.Medicament
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar medicamento";
 }
 
-<h2>Edit</h2>
+<div class="container col-sm-6 col-md-6 col-lg-6 pull-right" style="width:1000px;">
+    <div class="card card-banner card-header">
+        <div class="col-sm-10">
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <h4>Medicament</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Content" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Type" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Price" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Priority" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Priority" class="form-control" />
-                <span asp-validation-for="Priority" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Counter" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Counter" class="form-control" />
-                <span asp-validation-for="Counter" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input type="file" name="ImageFile" class="form-control" />
-                <span asp-validation-for="MedicamentImage" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div class="form-horizontal">
+
+                    <br />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Content" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Content" class="form-control" />
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Type" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Type" class="form-control" />
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Priority" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Priority" class="form-control" />
+                            <span asp-validation-for="Priority" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"> Imagen actual: </label>
+                        <div class="col-md-10">
+                            @if ((@Model.MedicamentImage == null) || (@Model.MedicamentImage == ""))
+                            {
+                            <img src="~/users/uploads/nophoto.png"
+                                 style="max-height:60px; max-width:60px; padding-left:30px;" title="Este medicamento no cuenta con fotografia.">
+                            }
+                            else
+                            {
+                            <img src="~/images/uploads/@Model.MedicamentImage"
+                             style="max-height:300px; max-width:300px;" /> 
+                            }
+
+                        </div>
+                    </div>
+
+                    <br /> 
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Subir imagen:</label>
+                        <div class="col-md-10">
+                            <input type="file" name="ImageFile" />
+                            <span asp-validation-for="MedicamentImage" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Guardar" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
             </div>
         </div>
     </div>
-</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+            <div class="form-actions no-color" style="max-width:300px;">
+                <a class="btn btn-info btn-xs pull-right" asp-action="Index">Volver a Medicamentos</a>
+            </div>
+
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }

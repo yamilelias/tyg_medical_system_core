@@ -10,9 +10,12 @@ using system_core_with_authentication.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    [Authorize(Roles = "Admin, Supervisor, Supervisor de Inventario")]
     public class MedicamentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -118,24 +121,30 @@ namespace system_core_with_authentication.Controllers
             if (ModelState.IsValid)
             {
 
-                if (imageFile != null)
-                {
-                    string uploadPath = Path.Combine(_environment.WebRootPath, "images", "uploads");
-                    Directory.CreateDirectory(Path.Combine(uploadPath));
-
-                    string fileName = Path.GetFileName(imageFile.FileName);
-
-                    using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(fs);
-                    }
-
-                    medicament.MedicamentImage = fileName;
-
-                }
-
                 try
                 {
+                    if (imageFile != null)
+                    {
+                        string uploadPath = Path.Combine(_environment.WebRootPath, "images", "uploads");
+                        Directory.CreateDirectory(Path.Combine(uploadPath));
+
+                        string fileName = Path.GetFileName(imageFile.FileName);
+
+                        using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fs);
+                        }
+
+                        medicament.MedicamentImage = fileName;
+
+                    }
+                    else
+                    {
+                        Medicament medWithImage = new Medicament();
+                        medWithImage = medicament;
+                        medWithImage.MedicamentImage = _context.Medicaments.Where(a => a.Id == medicament.Id).Select(a => a.MedicamentImage).FirstOrDefault();
+                    }
+
                     _context.Update(medicament);
                     await _context.SaveChangesAsync();
                 }

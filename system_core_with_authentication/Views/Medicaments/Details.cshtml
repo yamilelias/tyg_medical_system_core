@@ -1,54 +1,77 @@
 @model system_core_with_authentication.Models.Medicament
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle del medicamento";
+    ViewBag.Menu = "Medicaments";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-xs-4 small">
+        <div class="card card-table">
+            <div class="card-body">
 
-<div>
-    <h4>Medicament</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Priority)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Counter)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Counter)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+                    <h4>Details of @Html.DisplayFor(model => model.Description)</h4>
+                    <hr />
+                    <dl>
+                        <dt>
+                            Descripci&oacute;n
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Content)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Content)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Type)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Priority)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Priority)
+                        </dd>
+                        <dt>
+                            Imagen
+                        </dt>
+                       
+                        <dd>
+                            <br />
+                            @if ((@Model.MedicamentImage == null) || (@Model.MedicamentImage == ""))
+                            {
+                                <img src="~/users/uploads/nophoto.png"
+                                     style="max-height:60px; max-width:60px; padding-left:30px;" title="Este medicamento no cuenta con fotografia.">
+                            }
+                            else
+                            {
+                                <img src="~/images/uploads/@Model.MedicamentImage"
+                                     style="max-height:300px; max-width:300px;" />
+                            }
+                        </dd>
+
+                    </dl>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+
+    <a asp-action="Index" class="btn btn-info btn-xs" style="margin-left:50px;">Regresar a &Iacute;ndice</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success btn-xs" style="margin-left:90px; width:100px;"> Editar</a>
+
+                </div>
+

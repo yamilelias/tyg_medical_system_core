@@ -11,20 +11,23 @@
         <h4>LocationSchedule</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="IdUser" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="IdUser" class="form-control" />
-                <span asp-validation-for="IdUser" class="text-danger"></span>
+
+        <div>
+            <label asp-for="User"></label>
+            <div>
+                <select asp-for="User" asp-items="ViewBag.User">                    
+                </select>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="IdLocation" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="IdLocation" class="form-control" />
-                <span asp-validation-for="IdLocation" class="text-danger"></span>
+
+        <div>
+            <label asp-for="Location"></label>
+            <div>
+                <select asp-for="Location" asp-items="ViewBag.Location"></select>
             </div>
         </div>
+
+
         <div class="form-group">
             <label asp-for="Monday" class="col-md-2 control-label"></label>
             <div class="col-md-10">
