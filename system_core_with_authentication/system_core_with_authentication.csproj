@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AccountViewModels\Models\" />
+    <Folder Include="Views\Files\" />
     <Folder Include="wwwroot\images\uploads\" />
   </ItemGroup>
 

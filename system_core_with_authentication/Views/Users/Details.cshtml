@@ -83,7 +83,7 @@
             </div>
             <ul class="card-action">
                 <li>
-                <a asp-action="Create" asp-controller="LocationSchedules" class="btn btn-success btn-xs"> A&ntilde;adir Horario </a>
+                <a asp-action="Create" asp-controller="LocationSchedules" asp-route-id="@Model.user.Id" class="btn btn-success btn-xs"> A&ntilde;adir Horario </a>
                 </li>
             </ul>
         </div>
@@ -166,8 +166,6 @@
 
             <div class="card card-body">
                 <b> Este usuario no tiene un horario asignado. </b>
-                <br /> <br />
-                <a asp-action="Create" asp-controller="LocationSchedules"> Asignar horario</a>
             </div>
         }
             </div>
