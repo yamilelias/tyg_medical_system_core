@@ -82,6 +82,8 @@ namespace system_core_with_authentication.Controllers
                 return NotFound();
             }
 
+            ViewData["Location"] = new SelectList(_context.Locations, "Id", "Name");
+
             var locationSchedule = await _context.LocationSchedules.SingleOrDefaultAsync(m => m.Id == id);
             if (locationSchedule == null)
             {
@@ -95,7 +97,7 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Location,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule, string location)
         {
             if (id != locationSchedule.Id)
             {
@@ -106,6 +108,9 @@ namespace system_core_with_authentication.Controllers
             {
                 try
                 {
+                    locationSchedule.Location = _context.Locations.Where(a => a.Id == Int32.Parse(location)).FirstOrDefault();
+
+
                     _context.Update(locationSchedule);
                     await _context.SaveChangesAsync();
                 }
@@ -120,7 +125,7 @@ namespace system_core_with_authentication.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Users");
             }
             return View(locationSchedule);
         }

@@ -1,13 +1,13 @@
 @model IEnumerable<system_core_with_authentication.Models.Users>
 
 @{
-    ViewData["Title"] = "User Index";
+    ViewData["Title"] = "Indice de Usuarios";
     ViewBag.Menu = "User";
 }
 
 <div class="container" style="width: 10px">
 
-    <a asp-action="Register" asp-controller="Account" class="btn btn-success btn-xs pull-right"> Create new User </a>
+    <a asp-action="Register" asp-controller="Account" class="btn btn-success btn-xs pull-right"> Crear Usuario </a>
 
 </div>
 
@@ -21,19 +21,19 @@
                 <thead>
                     <tr>
                         <th>
-                            Identification
+                            Identificaci&oacute;n
                         </th>
                         <th>
-                            Full Name
+                            Nombre Completo
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Telephone)
+                            Tel&eacute;fono
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Email)
+                            Correo
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Role)
+                            Rol
                         </th>
                         <th></th>
                     </tr>
@@ -53,7 +53,7 @@
                                     @if ((@item.UserImage == null) || (@item.UserImage == ""))
                                     {
                                         <img src="~/users/uploads/nophoto.png"
-                                             style="max-height:60px; max-width:60px; padding-left:30px;" title="This user lacks a user photo.">
+                                             style="max-height:60px; max-width:60px; padding-left:30px;" title="Este usuario no cuenta con fotografia.">
                                     }
                                     else
                                     {
@@ -77,9 +77,9 @@
                                 <td>
                                     @*<a data-toggle="modal" data-target="#myModal" class="btn btn-default btn-xs" onclick="getDataAjax('@item.Id','Users/EditAjax')">Edit</a>*@
 
-                                    <a asp-action="Edit" class="btn btn-success btn-xs" asp-route-id="@item.Id">Edit</a>
-                                    <a asp-action="Details" class="btn btn-info btn-xs" asp-route-id="@item.Id">Details</a>
-                                    <a asp-action="Delete" class="btn btn-danger btn-xs" asp-route-id="@item.Id">Delete</a>
+                                    <a asp-action="Edit" class="btn btn-success btn-xs" asp-route-id="@item.Id">Editar</a>
+                                    <a asp-action="Details" class="btn btn-info btn-xs" asp-route-id="@item.Id">Detalles</a>
+                                    <a asp-action="Delete" class="btn btn-danger btn-xs" asp-route-id="@item.Id">Borrar</a>
 
                                 </td>
                             </tr>

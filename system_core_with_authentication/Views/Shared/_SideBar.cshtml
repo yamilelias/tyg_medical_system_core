@@ -95,7 +95,7 @@
             }
             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                <li class="@ViewBag.RequestsActive">
+                <li class="@ViewBag.UsersActive">
                     <a asp-area="" asp-controller="Users" asp-action="Index">
                         <div class="icon">
                             <i class="fa fa-user" aria-hidden="true"></i>

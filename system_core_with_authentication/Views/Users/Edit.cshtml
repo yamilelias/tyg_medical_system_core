@@ -1,6 +1,7 @@
 @model system_core_with_authentication.Models.ViewModels.EditUserViewModel
 @{
-    ViewData["Title"] = "Edit User";
+    ViewData["Title"] = "Editar Usuario";
+    ViewBag.Menu = "User";
 }
 
     <div class="container col-sm-6 col-md-6 col-lg-6 pull-right" style="width:1000px;">
@@ -9,7 +10,7 @@
 
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div class="form-horizontal">
-                        <h4>Full Edit for @Html.DisplayFor(model => model.appUser.Name) @Html.DisplayFor(model => model.appUser.LastName) @Html.DisplayFor(model => model.appUser.SecondLastName) </h4>
+                        <h4>Edici&oacute;n completa para @Html.DisplayFor(model => model.appUser.Name) @Html.DisplayFor(model => model.appUser.LastName) @Html.DisplayFor(model => model.appUser.SecondLastName) </h4>
                         <hr />
 
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -36,7 +37,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Telephone" class="col-md-2 control-label"> Telefono </label>
+                            <label for="Telephone" class="col-md-2 control-label"> Tel&eacute;fono </label>
                             <div class="col-md-5">
                                 <input name="Telephone" for="Telephone" class="form-control" value="@Model.appUser.Telephone" />
                              
@@ -88,12 +89,25 @@
                         <br />
                         <br />
 
+                        @if ((Model.appUser.UserImage == null) || (Model.appUser.UserImage == ""))
+                        {
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Imagen actual:</label>
+                                <div class="col-md-10">
+                                    <img src="~/users/uploads/nophoto.png"
+                                         style="max-height:60px; max-width:60px; padding-left:30px;" title="Este usuario no cuenta con fotografia.">
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
                         <div class="form-group">
                             <label class="col-md-2 control-label">Imagen actual:</label>
                             <div class="col-md-10">
                                 <img src="~/users/uploads/@Model.appUser.UserImage" style="max-height:300px; max-width:300px; padding-left:50px;"/>
                             </div>
                         </div> 
+                        }
 
                         <br />  <br /> 
 
@@ -109,7 +123,7 @@
 
                         <div class="form-group">
                             <div class="col-md-5">
-                                <input type="submit" value="Save" class="btn btn-success pull-right btn-xs" />
+                                <input type="submit" value="Guardar" class="btn btn-success pull-right btn-xs" />
                             </div>
                         </div>
                     </div>
@@ -119,7 +133,7 @@
     </div>
 
                 <div class="form-actions no-color" style="max-width:300px;">
-                    <a asp-action="Index" class="btn btn-info btn-xs pull-right">Back to Index</a>
+                    <a asp-action="Index" class="btn btn-info btn-xs pull-right">Regresar a &Iacute;ndice</a>
                     </div>
 
  
