@@ -1,6 +1,6 @@
 ﻿@model system_core_with_authentication.Models.ViewModels.MedicamentLowHighViewModel
 <!--Partial View to show Most Requested Medicament and Medicaments with less stock-->
-
+@if (User.IsInRole("Admin") || User.IsInRole("Supervisor")) {
 <div class="row">
     <div class="col-xs-12">
         <div class="card card-mini">
@@ -149,4 +149,72 @@
                     </div>
                 </div>
             </div>
+}
+<!--Section that only the user see-->
+@if (User.IsInRole("User"))
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card card-mini">
+                <div class="card-header">
+                    <div class="card-title">
+                        Solicitudes hechas
+                    </div>
+                </div>
+                <div class="card card-body no-padding">
+                    @if (Model.MedicamentLow.Count == 0)
+                {
+                        <p>No hay solicitudes por el momento.</p>
+
+                    }
+                    else
+                    {
+
+                        <table class="table card-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Notas
+                                    </th>
+                                    <th>
+                                        Usuario
+                                    </th>
+                                    <th>
+                                        Detalles
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RequestFromUser.RepositionStockList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.Note)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.User)
+                                        </td>
+                                        <td>
+                                            <form asp-controller="Requests" asp-action="ViewRepositionDetails" method="get">
+                                                <input class="form-control" type="hidden" value="@item.Request.Id" name="RepositionStockId" id="id">
+                                                <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    }
+                </div>
+            </div>
         </div>
+    </div>
+
+}

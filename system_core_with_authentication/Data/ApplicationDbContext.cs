@@ -22,6 +22,13 @@ namespace system_core_with_authentication.Data
 
         public DbSet<RepositionStock> RepositionStocks { get; set; }
         public DbSet<RepositionStockDetailed> RepositionStockDetailed { get; set; }
+        public DbSet<ShiftChange> ShiftChange { get; set; }
+        public DbSet<BreastFeeding> BreastFeeding { get; set; }
+        public DbSet<Permit> Permit { get; set; }
+        public DbSet<AllowanceWithoutPayment> AllowanceWithoutPayment { get; set; }
+        public DbSet<Vacations> Vacations { get; set; }
+        public DbSet<Maternity_Leave> Maternity_Leave { get; set; }
+        public DbSet<Viatical> Viatical { get; set; }
         public DbSet<Request> Requests { get; set; }
 
         public DbSet<User> Users { get; set; }

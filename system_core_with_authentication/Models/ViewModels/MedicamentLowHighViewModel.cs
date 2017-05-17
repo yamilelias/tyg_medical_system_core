@@ -12,5 +12,6 @@ namespace system_core_with_authentication.Models.ViewModels
         public List<ApplicationUser> Users { get; set; }
         public List<Request> Requests { get; set; }
         public double sumBudget { get; set; }
+        public RequestFromUser RequestFromUser { get; set; }
     }
 }

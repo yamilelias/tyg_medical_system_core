@@ -13,10 +13,10 @@
 
                         Buscar Medicamento:
                         <input class="form-control" style="width:1050px;" type="text" name="SearchString">
-                        <input type="submit" value="Filtrar" class="btn btn-default" />
+                        <input type="submit" value="Filtrar" class="btn btn-default btn-xs" />
 
                     </form>
-                    <a class="btn btn-success" asp-controller="Requests" asp-action="CreateReposition">Mostrar todos</a>
+                    <a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Mostrar todos</a>
                 </div>
             </div>
             <input type="hidden" value="@User.Identity.Name" id="username">
@@ -86,11 +86,13 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-12 small">
-                    <div class="card card-table">
-                        <div class="container">
-                            <h3>Notas:</h3> <textarea class="form-control" rows="5" id="notes"></textarea>
-
+                <div class="col-xs-12">
+                    <div class="card card-mini">
+                        <div class="card card-header"> 
+                            Notas:
+                        </div>
+                        <div class="card card-body no-padding">
+                            <textarea class="form-control" rows="5" id="notes"></textarea>
                             <div id="lista"></div>
                         </div>
                     </div>
@@ -99,6 +101,6 @@
 
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <a class="btn btn-info" asp-controller="Requests" asp-action="Index">Back</a>
+                <a class="btn btn-danger" asp-controller="Requests" asp-action="Index">Back</a>
             </div>
             <script src="~/js/Reposition.js"></script>

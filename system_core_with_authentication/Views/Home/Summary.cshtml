@@ -14,7 +14,7 @@
         </a>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <a class="card card-banner card-blue-light" asp-controller="Requests" asp-action="Index">
+        <a class="card card-banner card-blue-light" asp-controller="Requests" asp-action="ShowAllRequests">
             <div class="card-body">
                 <i class="icon fa fa-list fa-4x"></i>
                 <div class="content">
@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <i class="icon fa fa-shopping-basket fa-4x"></i>
                         <div class="content">
-                            <div class="title">Budget</div>
+                            <div class="title">Presupuesto</div>
                             <div class="value"><span class="sign">$</span>@Model.sumBudget</div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="card-body">
                         <i class="icon fa fa-list fa-4x"></i>
                         <div class="content">
-                            <div class="title">Requests</div>
+                            <div class="title">Solicitudes</div>
                             <div class="value"><span class="sign"></span>@Model.Requests.Count</div>
                         </div>
                     </div>

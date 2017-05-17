@@ -9,6 +9,7 @@ using system_core_with_authentication.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using system_core_with_authentication.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -17,9 +18,12 @@ namespace system_core_with_authentication.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ApplicationDbContext context)
+        UserManager<ApplicationUser> _userManager;
+
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -62,6 +66,18 @@ namespace system_core_with_authentication.Controllers
             //price
             var totalBudget = vhvm.MedicamentLow.Sum(a => a.budget);
             vhvm.sumBudget = totalBudget;
+
+            //User requests
+            var userSigned = _context.ApplicationUser.Where(a => a.Id == _userManager.GetUserId(User)).Select(a=>a.Email).FirstOrDefault();
+            var UserName = _context.RepositionStocks.Include(a => a.RepositionStockDetailed).Select(a => a.Request.User).FirstOrDefault();
+            var userRequestsList = _context.RepositionStocks.Include(a => a.RepositionStockDetailed)
+                                                            .Where(a => a.Request.User.Equals(userSigned))
+                                                            .ToList();
+            RequestFromUser rfu = new RequestFromUser();
+            rfu.RepositionStockList = userRequestsList;
+            vhvm.RequestFromUser = rfu;
+            
+
 
             return View(vhvm);
         }

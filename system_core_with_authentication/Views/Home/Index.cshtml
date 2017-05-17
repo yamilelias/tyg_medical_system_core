@@ -24,10 +24,7 @@
         </div>
     </div>
 </div>*@
-@if ((User.Identity.IsAuthenticated) && ( (User.IsInRole("Admin")) || (User.IsInRole("Supervisor"))))
-{
-    Html.RenderPartial("Summary");
-    Html.RenderPartial("MostRequestedItem");
-    //Html.RenderPartial("~/Views/Home/MostRequestedItem.cshtml");}
-    //Html.RenderPartial("~/Views/Home/LowStock.cshtml");}
+@if (User.Identity.IsAuthenticated){
+        Html.RenderPartial("Summary");
+        Html.RenderPartial("MostRequestedItem");
 }

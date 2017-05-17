@@ -55,7 +55,10 @@
                     <ul>
                         @* Use this li class if a section is needed *@
                         @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
+                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                        {
                         <li><a asp-controller="Requests" asp-action="ShowAllRequests">Mostrar todos</a></li>
+                        }
                         <li><a asp-controller="Requests" asp-action="Index"> Crear nueva solicitud</a></li>
                     </ul>
                 </div>

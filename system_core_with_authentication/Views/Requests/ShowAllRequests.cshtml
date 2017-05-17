@@ -1,4 +1,4 @@
-@model IEnumerable<system_core_with_authentication.Models.RepositionStock>
+@model system_core_with_authentication.Models.ViewModels.AllRequestsViewModel
 
 @{
     ViewData["Title"] = "Lista de todas las solicitudes";
@@ -12,6 +12,9 @@
                 <table class="table card-table">
                     <thead>
                         <tr>
+                            <th>
+                                Tipo
+                            </th>
                             <th>
                                 Fecha
                             </th>
@@ -30,9 +33,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.RepositionStock)
                         {
                             <tr>
+                                <td>
+                                    Medicamentos
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Request.Date)
                                 </td>
@@ -47,7 +53,59 @@
                                 </td>
                                 <td>
                                     <form asp-controller="Requests" asp-action="ViewRepositionDetails" method="get">
-                                        <input class="form-control" type="hidden" value="@item.Request.Id" name="RepositionStockId" id="id">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="RepositionStockId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.ShiftChange)
+                        {
+                            <tr>
+                                <td>
+                                    Cambio de turno
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_ShiftChange" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewShiftChangeDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="ShiftChangeId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.BreastFeeding)
+                        {
+                            <tr>
+                                <td>
+                                    Amamantamiento
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_BreastFeeding" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewBreastFeedingDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="BreastFeedingId" id="id">
                                         <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
                                     </form>
                                 </td>

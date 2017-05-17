@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Requests";
+    ViewData["Title"] = "Solicitudes";
     ViewBag.Menu = "Requests";
 }
 
@@ -11,16 +11,15 @@
                     Solicitudes
                 </div>
             </div>
-            <div class="card card-body no-padding">
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Reposicion de Medicamento</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Cambio de turno</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Breastfeeding</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Permiso</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Allowance without payment</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Vacaciones</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Maternidad</a>
-                <a class="btn btn-default btn-xs" asp-controller="Requests" asp-action="CreateReposition">Viaticos</a>
-
+            <div class="card card-body">
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Reposicion de Medicamento</a>    </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="r_Shift_Change">Cambio de turno</a>                </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="r_BreastFeeding">Amamantamiento</a>                </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Permiso</a>                      </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Allowance without payment</a>    </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Vacaciones</a>                   </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Maternidad</a>                   </div>
+                <div><a class="btn btn-success btn-xs" asp-controller="Requests" asp-action="CreateReposition">Viaticos</a>                     </div>
             </div>
         </div>
     </div>
