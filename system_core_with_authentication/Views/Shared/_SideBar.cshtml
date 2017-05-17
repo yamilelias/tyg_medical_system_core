@@ -27,7 +27,7 @@
 
 <aside class="app-sidebar" id="sidebar">
     <div class="sidebar-header">
-        <a class="sidebar-brand" href="#"><span class="highlight">TyG Medical</span></a>
+        <a class="sidebar-brand" asp-controller="Home" asp-action="Index"><img src="~/images/logo.jpg" alt="TyG Medical Logo" class="center-block" /></a>
         <button type="button" class="sidebar-toggle">
             <i class="fa fa-times"></i>
         </button>
@@ -39,7 +39,7 @@
                     <div class="icon">
                         <i class="fa fa-tasks" aria-hidden="true"></i>
                     </div>
-                    <div class="title">Dashboard</div>
+                    <div class="title">Panel Principal</div>
                 </a>
             </li>
             @if (SignInManager.IsSignedIn(User))

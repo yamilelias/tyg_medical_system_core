@@ -3130,6 +3130,9 @@ aside.app-sidebar {
   .app-login.__loading:after {
     background-color: rgba(9, 80, 119, 0.75); }
 
+.app-login-page {
+  background: #095077; }
+
 ul.icons {
   list-style: none;
   padding: 0;
