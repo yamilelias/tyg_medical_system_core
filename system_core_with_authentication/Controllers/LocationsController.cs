@@ -140,6 +140,14 @@ namespace system_core_with_authentication.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var location = await _context.Locations.SingleOrDefaultAsync(m => m.Id == id);
+
+            var schedules = _context.LocationSchedules.Where(m => m.Location.Id.Equals(id)).ToList();
+
+            foreach (var item in schedules)
+            {
+                _context.LocationSchedules.Remove(item);
+            }
+
             _context.Locations.Remove(location);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

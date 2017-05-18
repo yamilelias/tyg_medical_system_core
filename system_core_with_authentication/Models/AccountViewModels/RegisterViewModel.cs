@@ -57,6 +57,8 @@ namespace system_core_with_authentication.Models.AccountViewModels
         [Display(Name = "Imagen de usuario:")]
         public IFormFile UserImage { get; set; }
 
+        public bool valid { get; set; }
+
         public RegisterViewModel()
         {
             Roles = new List<SelectListItem>();

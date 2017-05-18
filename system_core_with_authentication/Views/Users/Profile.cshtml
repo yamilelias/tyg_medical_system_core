@@ -1,7 +1,7 @@
 ﻿@model system_core_with_authentication.Models.ApplicationUser
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Tu Perfil";
 }
 
 <div class="row">
@@ -9,41 +9,41 @@
         <div class="card card-table">
             <div class="container">
 
-                <h4> Your Information </h4>
+                <h4> Tu Informaci&oacute;n </h4>
 
                 <dl>
                     <dt>
-                        Name
+                        Nombre
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.Name)
                     </dd>
                     <dt>
-                        Paternal Name
+                        Apellido Paterno
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.LastName)
                     </dd>
                     <dt>
-                        Maternal Name
+                        Apellido Materno
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.SecondLastName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Telephone)
+                        Tel&eacute;fono
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.Telephone)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.UserName)
+                        Nombre de Usuario
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.UserName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Email)
+                        Correo Electr&oacute;nico
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.Email)
@@ -54,7 +54,7 @@
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
 
-                    <a style="margin-left:50px;" asp-action="Index" asp-controller="Home" class="btn btn-info">Back to Dashboard</a>
+                    <a style="margin-left:50px;" asp-action="Index" asp-controller="Home" class="btn btn-info">Regresar a Inicio</a>
 
                 </div>
 

@@ -151,9 +151,9 @@ namespace system_core_with_authentication.Controllers
 
                 _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Users");
             }
-            return View(applicationUser);
+            return RedirectToAction("Index", "Users");
         }
 
         public async Task<List<Users>> EditAjax(string id)
