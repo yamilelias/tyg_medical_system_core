@@ -28,7 +28,7 @@ namespace system_core_with_authentication.Controllers
         [Authorize(Roles = "Admin,Supervisor,User")]
         public ActionResult CreateReposition(string searchString)
         {
-            var medicaments = _context.Medicaments.Select(m=>m) ;
+            var medicaments = _context.Medicaments.Select(m => m);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -37,7 +37,7 @@ namespace system_core_with_authentication.Controllers
             return View(medicaments.ToList());
         }
         [Authorize(Roles = "Admin,Supervisor,User")]
-        public ActionResult SaveReposition(string values,string username, string notes)
+        public ActionResult SaveReposition(string values, string username, string notes)
         {
             Request _request = new Request();
             _request.User = username;
@@ -51,7 +51,7 @@ namespace system_core_with_authentication.Controllers
             JArray array = JArray.Parse(values);
             foreach (JObject obj in array.Children<JObject>())
             {
-                
+
                 int actualQuantity = 0;
                 int requestQuantity = 0;
                 int ID = 0;
@@ -64,7 +64,7 @@ namespace system_core_with_authentication.Controllers
                         actualQuantity = Int32.Parse(value);
                     if (name.Equals("RequestQuantity"))
                         requestQuantity = Int32.Parse(value);
-                    if(name.Equals("Id"))
+                    if (name.Equals("Id"))
                         ID = Int32.Parse(value);
 
                 }
@@ -77,7 +77,7 @@ namespace system_core_with_authentication.Controllers
                 RepositionStockDetailed _repositionStockDetailed = new RepositionStockDetailed();
                 _repositionStockDetailed.CurrentStock = actualQuantity;
                 _repositionStockDetailed.RequestStock = requestQuantity;
-                _repositionStockDetailed.Medicament = _context.Medicaments.Where(i=>i.Id==ID).FirstOrDefault();
+                _repositionStockDetailed.Medicament = _context.Medicaments.Where(i => i.Id == ID).FirstOrDefault();
                 _context.RepositionStockDetailed.Add(_repositionStockDetailed);
 
                 medicamentsList.Add(_repositionStockDetailed);
@@ -94,7 +94,7 @@ namespace system_core_with_authentication.Controllers
         {
             AllRequestsViewModel arvm = new AllRequestsViewModel();
             arvm.RepositionStock = _context.RepositionStocks.Include(r => r.Request)
-                                             .OrderByDescending(r=>r.Request.Date)
+                                             .OrderByDescending(r => r.Request.Date)
                                              .ToList();
             arvm.ShiftChange = _context.ShiftChange.Include(r => r.Request)
                                              .OrderByDescending(r => r.Request.Date)
@@ -109,6 +109,9 @@ namespace system_core_with_authentication.Controllers
                                              .OrderByDescending(r => r.Request.Date)
                                              .ToList();
             arvm.Vacations = _context.Vacations.Include(r => r.Request)
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            arvm.Maternity_Leave = _context.Maternity_Leave.Include(r => r.Request)
                                              .OrderByDescending(r => r.Request.Date)
                                              .ToList();
             arvm.Viatical = _context.Viatical.Include(r => r.Request)
@@ -126,12 +129,12 @@ namespace system_core_with_authentication.Controllers
                                              .Where(i => i.Id == RepositionStockId)
                                              .ToList()
                                              .FirstOrDefault();
-            double Totalcost=0;
+            double Totalcost = 0;
             double costPerOrder = 0;
             foreach (var item in x.RepositionStockDetailed)
             {
                 costPerOrder = item.RequestStock * item.Medicament.Price;
-                
+
                 Totalcost += costPerOrder;
             }
 
@@ -195,7 +198,7 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult ViewShiftChangeDetails(int ShiftChangeId)
         {
-            ShiftChange sc = _context.ShiftChange.Include(r=>r.Request).Where(a => a.Id == ShiftChangeId).FirstOrDefault();
+            ShiftChange sc = _context.ShiftChange.Include(r => r.Request).Where(a => a.Id == ShiftChangeId).FirstOrDefault();
             return View(sc);
         }
         public ActionResult ChangeSolved_ShiftChange(int Id)
@@ -210,6 +213,9 @@ namespace system_core_with_authentication.Controllers
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
+        /*
+         * End of Methods for Request r_Shift_Change
+         */
 
         /*
          * Methods for Request r_BreastFeeding
@@ -259,5 +265,271 @@ namespace system_core_with_authentication.Controllers
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
+        /*
+         * End Methods for Request r_BreastFeeding
+         */
+
+        /*
+         * Methods for Request r_Permit
+         */
+        public ActionResult r_Permit()
+        {
+            return View();
+        }
+        public ActionResult Create_r_Permit(string username, r_Permit_ViewModel rpvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Request r = new Request();
+                r.User = username;
+                r.Date = DateTime.UtcNow;
+                r.Note = rpvm.Notes;
+
+                Permit p = new Permit();
+                p.Request = r;
+                p.Type = rpvm.Type;
+                p.Date = rpvm.Date;
+                p.Start_Hour = rpvm.Start_Hour;
+                p.End_Hour = rpvm.End_Hour;
+
+                _context.Requests.Add(r);
+                _context.Permit.Add(p);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(rpvm);
+        }
+        public ActionResult ViewPermitDetails(int PermitId)
+        {
+            Permit p = _context.Permit.Include(r => r.Request).Where(a => a.Id == PermitId).FirstOrDefault();
+            return View(p);
+        }
+        public ActionResult ChangeSolved_Permit(int Id)
+        {
+            Permit p = _context.Permit.Include(r => r.Request).Where(a => a.Id == Id).FirstOrDefault();
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult ChangeSolved_Permit(Permit permit)
+        {
+            _context.Update(permit);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
+        }
+        /*
+         * End of Methods for Request r_Permit
+         */
+
+        /*
+         * Methods for Request r_Allowance_Without_Payment
+         */
+        public ActionResult r_Allowance_Without_Payment()
+        {
+            return View();
+        }
+        public ActionResult Create_r_Allowance_Without_Payment(string username, r_Allowance_Without_Payment_ViewModel rawpvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Request r = new Request();
+                r.User = username;
+                r.Date = DateTime.UtcNow;
+                r.Note = rawpvm.Notes;
+
+                AllowanceWithoutPayment awp = new AllowanceWithoutPayment();
+                awp.Request = r;
+                awp.Start_Date = rawpvm.Start_Date;
+                awp.End_Date = rawpvm.End_Date;
+                awp.Comeback_Date = rawpvm.Comeback_Date;
+
+                _context.Requests.Add(r);
+                _context.AllowanceWithoutPayment.Add(awp);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(rawpvm);
+        }
+        public ActionResult ViewAllowanceWithoutPaymentDetails(int AllowanceWithoutPaymentId)
+        {
+            AllowanceWithoutPayment awp = _context.AllowanceWithoutPayment.Include(r => r.Request).Where(a => a.Id == AllowanceWithoutPaymentId).FirstOrDefault();
+            return View(awp);
+        }
+        public ActionResult ChangeSolved_AllowanceWithoutPayment(int Id)
+        {
+            AllowanceWithoutPayment p = _context.AllowanceWithoutPayment.Include(r => r.Request).Where(a => a.Id == Id).FirstOrDefault();
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult ChangeSolved_AllowanceWithoutPayment(AllowanceWithoutPayment allowanceWithoutPayment)
+        {
+            _context.Update(allowanceWithoutPayment);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
+        }
+        /*
+        * End Methods for Request r_Allowance_Without_Payment
+        */
+
+        /*
+         * Methods for Request r_Vacations
+         */
+        public ActionResult r_Vacations()
+        {
+            return View();
+        }
+        public ActionResult Create_r_Vacations(string username, r_Vacations_ViewModel rvvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Request r = new Request();
+                r.User = username;
+                r.Date = DateTime.UtcNow;
+                r.Note = rvvm.Notes;
+
+                Vacations v = new Vacations();
+                v.Request = r;
+                v.Vacation_Period_Completed = rvvm.Vacation_Period_Completed;
+                v.Available_Days = rvvm.Available_Days;
+                v.Requested_Days = rvvm.Requested_Days;
+                v.Start_Date = rvvm.Start_Date;
+                v.End_Date = rvvm.End_Date;
+                v.Comeback_Date = rvvm.Comeback_Date;
+                v.Pending_Days = rvvm.Pending_Days;
+
+                _context.Requests.Add(r);
+                _context.Vacations.Add(v);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(rvvm);
+        }
+        public ActionResult ViewVacationsDetails(int VacationsId)
+        {
+            Vacations v = _context.Vacations.Include(r => r.Request).Where(a => a.Id == VacationsId).FirstOrDefault();
+            return View(v);
+        }
+        public ActionResult ChangeSolved_Vacations(int Id)
+        {
+            Vacations p = _context.Vacations.Include(r => r.Request).Where(a => a.Id == Id).FirstOrDefault();
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult ChangeSolved_Vacations (Vacations vacations)
+        {
+            _context.Update(vacations);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
+        }
+        /*
+        * End Methods for Request r_Vacations
+        */
+
+        /*
+         * Methods for Request r_Maternity_Leave
+         */
+        public ActionResult r_Maternity_Leave()
+        {
+            return View();
+        }
+        public ActionResult Create_r_Maternity_Leave(string username, r_Maternity_Leave_ViewModel rmlvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Request r = new Request();
+                r.User = username;
+                r.Date = DateTime.UtcNow;
+                r.Note = rmlvm.Notes;
+
+                Maternity_Leave ml = new Maternity_Leave();
+                ml.Request = r;
+                ml.Start_Date = rmlvm.Start_Date;
+                ml.End_Date = rmlvm.End_Date;
+                ml.Covered_Days = rmlvm.Covered_Days;
+                ml.Folio = rmlvm.Folio;
+                ml.Labor_Start_Date = rmlvm.Labor_Start_Date;
+                ml.Medic_Unit = rmlvm.Medic_Unit;
+
+                _context.Requests.Add(r);
+                _context.Maternity_Leave.Add(ml);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(rmlvm);
+        }
+        public ActionResult ViewMaternity_LeaveDetails(int Maternity_LeaveId)
+        {
+            Maternity_Leave v = _context.Maternity_Leave.Include(r => r.Request).Where(a => a.Id == Maternity_LeaveId).FirstOrDefault();
+            return View(v);
+        }
+        public ActionResult ChangeSolved_Maternity_Leave(int Id)
+        {
+            Maternity_Leave p = _context.Maternity_Leave.Include(r => r.Request).Where(a => a.Id == Id).FirstOrDefault();
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult ChangeSolved_Maternity_Leave(Maternity_Leave maternity_Leave)
+        {
+            _context.Update(maternity_Leave);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
+        }
+        /*
+        * End Methods for Request r_Maternity_Leave
+        */
+
+        /*
+         * Methods for Request r_Viatical
+         */
+        public ActionResult r_Viatical()
+        {
+            return View();
+        }
+        public ActionResult Create_r_Viatical(string username, r_Viatical_ViewModel rvvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Request r = new Request();
+                r.User = username;
+                r.Date = DateTime.UtcNow;
+                r.Note = rvvm.Notes;
+
+                Viatical v = new Viatical();
+                v.Request = r;
+                v.Travel_Destination = rvvm.Travel_Destination;
+                v.Start_Date = rvvm.Start_Date;
+                v.End_Date = rvvm.End_Date;
+
+                _context.Requests.Add(r);
+                _context.Viatical.Add(v);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return View(rvvm);
+        }
+        public ActionResult ViewViaticalDetails(int ViaticalId)
+        {
+            Viatical v = _context.Viatical.Include(r => r.Request).Where(a => a.Id == ViaticalId).FirstOrDefault();
+            return View(v);
+        }
+        public ActionResult ChangeSolved_Viatical(int Id)
+        {
+            Viatical p = _context.Viatical.Include(r => r.Request).Where(a => a.Id == Id).FirstOrDefault();
+            return View(p);
+        }
+        [HttpPost]
+        public ActionResult ChangeSolved_Viatical(Viatical viatical)
+        {
+            _context.Update(viatical);
+            _context.SaveChanges();
+            return RedirectToAction("ShowAllRequests");
+        }
+        /*
+        * End Methods for Request r_Viatical
+        */
     }
 }

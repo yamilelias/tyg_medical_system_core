@@ -29,6 +29,9 @@
                             <th>
                                 Precio
                             </th>
+                            <th>
+                                Notas
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +50,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(model => a.Medicament.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Request.Note)
                                 </td>
                             </tr>
                         }

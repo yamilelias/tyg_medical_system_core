@@ -26,6 +26,9 @@
                             <th>
                                 Fecha de Regreso
                             </th>
+                            <th>
+                                Notas
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +42,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(model => model.Return_Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Request.Note)
                                 </td>
                             </tr>
 

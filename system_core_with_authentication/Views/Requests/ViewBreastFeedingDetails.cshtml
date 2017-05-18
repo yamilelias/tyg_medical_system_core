@@ -1,7 +1,7 @@
 ﻿@model system_core_with_authentication.Models.BreastFeeding
 
 @{
-    ViewData["Title"] = "Solicitud de amamantamiento";
+    ViewData["Title"] = "Solicitud de Periodo de Lactancia";
     ViewBag.Menu = "Requests";
 }
 
@@ -29,6 +29,9 @@
                             <th>
                                 Hora Final
                             </th>
+                            <th>
+                                Notas
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +48,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(model => model.End_Hour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Request.Note)
                             </td>
                         </tr>
 
