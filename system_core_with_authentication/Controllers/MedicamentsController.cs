@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
-    [Authorize(Roles = "Admin,Supervisor")]
+    [Authorize(Roles = "Admin, Supervisor, Supervisor de Inventario")]
     public class MedicamentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -131,8 +131,6 @@ namespace system_core_with_authentication.Controllers
 
                         string fileName = Path.GetFileName(imageFile.FileName);
 
-                        Debug.WriteLine("Accepted image");
-
                         using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
                         {
                             await imageFile.CopyToAsync(fs);
@@ -140,6 +138,12 @@ namespace system_core_with_authentication.Controllers
 
                         medicament.MedicamentImage = fileName;
 
+                    }
+                    else
+                    {
+                        Medicament medWithImage = new Medicament();
+                        medWithImage = medicament;
+                        medWithImage.MedicamentImage = _context.Medicaments.Where(a => a.Id == medicament.Id).Select(a => a.MedicamentImage).FirstOrDefault();
                     }
 
                     _context.Update(medicament);

@@ -126,6 +126,7 @@ namespace system_core_with_authentication.Controllers
 
             if (ModelState.IsValid)
             {
+                model.valid = true;
 
                 if (imageFile != null)
                 {
@@ -153,13 +154,14 @@ namespace system_core_with_authentication.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Users");
                 }
+                model.valid = false;
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Users");
         }
 
         //

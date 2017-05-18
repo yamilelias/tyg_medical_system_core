@@ -1,6 +1,7 @@
-@model system_core_with_authentication.Models.ApplicationUser
+@model system_core_with_authentication.Models.ViewModels.EditUserViewModel
 @{
-    ViewData["Title"] = "Edit User";
+    ViewData["Title"] = "Editar Usuario";
+    ViewBag.Menu = "User";
 }
 
     <div class="container col-sm-6 col-md-6 col-lg-6 pull-right" style="width:1000px;">
@@ -9,89 +10,120 @@
 
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div class="form-horizontal">
-                        <h4>Full Edit for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) @Html.DisplayFor(model => model.SecondLastName) </h4>
+                        <h4>Edici&oacute;n completa para @Html.DisplayFor(model => model.appUser.Name) @Html.DisplayFor(model => model.appUser.LastName) @Html.DisplayFor(model => model.appUser.SecondLastName) </h4>
                         <hr />
 
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                        
                         <div class="form-group">
-                            <label asp-for="Name" class="col-md-2 control-label"></label>
+                            <label for="Name" class="col-md-2 control-label"> Nombre </label>
                             <div class="col-md-5">
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <input name="Name" for="Name" class="form-control" value="@Model.appUser.Name"/>
+                                
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="LastName" class="col-md-2 control-label"> Paternal Name </label>
+                            <label for="LastName" class="col-md-2 control-label"> Apellido Paterno </label>
                             <div class="col-md-5">
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                <input name="LastName" for="LastName" class="form-control" value="@Model.appUser.LastName"/>
+                               
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="SecondLastName" class="col-md-2 control-label"> Maternal Name </label>
+                            <label for="SecondLastName" class="col-md-2 control-label"> Apellido Materno </label>
                             <div class="col-md-5">
-                                <input asp-for="SecondLastName" class="form-control" />
-                                <span asp-validation-for="SecondLastName" class="text-danger"></span>
+                                <input name="SecondLastName" for="SecondLastName" class="form-control" value="@Model.appUser.SecondLastName" />
+                               
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Telephone" class="col-md-2 control-label"></label>
+                            <label for="Telephone" class="col-md-2 control-label"> Tel&eacute;fono </label>
                             <div class="col-md-5">
-                                <input asp-for="Telephone" class="form-control" />
-                                <span asp-validation-for="Telephone" class="text-danger"></span>
+                                <input name="Telephone" for="Telephone" class="form-control" value="@Model.appUser.Telephone" />
+                             
                             </div>
                         </div>
-                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" for="Id" />
                         <div class="form-group">
-                            <label asp-for="UserName" class="col-md-2 control-label"> Username </label>
+                            <label for="UserName" class="col-md-2 control-label"> Usuario </label>
                             <div class="col-md-5">
-                                <input asp-for="UserName" class="form-control" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
+                                <input name="UserName" for="UserName" class="form-control" value="@Model.appUser.UserName" />
+                            
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Email" class="col-md-2 control-label"></label>
+                            <label for="Email" class="col-md-2 control-label"> Email </label>
                             <div class="col-md-5">
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <input name="Email" for="Email" class="form-control" value="@Model.appUser.Email"/>
+                        
                             </div>
                         </div>
 
-                        <br />  
+                        <br />
 
                         <div class="form-group">
-                            <label class="col-md-2 control-label">Current image:</label>
+                            <label class="col-md-2 control-label">Selecciona rol: </label>
+                            <div class="col-md-5">
+                                
+                                <select name="role">
+
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        if (role.Equals(Model.role))
+                                        {
+                                            <option selected> @role </option>
+
+                                        }
+                                        else
+                                        {
+                                            <option> @role </option>
+
+                                        }
+
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <br />
+                        <br />
+
+                        @if ((Model.appUser.UserImage == null) || (Model.appUser.UserImage == ""))
+                        {
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Imagen actual:</label>
+                                <div class="col-md-10">
+                                    <img src="~/users/uploads/nophoto.png"
+                                         style="max-height:60px; max-width:60px; padding-left:30px;" title="Este usuario no cuenta con fotografia.">
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Imagen actual:</label>
                             <div class="col-md-10">
-                                <img src="~/users/uploads/@Model.UserImage" style="max-height:300px; max-width:300px; padding-left:50px;"/>
+                                <img src="~/users/uploads/@Model.appUser.UserImage" style="max-height:300px; max-width:300px; padding-left:50px;"/>
                             </div>
-                        </div>
+                        </div> 
+                        }
 
-                        <br />  <br />  
+                        <br />  <br /> 
 
-                        @*<div class="form-group">
-                            <label class="col-md-2 control-label">User image:</label>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Subir imagen:</label>
                             <div class="col-md-10">
                                 <input type="file" name="ImageFile" />
-                                <span asp-validation-for="UserImage" class="text-danger"></span>
-                            </div>
-                        </div>*@
 
-                        <div class="form-group">
-                            <label for="Roles" class="col-md-2 control-label">Roles</label>
-                            <div class="col-md-10">
-                                <select id='select' class="form-control" onclick='getRolesAjax("Users/RolesAjax");'>
-                                    <option value='0'>Seleccione un rol</option>
-                                </select>
                             </div>
                         </div>
 
-                        <br /> <br />
-
+                        <br />  <br /> 
 
                         <div class="form-group">
                             <div class="col-md-5">
-                                <input type="submit" value="Save" class="btn btn-success pull-right btn-xs" />
+                                <input type="submit" value="Guardar" class="btn btn-success pull-right btn-xs" />
                             </div>
                         </div>
                     </div>
@@ -101,7 +133,7 @@
     </div>
 
                 <div class="form-actions no-color" style="max-width:300px;">
-                    <a asp-action="Index" class="btn btn-info btn-xs pull-right">Back to Index</a>
+                    <a asp-action="Index" class="btn btn-info btn-xs pull-right">Regresar a &Iacute;ndice</a>
                     </div>
 
  

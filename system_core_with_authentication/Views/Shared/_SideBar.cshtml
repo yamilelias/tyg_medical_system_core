@@ -27,7 +27,7 @@
 
 <aside class="app-sidebar" id="sidebar">
     <div class="sidebar-header">
-        <a class="sidebar-brand" href="#"><span class="highlight">TyG Medical</span></a>
+        <a class="sidebar-brand" asp-action="Index" asp-controller="Home"><span class="highlight">TyG Medical</span></a>
         <button type="button" class="sidebar-toggle">
             <i class="fa fa-times"></i>
         </button>
@@ -39,29 +39,18 @@
                     <div class="icon">
                         <i class="fa fa-tasks" aria-hidden="true"></i>
                     </div>
-                    <div class="title">Dashboard</div>
+                    <div class="title">Inicio</div>
                 </a>
             </li>
             @if (SignInManager.IsSignedIn(User))
             {
-            <li class="dropdown @ViewBag.RequestsActive">
-                <a asp-area="" asp-controller="Requests" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
+            <li class="@ViewBag.RequestsActive">
+                <a asp-area="" asp-controller="Requests" asp-action="Index">
                     <div class="icon">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </div>
-                    <div class="title">Requests</div>
+                    <div class="title">Solicitudes</div>
                 </a>
-                <div class="dropdown-menu">
-                    <ul>
-                        @* Use this li class if a section is needed *@
-                        @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
-                        @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
-                        {
-                        <li><a asp-controller="Requests" asp-action="ShowAllRequests">Mostrar todos</a></li>
-                        }
-                        <li><a asp-controller="Requests" asp-action="Index"> Crear nueva solicitud</a></li>
-                    </ul>
-                </div>
             </li>
             }
 
@@ -72,14 +61,14 @@
                     <div class="icon">
                         <i class="fa fa-medkit" aria-hidden="true"></i>
                     </div>
-                    <div class="title">Medicaments</div>
+                    <div class="title">Medicamentos</div>
                 </a>
                 <div class="dropdown-menu">
                     <ul>
                         @* Use this li class if a section is needed *@
                         @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
-                        <li><a asp-controller="Medicaments" asp-action="Index">Mostrar todos</a></li>
-                        <li><a asp-controller= "Medicaments" asp-action= "Create" > Crear nuevo</a></li>
+                        <li><a asp-controller="Medicaments" asp-action="Index">Administrar Medicamentos</a></li>
+                        <li><a asp-controller= "Medicaments" asp-action= "Create" > Crear Medicamento </a></li>
                         <li><a asp-controller="MedicamentOut" asp-action="Index"> Salida de Medicamentos</a></li>
                     </ul>
                 </div>
@@ -98,21 +87,29 @@
                     <ul>
                         @* Use this li class if a section is needed *@
                         @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
-                        <li><a asp-controller="Stocks" asp-action="Index">Mostrar todos</a></li>
-                        <li><a asp-controller="Stocks" asp-action="Create">Crear nuevos</a></li>
+                        <li><a asp-controller="Stocks" asp-action="Index">Administrar Stocks</a></li>
+                        <li><a asp-controller="Stocks" asp-action="Create">Crear Stock</a></li>
                     </ul>
                 </div>
             </li>
             }
             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                <li class="@ViewBag.UsersActive">
-                    <a asp-area="" asp-controller="Users" asp-action="Index">
+                <li class="dropdown @ViewBag.UsersActive">
+                    <a asp-area="" asp-controller="Users" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
                         <div class="icon">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </div>
-                        <div class="title">Users</div>
+                        <div class="title">Usuarios</div>
                     </a>
+                    <div class="dropdown-menu">
+                        <ul>
+                            @* Use this li class if a section is needed *@
+                            @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
+                            <li><a asp-controller="Users" asp-action="Index">Administrar Usuarios</a></li>
+                            <li><a asp-controller="Locations" asp-action="Index">Administrar Ubicaciones </a></li>
+                        </ul>
+                    </div>
                 </li>
             }
         </ul>

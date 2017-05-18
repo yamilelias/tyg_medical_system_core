@@ -98,17 +98,16 @@ namespace system_core_with_authentication.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Profile(string id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
+            if (id == null)
+            {
+                return NotFound();
+            }
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
-            //if (applicationUser == null)
-            //{
-            //    return NotFound();
-            //}
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
 
             return View(applicationUser);
         }
@@ -152,9 +151,9 @@ namespace system_core_with_authentication.Controllers
 
                 _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Users");
             }
-            return View(applicationUser);
+            return RedirectToAction("Index", "Users");
         }
 
         public async Task<List<Users>> EditAjax(string id)
@@ -190,14 +189,6 @@ namespace system_core_with_authentication.Controllers
             });
 
             return user;
-
-            /*
-             * LEGACY CODE - KEPT FOR FUTURE REFERENCES
-             */
-
-            //List<ApplicationUser> user = new List<ApplicationUser>();
-            //var appUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            //user.Add(appUser);
         }
 
         [HttpPost]
@@ -261,71 +252,125 @@ namespace system_core_with_authentication.Controllers
         }
 
 
-        //// GET: Users/Edit/5
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //    var applicationUser = await _context.ApplicationUser
-        //        .SingleOrDefaultAsync(m => m.Id == id);
+        // GET: Users/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            var applicationUser = await _context.ApplicationUser
+                .SingleOrDefaultAsync(m => m.Id == id);
 
-        //    return View(applicationUser);
-        //}
+            EditUserViewModel vm = new EditUserViewModel();
+            vm.appUser = applicationUser;
 
-        // POST: Users/Edit/5
+            var x = _context.Roles.Select(m => new {m.Id, m.Name}).ToList();
+            var y = _context.UserRoles.Where(m => m.UserId == applicationUser.Id).Select(n => n.RoleId).FirstOrDefault();
+
+
+            foreach (var item in x)
+            {
+                if (y == item.Id)
+                    vm.role = item.Name;
+            }
+
+            return View(vm);
+        }
+
+        //POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(string id, [Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
-        //{
-        //    if (id != applicationUser.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        //[Bind("Name,LastName,SecondLastName,Telephone,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount,ImageFile")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, string name, string lastName, string secondLastName, string telephone, string email, string userName, IFormFile imageFile, EditUserViewModel vm)
+        {
+            //if (id != userNew.Id)
+            //{
+            //    return NotFound();
+            //}
 
-        //    if (ModelState.IsValid)
-        //    {
+            ApplicationUser userNew = _context.ApplicationUser.Where(m => m.Id == id).FirstOrDefault();
 
-                
-        //        try
-        //        {
-        //            /*
-        //            if (imageFile != null)
-        //            {
-        //                string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
-        //                Directory.CreateDirectory(Path.Combine(uploadPath));
+            userNew.Name = name;
+            userNew.LastName = lastName;
+            userNew.SecondLastName = secondLastName;
+            userNew.Telephone = telephone;
+            userNew.Email = email;
+            userNew.UserName = userName;
 
-        //                string fileName = Path.GetFileName(imageFile.FileName);
+            if (ModelState.IsValid)
+            {
+                try
+                {
 
-        //                using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
-        //                {
-        //                    await imageFile.CopyToAsync(fs);
-        //                }
+                    if (imageFile != null)
+                    {
+                        string uploadPath = Path.Combine(_environment.WebRootPath, "users", "uploads");
+                        Directory.CreateDirectory(Path.Combine(uploadPath));
 
-        //                applicationUser.UserImage = fileName;
+                        string fileName = Path.GetFileName(imageFile.FileName);
 
-        //            } */
+                        using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fs);
+                        }
 
-        //            _context.Update(applicationUser);
-        //            await _context.SaveChangesAsync();
+                       userNew.UserImage = fileName;
 
-                    
-        //        } 
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ApplicationUserExists(applicationUser.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
+                    }
+                    else
+                    {
+                        ApplicationUser userWithImage = new ApplicationUser();
+                        userWithImage = userNew;
+                        userWithImage.UserImage = _context.ApplicationUser.Where(a => a.Id == userNew.Id).Select(a => a.UserImage).FirstOrDefault();
+                    }
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(applicationUser);
-        //}
+                    var oldRole = _context.UserRoles.Where(m => m.UserId.Equals(userNew.Id)).FirstOrDefault();
+
+                    var newRole = _context.Roles.Where(m => m.Name.Equals(vm.role)).Select(m => m.Id).FirstOrDefault();
+
+                    var oldRoleName = _context.Roles.Where(m => m.Id.Equals(oldRole.RoleId)).Select(m => m.Name).FirstOrDefault();
+
+                    await _userManager.RemoveFromRoleAsync(userNew, oldRoleName);
+                    await _userManager.AddToRoleAsync(userNew, vm.role);
+
+                    _context.Update(userNew);
+                    await _context.SaveChangesAsync();
+ 
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                   
+                    foreach (var entry in ex.Entries)
+                    {
+                        if (entry.Entity is ApplicationUser)
+                        {
+                            var dbEntity = _context.ApplicationUser.AsNoTracking().Single(p => p.Id == ((ApplicationUser)entry.Entity).Id);
+                            var dbEntry = _context.Entry(dbEntity);
+
+                            foreach (var property in entry.Metadata.GetProperties())
+                            {
+
+                                var proposedValue = entry.Property(property.Name).CurrentValue;
+                                var originalValue = entry.Property(property.Name).OriginalValue;
+                                var databaseValue = dbEntry.Property(property.Name).CurrentValue;
+
+                                entry.Property(property.Name).OriginalValue = dbEntry.Property(property.Name).CurrentValue;
+
+                            }
+
+                        } else
+                        {
+                            throw new NotSupportedException("Don't know how to handle concurrency conflicts for " + entry.Metadata.Name);
+                        }
+                    }
+
+                    _context.SaveChanges();
+
+                }
+
+                return RedirectToAction("Index");
+            }
+            return View(userNew);
+        }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -334,9 +379,9 @@ namespace system_core_with_authentication.Controllers
             {
                 return NotFound();
             }
-
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
+
             if (applicationUser == null)
             {
                 return NotFound();
@@ -350,8 +395,18 @@ namespace system_core_with_authentication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+
             var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+
+            var schedules = _context.LocationSchedules.Where(m => m.User.Email.Equals(applicationUser.Email)).ToList();
+
+            foreach (var item in schedules)
+            {
+                _context.LocationSchedules.Remove(item);
+            }
+
             _context.ApplicationUser.Remove(applicationUser);
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }

@@ -13,9 +13,6 @@ using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
 using Microsoft.AspNetCore.Identity;
-using Treshold_Mail.Scheduler;
-using Hangfire;
-using Treshold_Mail.Mail;
 
 namespace system_core_with_authentication
 {
@@ -49,17 +46,10 @@ namespace system_core_with_authentication
                 */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            /*services.AddHangfire(options =>
-                        options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));*/
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            
-
-            services.AddTransient<IMail, MailService>();
-
 
             services.AddMvc();
 
@@ -86,7 +76,7 @@ namespace system_core_with_authentication
             }
 
             app.UseStaticFiles();
-            //app.UseHangfireServer();
+
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
@@ -100,12 +90,12 @@ namespace system_core_with_authentication
 
             context.Database.EnsureCreated();
 
-            //DbInitializer.Initialize(context);
 
-            if(context.Roles.ToList().Count==0)
-                await CreateRoles(serviceProvider);
-            //HangfireScheduler.Init(app);
 
+           // DbInitializer.Initialize(context);
+          //await CreateRoles(serviceProvider);
+
+            
         }
 
         /*
@@ -117,12 +107,13 @@ namespace system_core_with_authentication
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] rolesNames = { "Admin", "Supervisor", "User" };
+            string[] rolesNames = { "Admin", "Supervisor", "Supervisor de RH", "Supervisor de Inventario" ,"Medico", "Enfermero" };
             IdentityResult result;
 
             foreach (var rolesName in rolesNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(rolesName);
+                int id = 1;
                 if (!roleExist)
                 {
                     result = await roleManager.CreateAsync(new IdentityRole(rolesName));
@@ -134,17 +125,16 @@ namespace system_core_with_authentication
              * WILL BE ASSIGNED THE ADMIN ROLE
              */
 
-            var user = new ApplicationUser
-            {
-                Id = "1",
-                UserName = "asti@asti.com",
-                Email = "asti@asti.com"
-            };
+             var user = new ApplicationUser
+                {
+                    Id = "1",
+                    UserName = "asti@asti.com",
+                    Email = "asti@asti.com"
+                };
 
-            var result2 = await userManager.CreateAsync(user, "Asti2017.");
-            await userManager.AddToRoleAsync(user, "Admin");
-
-    }
+             var result2 = await userManager.CreateAsync(user, "Asti2017.");
+             await userManager.AddToRoleAsync(user, "Admin");
+        }
 
     }
 }

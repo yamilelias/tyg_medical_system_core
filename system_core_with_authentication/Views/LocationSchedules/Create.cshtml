@@ -1,94 +1,113 @@
 @model system_core_with_authentication.Models.LocationSchedule
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear horario";
 }
 
-<h2>Create</h2>
-
-<form asp-action="Create">
-    <div class="form-horizontal">
-        <h4>LocationSchedule</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div>
-            <label asp-for="User"></label>
-            <div>
-                <select asp-for="User" asp-items="ViewBag.User">                    
-                </select>
-            </div>
-        </div>
-
-        <div>
-            <label asp-for="Location"></label>
-            <div>
-                <select asp-for="Location" asp-items="ViewBag.Location"></select>
-            </div>
-        </div>
+<div class="container col-sm-6 col-md-6 col-lg-6 pull-right" style="width:1000px;">
+    <div class="card card-banner card-header">
+        <div class="col-sm-10">
 
 
-        <div class="form-group">
-            <label asp-for="Monday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Monday" class="form-control" />
-                <span asp-validation-for="Monday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Tuesday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Tuesday" class="form-control" />
-                <span asp-validation-for="Tuesday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Wednesday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Wednesday" class="form-control" />
-                <span asp-validation-for="Wednesday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Thursday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Thursday" class="form-control" />
-                <span asp-validation-for="Thursday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Friday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Friday" class="form-control" />
-                <span asp-validation-for="Friday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Saturday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Saturday" class="form-control" />
-                <span asp-validation-for="Saturday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Sunday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Sunday" class="form-control" />
-                <span asp-validation-for="Sunday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <form asp-action="Create" asp-controller="LocationSchedules">
+                <div class="form-horizontal">
+                    <h4>Horario</h4>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="User" class="col-md-2 control-label">
+                            <b> Usuario </b>
+
+                        </label>
+                        <div class="col-md-10">
+                            <select asp-for="User" asp-items="ViewBag.User" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+                        <label asp-for="Location" class="col-md-2 control-label">
+                            <b> Ubicaci&oacute;n </b>
+                        </label>
+                        <div class="col-md-10">
+                            <select asp-for="Location" asp-items="ViewBag.Location" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+                        <label asp-for="Monday" class="col-md-2 control-label"> Lunes </label>
+                        <div class="col-md-10">
+                            <input asp-for="Monday" class="form-control" />
+                            <span asp-validation-for="Monday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Tuesday" class="col-md-2 control-label"> Martes </label>
+                        <div class="col-md-10">
+                            <input asp-for="Tuesday" class="form-control" />
+                            <span asp-validation-for="Tuesday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Wednesday" class="col-md-2 control-label"> Mi&eacute;rcoles</label>
+                        <div class="col-md-10">
+                            <input asp-for="Wednesday" class="form-control" />
+                            <span asp-validation-for="Wednesday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Thursday" class="col-md-2 control-label"> Jueves</label>
+                        <div class="col-md-10">
+                            <input asp-for="Thursday" class="form-control" />
+                            <span asp-validation-for="Thursday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Friday" class="col-md-2 control-label"> Viernes </label>
+                        <div class="col-md-10">
+                            <input asp-for="Friday" class="form-control" />
+                            <span asp-validation-for="Friday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Saturday" class="col-md-2 control-label"> S&aacute;bado</label>
+                        <div class="col-md-10">
+                            <input asp-for="Saturday" class="form-control" />
+                            <span asp-validation-for="Saturday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Sunday" class="col-md-2 control-label"> Domingo </label>
+                        <div class="col-md-10">
+                            <input asp-for="Sunday" class="form-control" />
+                            <span asp-validation-for="Sunday" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Crear" class="btn btn-success btn-xs" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
             </div>
         </div>
     </div>
-</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+            <div class="form-actions no-color" style="max-width:300px;">
+                <br />
+                <a action="action" onclick="history.go(-1);" value="Regresar" class="btn btn-info btn-xs pull-right">Regresar</a>
+            </div>
+
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }

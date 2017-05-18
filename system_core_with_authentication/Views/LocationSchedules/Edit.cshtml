@@ -1,78 +1,113 @@
-@model system_core_with_authentication.Models.LocationSchedule
+@model system_core_with_authentication.Models.ViewModels.EditLocationScheduleViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Horario";
 }
 
-<h2>Edit</h2>
+<div class="container col-sm-6 col-md-6 col-lg-6 pull-right" style="width:1000px;">
+    <div class="card card-banner card-header">
+        <div class="col-sm-10">
 
-<form asp-action="Edit">
-    <div class="form-horizontal">
-        <h4>LocationSchedule</h4>
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="Monday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Monday" class="form-control" />
-                <span asp-validation-for="Monday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Tuesday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Tuesday" class="form-control" />
-                <span asp-validation-for="Tuesday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Wednesday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Wednesday" class="form-control" />
-                <span asp-validation-for="Wednesday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Thursday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Thursday" class="form-control" />
-                <span asp-validation-for="Thursday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Friday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Friday" class="form-control" />
-                <span asp-validation-for="Friday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Saturday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Saturday" class="form-control" />
-                <span asp-validation-for="Saturday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Sunday" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Sunday" class="form-control" />
-                <span asp-validation-for="Sunday" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <form asp-action="Edit">
+                <div class="form-horizontal">
+
+                    <div>
+                        <br />
+                        <label for="Location">Ubicaci&oacute;n</label> 
+                        <div> <br />
+                            <select name="Location">
+
+                                @foreach (string location in Model.Locations)
+                                {
+                                    if (location.Equals(Model.ls.Location.Name))
+                                    {
+                                        <option selected> @location </option>
+                                    }
+                                    else
+                                    {
+                                        <option> @location </option>
+                                    }
+
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" for="Id" />
+
+                    <div class="form-group">
+                        <label for="Monday" class="col-md-2 control-label"> Lunes </label>
+                        <div class="col-md-10">
+                            <input name="Monday" for="Monday" class="form-control" value="@Model.ls.Monday" />
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Tuesday" class="col-md-2 control-label"> Martes</label>
+                        <div class="col-md-10">
+                            <input name="Tuesday" for="Tuesday" class="form-control" value="@Model.ls.Tuesday" />
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Wednesday" class="col-md-2 control-label"> Mi&eacute;rcoles </label>
+                        <div class="col-md-10">
+                            <input name="Wednesday" for="Wednesday" class="form-control" value="@Model.ls.Wednesday"/>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Thursday" class="col-md-2 control-label"> Jueves </label>
+                        <div class="col-md-10">
+                            <input name="Thursday" for="Thursday" class="form-control" value="@Model.ls.Thursday"/>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Friday" class="col-md-2 control-label"> Viernes </label>
+                        <div class="col-md-10">
+                            <input name="Friday" for="Friday" class="form-control" value="@Model.ls.Friday"/>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Saturday" class="col-md-2 control-label"> S&aacute;bado </label>
+                        <div class="col-md-10">
+                            <input name="Saturday" for="Saturday" class="form-control" value="@Model.ls.Saturday"/>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Sunday" class="col-md-2 control-label"> Domingo </label>
+                        <div class="col-md-10">
+                            <input name="Sunday"  for="Sunday" class="form-control" value="@Model.ls.Sunday" />
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Guardar" class="btn btn-success btn-xs" />
+                            <a asp-controller="LocationSchedules" asp-action="Delete" asp-route-id="@Model.ls.Id" class="btn btn-danger btn-xs" style="margin-left:30px;"> Borrar </a>
+                        </div>
+                    </div>
+
+                    <br />
+
+                </div>
+            </form>
+
             </div>
         </div>
     </div>
-</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+   <div class="form-actions no-color" style="max-width:300px;">
+    <input action="action" onclick="history.go(-1);" type="button" value="Regresar" class="btn btn-info btn-xs pull-right" />
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+            @section Scripts {
+                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            }
