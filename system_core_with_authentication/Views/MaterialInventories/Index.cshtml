@@ -1,0 +1,53 @@
+@model IEnumerable<system_core_with_authentication.Models.MaterialInventory>
+
+@{
+    ViewData["Title"] = "Inventario de Material";
+}
+<div class="container">
+    <div class="row">
+        <a style="margin-left:40px;" asp-action="Create" class="btn btn-success btn-xs">Nuevo inventario</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-banner card-table">
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    Descripci&#243;n
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Serial)
+                </th>
+                <th>
+                    Fecha de mantenimeinto
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Serial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintananceDate)
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-success btn-sm" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" class="btn btn-primary btn-sm" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" class="btn btn-danger btn-sm"asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+        </div>
+    </div>
+</div>

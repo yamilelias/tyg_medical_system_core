@@ -1,0 +1,49 @@
+@model system_core_with_authentication.Models.MaterialInventory
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card card-body">
+                <h3>@Html.DisplayFor(model => model.Description)</h3>
+                <hr />  
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Serial)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Serial)
+                        </dd>
+                        <dt>
+                            Nota
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Note)
+                        </dd>
+                        <dt>
+                            Fecha mantenimiento
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.MaintananceDate)
+                        </dd>
+                        <dt>
+                            Imagen
+                        </dt>
+                        <dd>
+                            <img src="@Url.Content("~/images/uploads/"+Model.ImageName)" alt="Image" style="height:200px" />
+                        </dd>
+                    </dl>
+                    <div class="col-md-offset-2">
+                        <a asp-action="Edit" class="btn btn-success" asp-route-id="@Model.Id">Editar</a>
+                        <a asp-action="Index" class="btn btn-default">Volver al listado</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
