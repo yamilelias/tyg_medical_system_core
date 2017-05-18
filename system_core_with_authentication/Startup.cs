@@ -13,6 +13,9 @@ using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
 using system_core_with_authentication.Services;
 using Microsoft.AspNetCore.Identity;
+using Treshold_Mail.Scheduler;
+using Hangfire;
+using Treshold_Mail.Mail;
 
 namespace system_core_with_authentication
 {
@@ -51,6 +54,7 @@ namespace system_core_with_authentication
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddTransient<IMail, MailService>();
             services.AddMvc();
 
             // Add application services.
@@ -92,10 +96,11 @@ namespace system_core_with_authentication
 
 
 
-           // DbInitializer.Initialize(context);
-          //await CreateRoles(serviceProvider);
+            // DbInitializer.Initialize(context);
+            if (context.Roles.ToList().Count == 0)
+                await CreateRoles(serviceProvider);
 
-            
+
         }
 
         /*

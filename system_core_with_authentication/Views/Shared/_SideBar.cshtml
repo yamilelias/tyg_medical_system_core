@@ -44,14 +44,25 @@
             </li>
             @if (SignInManager.IsSignedIn(User))
             {
-            <li class="@ViewBag.RequestsActive">
-                <a asp-area="" asp-controller="Requests" asp-action="Index">
-                    <div class="icon">
-                        <i class="fa fa-list" aria-hidden="true"></i>
+                <li class="dropdown @ViewBag.RequestsActive">
+                    <a asp-area="" asp-controller="Requests" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown">
+                        <div class="icon">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                        </div>
+                        <div class="title">Solicitudes</div>
+                    </a>
+                    <div class="dropdown-menu">
+                        <ul>
+                            @* Use this li class if a section is needed *@
+                            @*<li class="section"><i class="fa fa-file-o" aria-hidden="true"></i> Admin</li>*@
+                            @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                            {
+                                <li><a asp-controller="Requests" asp-action="ShowAllRequests">Mostrar todos</a></li>
+                            }
+                            <li><a asp-controller="Requests" asp-action="Index"> Crear nueva solicitud</a></li>
+                        </ul>
                     </div>
-                    <div class="title">Solicitudes</div>
-                </a>
-            </li>
+                </li>
             }
 
             @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Supervisor")))
