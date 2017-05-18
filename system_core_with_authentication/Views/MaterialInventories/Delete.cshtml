@@ -5,51 +5,53 @@
 }
 <div class="row">
     <div class="col-xs-12">
-        <div class="card card-banner card-table">
-            <h3>Seguro que quiere eleminar del inventario?</h3>
-            <div>
-                <hr />
-                <dl class="dl-horizontal">
-                    <input type="hidden" asp-for="Id" />
-                    <dt>
-                        Descripci&#243;n
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Serial)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Serial)
-                    </dd>
-                    <dt>
-                        Nota
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Note)
-                    </dd>
-                    <dt>
-                        Fecha mantenimiento
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.MaintananceDate)
-                    </dd>
-                    <dt>
-                        Imagen
-                    </dt>
-                    <dd>
-                        <img src="@Url.Content("~/images/uploads/"+Model.ImageName)" alt="Image" style="height:300px" />
-                    </dd>
-                </dl>
+        <div class="card card-mini">
+            <div class="card card-body">
+                <h3>&#191;Seguro que quiere eliminar del inventario?</h3>
+                <div>
+                    <hr />
+                    <dl class="dl-horizontal">
+                        <input type="hidden" asp-for="Id" />
+                        <dt>
+                            Descripci&#243;n
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Serial)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Serial)
+                        </dd>
+                        <dt>
+                            Nota
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Note)
+                        </dd>
+                        <dt>
+                            Fecha mantenimiento
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.MaintananceDate)
+                        </dd>
+                        <dt>
+                            Imagen
+                        </dt>
+                        <dd>
+                            <img src="@Url.Content("~/images/uploads/"+Model.ImageName)" alt="Image" style="height:200px" />
+                        </dd>
+                    </dl>
 
-                <form asp-action="Delete">
-                    <div class="form-actions no-color">
-                        <input type="submit" value="Borrar" class="btn btn-danger btn-sm" /> |
-                        <a asp-action="Index">Volver al listado</a>
-                    </div>
-                </form>
+                    <form asp-action="Delete">
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Borrar" class="btn btn-danger btn-sm" /> |
+                            <a asp-action="Index" class="btn btn-default">Volver al listado</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            </div>
-</div>
-</div>
+        </div>
+    </div>
+    </div>

@@ -45,6 +45,7 @@ namespace Treshold_Mail.Mail
 
             emails.ForEach(e =>
             {
+                Debug.WriteLine($"Name: {e.Name} \nLast name: {e.LastName} \nEmail:{e.Email}");
                 message.To.Add(new MailboxAddress($"{e.Name} {e.LastName}", $"{e.Email}"));
             });
             message.Subject = subject;
@@ -52,7 +53,8 @@ namespace Treshold_Mail.Mail
             {
                 Text = body
             };
-            SendEmail(message);
+            if (emails.Count > 0)
+                SendEmail(message);
         }
 
         public void SendToSupervisor(string body, string subject)
@@ -72,7 +74,8 @@ namespace Treshold_Mail.Mail
             {
                 Text = body
             };
-            SendEmail(message);
+            if(emails.Count > 0)
+                SendEmail(message);
         }
 
         private void SendEmail(MimeMessage message)

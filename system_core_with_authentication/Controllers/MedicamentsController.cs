@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
-    [Authorize(Roles = "Admin,Supervisor")]
+    [Authorize(Roles = "Admin, Supervisor")]
     public class MedicamentsController : Controller
     {
         private readonly ApplicationDbContext _context;

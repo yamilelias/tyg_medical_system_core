@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models.Alerts;
 using system_core_with_authentication.Scheduler;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+
+    [Authorize(Roles = "Admin, Supervisor")]
     public class AlertSettingsController : Controller
     {
         private readonly ApplicationDbContext _context;

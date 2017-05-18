@@ -51,8 +51,8 @@ namespace system_core_with_authentication
                 */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddHangfire(options =>
-            //            options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfire(options =>
+                        options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -89,7 +89,7 @@ namespace system_core_with_authentication
             }
 
             app.UseStaticFiles();
-            //app.UseHangfireServer();
+            app.UseHangfireServer();
             app.UseIdentity();
             app.UseDeveloperExceptionPage();
 
@@ -107,7 +107,7 @@ namespace system_core_with_authentication
             DbInitializer.Initialize(context);
 
             await CreateRoles(serviceProvider);
-            //HangfireScheduler.Init(app);
+            HangfireScheduler.Init(app);
 
         }
 

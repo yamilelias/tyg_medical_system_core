@@ -46,8 +46,15 @@ namespace Treshold_Mail.Scheduler
 
         public static void CheckMinimumStock()
         {
-            var scheduler = _app.ApplicationServices.GetRequiredService<IScheduler>();
-            scheduler.CheckMinimumStock();
+            try
+            {
+                var scheduler = _app.ApplicationServices.GetRequiredService<IScheduler>();
+                scheduler.CheckMinimumStock();
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            
         }
     }
 }

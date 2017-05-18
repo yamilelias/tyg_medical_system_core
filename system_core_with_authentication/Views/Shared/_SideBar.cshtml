@@ -96,6 +96,17 @@
             @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
                 <li class="@ViewBag.RequestsActive">
+                    <a asp-area="" asp-controller="MaterialInventories" asp-action="Index">
+                        <div class="icon">
+                            <i class="fa fa-cubes" aria-hidden="true"></i>
+                        </div>
+                        <div class="title">Inventario</div>
+                    </a>
+                </li>
+            }
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <li class="@ViewBag.RequestsActive">
                     <a asp-area="" asp-controller="Users" asp-action="Index">
                         <div class="icon">
                             <i class="fa fa-user" aria-hidden="true"></i>
@@ -104,15 +115,20 @@
                     </a>
                 </li>
             }
+
+
         </ul>
     </div>
     <div class="sidebar-footer">
         <ul class="menu">
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
             <li>
-                <a href="/" class="dropdown-toggle" data-toggle="dropdown">
+                <a asp-area="" asp-controller="AlertSettings" asp-action="Index" class="dropdown-toggle" >
                     <i class="fa fa-cogs" aria-hidden="true"></i>
                 </a>
             </li>
+}
             <li><a href="#"><span class="flag-icon flag-icon-th flag-icon-squared"></span></a></li>
         </ul>
     </div>
