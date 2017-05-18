@@ -209,7 +209,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_ShiftChange(ShiftChange shiftChange)
         {
-            _context.Update(shiftChange);
+            var sc = _context.ShiftChange.Where(a => a.Id == shiftChange.Id).FirstOrDefault();
+            sc.Solved = shiftChange.Solved;
+            _context.Update(sc);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -261,7 +263,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_BreastFeeding(BreastFeeding breastFeeding)
         {
-            _context.Update(breastFeeding);
+            var bf = _context.BreastFeeding.Where(a => a.Id == breastFeeding.Id).FirstOrDefault();
+            bf.Solved = breastFeeding.Solved;
+            _context.Update(bf);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -313,7 +317,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_Permit(Permit permit)
         {
-            _context.Update(permit);
+            var p = _context.Permit.Where(a => a.Id == permit.Id).FirstOrDefault();
+            p.Solved = permit.Solved;
+            _context.Update(p);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -364,7 +370,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_AllowanceWithoutPayment(AllowanceWithoutPayment allowanceWithoutPayment)
         {
-            _context.Update(allowanceWithoutPayment);
+            var awp = _context.AllowanceWithoutPayment.Where(a => a.Id == allowanceWithoutPayment.Id).FirstOrDefault();
+            awp.Solved = allowanceWithoutPayment.Solved;
+            _context.Update(awp);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -419,7 +427,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_Vacations (Vacations vacations)
         {
-            _context.Update(vacations);
+            var v = _context.Vacations.Where(a => a.Id == vacations.Id).FirstOrDefault();
+            v.Solved = vacations.Solved;
+            _context.Update(v);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -473,7 +483,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_Maternity_Leave(Maternity_Leave maternity_Leave)
         {
-            _context.Update(maternity_Leave);
+            var m = _context.Maternity_Leave.Where(a => a.Id == maternity_Leave.Id).FirstOrDefault();
+            m.Solved = maternity_Leave.Solved;
+            _context.Update(m);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
@@ -524,7 +536,9 @@ namespace system_core_with_authentication.Controllers
         [HttpPost]
         public ActionResult ChangeSolved_Viatical(Viatical viatical)
         {
-            _context.Update(viatical);
+            var v = _context.Viatical.Where(a => a.Id == viatical.Id).FirstOrDefault();
+            v.Solved = viatical.Solved;
+            _context.Update(v);
             _context.SaveChanges();
             return RedirectToAction("ShowAllRequests");
         }
