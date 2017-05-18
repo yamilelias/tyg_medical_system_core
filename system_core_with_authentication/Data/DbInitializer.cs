@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using system_core_with_authentication.Models;
+using system_core_with_authentication.Models.Alerts;
 
 namespace system_core_with_authentication.Data
 {
@@ -26,6 +27,17 @@ namespace system_core_with_authentication.Data
             {
                 return;   // DB has been seeded
             }
+
+            var alerts = new AlertSettings()
+            {
+                EmailNotifications = true,
+                SmsNotifications = true,
+                NotificationReminderPeriodPOne = Periods.Cada_dos_días,
+                NotificationReminderPeriodPTwo = Periods.Cada_dos_días,
+                SendToAdmins = true,
+                SendToSupervisors = true
+            };
+            context.AlertSettings.Add(alerts);
 
             context.SaveChanges();
         }
