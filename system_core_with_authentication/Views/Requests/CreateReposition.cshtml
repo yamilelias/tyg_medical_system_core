@@ -1,4 +1,4 @@
-﻿@model IEnumerable<system_core_with_authentication.Models.Medicament>
+﻿@model system_core_with_authentication.Models.ViewModels.MedicamentsWithUserLocationsViewModel
 
 @{
     ViewData["Title"] = "Medicament Request - Reposition";
@@ -23,6 +23,10 @@
         </div>
         </div>  
     </div>
+    <div class="form-group">
+</div>
+
+
 
             <div class="row">
                 <div class="col-xs-12">
@@ -51,7 +55,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.MedicamentsForCreateReposition)
                                     {
                                         <tr>
                                             <td>
@@ -93,11 +97,26 @@
                         </div>
                         <div class="card card-body no-padding">
                             <textarea class="form-control" rows="5" id="notes"></textarea>
+                            <label class="col-md-2 control-label">Selecciona Lugar de Trabajo: </label>
+                            <div class="col-md-5">
+
+                                <select name="locationuser" id="locationuser">
+
+                                    @foreach (var location in Model.UserLocations)
+                                    {
+                                            <option value="@location"> @location </option>
+
+                                    }
+                                </select>
+
+                            </div>
                             <div id="lista"></div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            
 
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">

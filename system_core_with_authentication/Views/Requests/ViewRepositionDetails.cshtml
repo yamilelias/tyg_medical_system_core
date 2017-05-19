@@ -10,7 +10,11 @@
         <div class="card card-mini">
             <div class="card-header">
                 <div class="card-title">
-                    Usuario: @Html.DisplayFor(model => Model.RsList.Request.User)
+                    <p><b>Usuario:</b> @Html.DisplayFor(model => Model.RsList.Request.User)</p>
+                    @if (Model.RsList.Location.Name != null)
+                    {
+                        <p><b>Lugar de trabajo: </b>@Html.DisplayFor(model => Model.RsList.Location.Name)</p>
+                    }
                 </div>
             </div>
             <div class="card card-body no-padding">
@@ -70,13 +74,13 @@
 @if ((User.IsInRole("Admin")) || (User.IsInRole("Supervisor")))
 {
 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-    <a asp-action="ShowAllRequests" class="btn btn-info btn-xs">Back to List</a>
+    <a asp-action="ShowAllRequests" class="btn btn-info btn-xs">Regresar a lista de solicitudes</a>
 </div>
 }
-else if (User.IsInRole("User"))
+else if (User.IsInRole("Medico"))
 {
     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-info btn-xs">Back to List</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-info btn-xs">Regresar a solicitudes</a>
     </div>
 
 }

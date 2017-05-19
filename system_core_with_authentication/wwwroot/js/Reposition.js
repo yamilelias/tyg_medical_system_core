@@ -1,6 +1,7 @@
 ﻿var list = JSON.parse(getCookie("listaReposicion"));
 var username;
 var notes;
+var locationUser;
 if (list.length > 0) {
     displayList();
 }
@@ -112,8 +113,10 @@ function displayList() {
 function sendRepositionList() {
     username = document.getElementById("username").value;
     notes = document.getElementById("notes").value;
+    var i = document.getElementById("locationuser").selectedIndex;
+    locationUser = document.getElementById("locationuser").options[i].text;
     var jsonListstring = JSON.stringify(list);
-    var postDataList = { values: jsonListstring,username,notes };
+    var postDataList = { values: jsonListstring,username,notes,locationUser };
 
     //POST
     $.ajax({

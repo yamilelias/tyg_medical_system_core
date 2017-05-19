@@ -9,23 +9,26 @@ using system_core_with_authentication.Models;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace system_core_with_authentication.Controllers
 {
     public class RequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RequestsController(ApplicationDbContext context)
+        public RequestsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-        [Authorize(Roles = "Admin,Supervisor,User")]
+        [Authorize(Roles = "Admin,Supervisor,Supervisor de RH,Supervisor de Inventario,Medico")]
         public ActionResult CreateReposition(string searchString)
         {
             var medicaments = _context.Medicaments.Select(m => m);
@@ -34,10 +37,24 @@ namespace system_core_with_authentication.Controllers
             {
                 medicaments = medicaments.Where(m => m.Description.Contains(searchString));
             }
-            return View(medicaments.ToList());
+
+            MedicamentsWithUserLocationsViewModel vm = new MedicamentsWithUserLocationsViewModel();
+            vm.MedicamentsForCreateReposition = medicaments.ToList();
+            var actualUserId = _userManager.GetUserId(User);
+            var x = _context.LocationSchedules.Include(b=>b.Location).Where(a => a.User.Id.Equals(actualUserId)).ToList().Select(a=>a.Location).Distinct();
+            List<string> loc = new List<string>();
+            foreach(var item in x)
+            {
+                loc.Add(item.Name);
+                
+            }
+            vm.UserLocations=loc;
+
+            return View(vm);
         }
-        [Authorize(Roles = "Admin,Supervisor,User")]
-        public ActionResult SaveReposition(string values, string username, string notes)
+
+        [Authorize(Roles = "Admin,Supervisor,Supervisor de RH,Supervisor de Inventario,Medico")]
+        public ActionResult SaveReposition(string values, string username, string notes, string locationUser)
         {
             Request _request = new Request();
             _request.User = username;
@@ -45,6 +62,7 @@ namespace system_core_with_authentication.Controllers
             _request.Date = DateTime.UtcNow;
             RepositionStock _repositionStock = new RepositionStock();
             _repositionStock.Request = _request;
+            _repositionStock.Location = _context.Locations.Where(a => a.Name.Equals(locationUser)).FirstOrDefault();
 
             List<RepositionStockDetailed> medicamentsList = new List<RepositionStockDetailed>();
 
@@ -124,6 +142,7 @@ namespace system_core_with_authentication.Controllers
         public ActionResult ViewRepositionDetails(int RepositionStockId)
         {
             var x = _context.RepositionStocks.Include(r => r.Request)
+                                             .Include(r => r.Location)
                                              .Include(r => r.RepositionStockDetailed)
                                              .ThenInclude(m => m.Medicament)
                                              .Where(i => i.Id == RepositionStockId)
@@ -148,6 +167,7 @@ namespace system_core_with_authentication.Controllers
         public ActionResult ChangeSolved(int? id)
         {
             var x = _context.RepositionStocks.Include(r => r.Request)
+                                             .Include(r => r.Location)
                                              .Include(r => r.RepositionStockDetailed)
                                              .ThenInclude(m => m.Medicament)
                                              .Where(m => m.Id == id)
@@ -176,9 +196,13 @@ namespace system_core_with_authentication.Controllers
         {
             return View();
         }
+        [HttpPost]
         public ActionResult Create_r_Shift_Change(string username, r_Shift_Change_ViewModel rscvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rscvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid&& validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -198,7 +222,7 @@ namespace system_core_with_authentication.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(rscvm);
+            return View("r_Shift_Change", rscvm);
         }
         public ActionResult ViewShiftChangeDetails(int ShiftChangeId)
         {
@@ -232,7 +256,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_BreastFeeding(string username, r_BreastFeeding_ViewModel rbfvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rbfvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -252,7 +279,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rbfvm);
+            return View("r_BreastFeeding", rbfvm);
         }
         public ActionResult ViewBreastFeedingDetails(int BreastFeedingId)
         {
@@ -286,7 +313,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_Permit(string username, r_Permit_ViewModel rpvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rpvm.Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -306,7 +336,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rpvm);
+            return View("r_Permit", rpvm);
         }
         public ActionResult ViewPermitDetails(int PermitId)
         {
@@ -340,7 +370,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_Allowance_Without_Payment(string username, r_Allowance_Without_Payment_ViewModel rawpvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rawpvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -359,7 +392,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rawpvm);
+            return View("r_Allowance_Without_Payment", rawpvm);
         }
         public ActionResult ViewAllowanceWithoutPaymentDetails(int AllowanceWithoutPaymentId)
         {
@@ -393,7 +426,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_Vacations(string username, r_Vacations_ViewModel rvvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rvvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -416,7 +452,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rvvm);
+            return View("r_Vacations", rvvm);
         }
         public ActionResult ViewVacationsDetails(int VacationsId)
         {
@@ -450,7 +486,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_Maternity_Leave(string username, r_Maternity_Leave_ViewModel rmlvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rmlvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -472,7 +511,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rmlvm);
+            return View("r_Maternity_Leave", rmlvm);
         }
         public ActionResult ViewMaternity_LeaveDetails(int Maternity_LeaveId)
         {
@@ -506,7 +545,10 @@ namespace system_core_with_authentication.Controllers
         }
         public ActionResult Create_r_Viatical(string username, r_Viatical_ViewModel rvvm)
         {
-            if (ModelState.IsValid)
+            DateTime actualDate = DateTime.UtcNow;
+            bool validDate = ((rvvm.Start_Date - actualDate).TotalDays > 3);
+
+            if (ModelState.IsValid && validDate)
             {
                 Request r = new Request();
                 r.User = username;
@@ -525,7 +567,7 @@ namespace system_core_with_authentication.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(rvvm);
+            return View("r_Viatical",rvvm);
         }
         public ActionResult ViewViaticalDetails(int ViaticalId)
         {

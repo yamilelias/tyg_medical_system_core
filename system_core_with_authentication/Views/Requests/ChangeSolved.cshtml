@@ -10,7 +10,11 @@
         <div class="card card-mini">
             <div class="card-header">
                 <div class="card-title">
-                    Usuario: @Html.DisplayFor(model => Model.Request.User)
+                    <p><b>Usuario:</b> @Html.DisplayFor(model => Model.Request.User)</p>
+                    @if (Model.Location.Name != null)
+                    {
+                        <p><b>Lugar de trabajo:</b> @Html.DisplayFor(model => Model.Location.Name)</p>
+                    }
                 </div>
             </div>
             <div class="card card-body no-padding">
