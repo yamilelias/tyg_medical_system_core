@@ -25,7 +25,17 @@ namespace system_core_with_authentication.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            string path = "wwwroot/files/";
+
+            List<String> listOfFiles = new List<String>();
+
+                foreach (string fileName in Directory.GetFiles(path))
+                {
+                var fileNameTrimmed = fileName.Substring("wwwroot/".Length);
+                    listOfFiles.Add(fileNameTrimmed);
+                }
+            
+            return View(listOfFiles);
         }
 
         [HttpPost]
@@ -44,8 +54,20 @@ namespace system_core_with_authentication.Controllers
                     }
                 }
             }
-            return View();
+            return RedirectToAction("Index", "AlertSettings");
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(string fileName)
+        {
+
+            System.IO.File.Delete("wwwroot/" + fileName);
+
+            return RedirectToAction("Index", "Files");
         }
 
     }
+
 }

@@ -1,91 +1,119 @@
 @model system_core_with_authentication.Models.Alerts.AlertSettings
-
 @{
-    ViewData["Title"] = "Configurar Alarmas";
+    ViewData["Title"] = "Configuraciones";
 }
-
 <div class="row">
     <div class="col-xs-4 small">
         <div class="card card-table">
             <div class="container">
-
                 <form asp-action="Index" method="post" enctype="multipart/form-data">
-                        <h4>Stock bajo</h4>
-                        <hr />
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="Id" />
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <div class="checkbox">
-                                    <input asp-for="EmailNotifications" />
-                                    <label asp-for="EmailNotifications">Notificaciones por Email</label>
-                                </div>
+                    <h4>Stock bajo</h4>
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <input asp-for="EmailNotifications" />
+                                <label asp-for="EmailNotifications">Notificaciones por Email</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <div class="checkbox">
-                                    <input asp-for="SmsNotifications" />
-                                    <label asp-for="SmsNotifications">Notificaciones SMS</label>
-                                </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <input asp-for="SmsNotifications" />
+                                <label asp-for="SmsNotifications">Notificaciones SMS</label>
                             </div>
                         </div>
-                        
+                    </div>
 
-                        <div class="form-group">
-                            <label asp-for="NotificationReminderPeriodPOne">Periodo de notificaciones Prioridad 1</label>
-                            <div class="col-md-10">
-                                <select asp-for="NotificationReminderPeriodPOne" class="form-control" style="width:auto;">
-                                    <option value="1">Cada d&#237;a</option>
-                                    <option value="2">Cada dos d&#237;as</option>
-                                    <option value="3">Cada tres d&#237;as</option>
-                                    <option value="7">Cada semana</option>
-                                </select>
-                                <span asp-validation-for="NotificationReminderPeriodPTwo" class="text-danger"></span>
+                    <div class="form-group">
+                        <label asp-for="NotificationReminderPeriodPOne">Periodo de notificaciones Prioridad 1</label>
+                        <div class="col-md-10">
+                            <select asp-for="NotificationReminderPeriodPOne" class="form-control" style="width:auto;">
+                                <option value="1">Cada d&#237;a</option>
+                                <option value="2">Cada dos d&#237;as</option>
+                                <option value="3">Cada tres d&#237;as</option>
+                                <option value="7">Cada semana</option>
+                            </select>
+                            <span asp-validation-for="NotificationReminderPeriodPTwo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NotificationReminderPeriodPTwo">Periodo de notificaciones Prioridad 2</label>
+                        <div class="col-md-10">
+                            <select asp-for="NotificationReminderPeriodPTwo" class="form-control" style="width:auto;">
+                                <option value="1">Cada d&#237;a</option>
+                                <option value="2">Cada dos d&#237;as</option>
+                                <option value="3">Cada tres d&#237;as</option>
+                                <option value="7">Cada semana</option>
+                            </select>
+                            <span asp-validation-for="NotificationReminderPeriodPTwo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <input asp-for="SendToAdmins" />
+                                <label asp-for="SendToAdmins">Enviar a Administradores</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="NotificationReminderPeriodPTwo">Periodo de notificaciones Prioridad 2</label>
-                            <div class="col-md-10">
-                                <select asp-for="NotificationReminderPeriodPTwo" class="form-control" style="width:auto;">
-                                    <option value="1">Cada d&#237;a</option>
-                                    <option value="2">Cada dos d&#237;as</option>
-                                    <option value="3">Cada tres d&#237;as</option>
-                                    <option value="7">Cada semana</option>
-                                </select>
-                                <span asp-validation-for="NotificationReminderPeriodPTwo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                <input asp-for="SendToSupervisors" />
+                                <label asp-for="SendToSupervisors">Enviar a Supervisores</label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <div class="checkbox">
-                                    <input asp-for="SendToAdmins" />
-                                    <label asp-for="SendToAdmins">Enviar a Administradores</label>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-default" />
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <div class="checkbox">
-                                    <input asp-for="SendToSupervisors" />
-                                    <label asp-for="SendToSupervisors">Enviar a Supervisores</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Save" class="btn btn-default" />
-                            </div>
-                        </div>
+                    </div>
                 </form>
+            
+            
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-4 small">
+        <div class="card card-table">
+            <div class="container">
+
+              <h4> Manejo de Archivos </h4>  
+                <hr />
+
+                <div class="row">
+
+                    <div class="form-group container">
+                        <form method="post" asp-action="Index" asp-controller="Files" enctype="multipart/form-data">
+                            <input type="file" name="files" multiple /> <br />
+                            <input class="btn btn-success btn-xs pull-left" type="submit" value="Subir" />
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="container">
+                        <a class="btn btn-xs btn-info" asp-action="Index" asp-controller="Files"> Lista de Archivos </a>
+                    </div>
+
+                    <br />
+                    
+                </div>
 
             </div>
         </div>
     </div>
+
+
 </div>
 
 
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
