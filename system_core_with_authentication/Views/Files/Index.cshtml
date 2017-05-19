@@ -1,19 +1,53 @@
+@model IEnumerable<String>
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Archivos";
 }
+<div class="col-xs-12">
+    <div class="card card-table">
+        <div class="card-header">
+            <div class="card-title">
+                <b> Lista de Archivos </b>
+            </div>
+         </div>
 
-<h2>Index</h2>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nombre del Archivo
+                            </th>
+                        </tr>
+                    </thead>
 
-<div class="row">
-    <form method="post" asp-action="Index" asp-controller="Files" enctype="multipart/form-data">
-        <input type="file" name="files" multiple />
-        <input type="submit" value="Upload" />
-    </form>
-</div>
+                    @foreach (var file in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@file"> @file.Substring(6) </a>
+                                    
+                                @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                                {
+                                    <form asp-action="Delete" asp-controller="Files">
+                                        <input type="submit" value="Borrar" class="btn btn-danger btn-xs" />
+                                        <input type="hidden" value="@file" name="fileName" id="@file" />
+                                    </form>
+                                }
+                                    
+                            </td>
+                        </tr>
 
-<div>
-    <h2> List of Files </h2>
+                    }
+                </table>
+             </div>
+        </div>
+    </div>
 
+<div class="form-actions no-color">
+    <div class="container">
+        <input action="action" onclick="history.go(-1);" type="button" value="Regresar" class="btn btn-info btn-xs" style="margin-top:20px;" />
+    </div>
 </div>
 
