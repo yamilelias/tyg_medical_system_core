@@ -1,0 +1,78 @@
+﻿@model system_core_with_authentication.Models.ViewModels.r_Maternity_Leave_ViewModel
+@{
+    ViewData["Title"] = "Solicitud de Maternidad";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    <form asp-controller="Requests" asp-action="Create_r_Maternity_Leave" method="post">
+                        <div class="form-horizontal">
+
+                            <input type="hidden" value="@User.Identity.Name" id="username" name="username">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Start_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="Start_Date" class="form-control" required />
+                                    <span asp-validation-for="Start_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="End_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="End_Date" class="form-control" required />
+                                    <span asp-validation-for="End_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Covered_Days" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Covered_Days" class="form-control" required />
+                                    <span asp-validation-for="Covered_Days" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Folio" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Folio" class="form-control" required />
+                                    <span asp-validation-for="Folio" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Labor_Start_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="Labor_Start_Date" class="form-control" required />
+                                    <span asp-validation-for="Labor_Start_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Medic_Unit" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Medic_Unit" class="form-control" required />
+                                    <span asp-validation-for="Medic_Unit" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Notes" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="Notes" class="form-control"></textarea>
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <input type="submit" value="Enviar" class="btn btn-success" />
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <a class="btn btn-danger" asp-controller="Requests" asp-action="Index">Regresar</a>
+    </div>
+</div>

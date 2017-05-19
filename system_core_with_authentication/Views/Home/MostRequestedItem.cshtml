@@ -1,56 +1,224 @@
-﻿@model IEnumerable<system_core_with_authentication.Models.Medicament>
+﻿@model system_core_with_authentication.Models.ViewModels.MedicamentLowHighViewModel
+<!--Partial View to show Most Requested Medicament and Medicaments with less stock-->
+@if (User.IsInRole("Admin") || User.IsInRole("Supervisor")) {
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Medicamentos más pedidos
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Descripcion
+                            </th>
+                            <th>
+                                Contenido
+                            </th>
+                            <th>
+                                Tipo
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Prioridad
+                            </th>
+                            <th>
+                                # Pedidos
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.MedicamentHigh)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Content)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Counter)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>Medicamentos más pedidos</h2>
 
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Medicamentos con menos Stock
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                @if (Model.MedicamentLow.Count == 0)
+                {
+                    <div class="container" style="margin-top:10px;">
+                        
+                        <p>Se tiene suficiente por el momento.</p>
+                    </div>
+                   
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Priority)
-            </th>
+                }
+                else
+                {
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Priority)
-                </td>
+                    <table class="table card-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Descripcion
+                                </th>
+                                <th>
+                                    Contenido
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Precio
+                                </th>
+                                <th>
+                                    Prioridad
+                                </th>
+                                <th>
+                                    Stock minimo
+                                </th>
+                                <th>
+                                    Stock Total Actual
+                                </th>
+                                <th>
+                                    %
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.MedicamentLow)
+                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Content)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Priority)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.MinimumStock)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sumTotal)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.percentage)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                }
+            </div>
+                    </div>
+                </div>
+            </div>
+}
+<!--Section that only the user see-->
+@if (User.IsInRole("User"))
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card card-mini">
+                <div class="card-header">
+                    <div class="card-title">
+                        Solicitudes hechas
+                    </div>
+                </div>
+                <div class="card card-body no-padding">
+                    @if (Model.MedicamentLow.Count == 0)
+                {
+                        <p>No hay solicitudes por el momento.</p>
+
+                    }
+                    else
+                    {
+
+                        <table class="table card-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Fecha
+                                    </th>
+                                    <th>
+                                        Notas
+                                    </th>
+                                    <th>
+                                        Usuario
+                                    </th>
+                                    <th>
+                                        Detalles
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RequestFromUser.RepositionStockList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.Note)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Request.User)
+                                        </td>
+                                        <td>
+                                            <form asp-controller="Requests" asp-action="ViewRepositionDetails" method="get">
+                                                <input class="form-control" type="hidden" value="@item.Request.Id" name="RepositionStockId" id="id">
+                                                <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

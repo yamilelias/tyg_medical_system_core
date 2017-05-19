@@ -1,0 +1,85 @@
+﻿@model system_core_with_authentication.Models.ViewModels.r_Vacations_ViewModel
+@{
+    ViewData["Title"] = "Solicitud de Vacaciones";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    <form asp-controller="Requests" asp-action="Create_r_Vacations" method="post">
+                        <div class="form-horizontal">
+
+                            <input type="hidden" value="@User.Identity.Name" id="username" name="username">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Vacation_Period_Completed" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Vacation_Period_Completed" class="form-control" required />
+                                    <span asp-validation-for="Vacation_Period_Completed" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Available_Days" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Available_Days" class="form-control" required />
+                                    <span asp-validation-for="Available_Days" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Requested_Days" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Requested_Days" class="form-control" required />
+                                    <span asp-validation-for="Requested_Days" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Start_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="Start_Date" class="form-control" required />
+                                    <span asp-validation-for="Start_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="End_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="End_Date" class="form-control" required />
+                                    <span asp-validation-for="End_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Comeback_Date" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input type="date" asp-for="Comeback_Date" class="form-control" required />
+                                    <span asp-validation-for="Comeback_Date" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Pending_Days" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <input asp-for="Pending_Days" class="form-control" required />
+                                    <span asp-validation-for="Pending_Days" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Notes" class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <textarea asp-for="Notes" class="form-control"></textarea>
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <input type="submit" value="Enviar" class="btn btn-success" />
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <a class="btn btn-danger" asp-controller="Requests" asp-action="Index">Regresar</a>
+    </div>
+</div>

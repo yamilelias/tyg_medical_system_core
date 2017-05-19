@@ -1,5 +1,6 @@
 ﻿var list = JSON.parse(getCookie("listaReposicion"));
 var username;
+var notes;
 if (list.length > 0) {
     displayList();
 }
@@ -38,9 +39,8 @@ function AddToRepositionList(y) {
     var type = document.getElementById("type-" + y).value;
     var actualQuantity = parseInt(document.getElementById("actualQuantity-" + y).value);
     var requestQuantity = parseInt(document.getElementById("requestQuantity-" + y).value);
-    username = document.getElementById("username").value;
 
-    if ((actualQuantity > 0) && (requestQuantity > 0)) {
+    if ((actualQuantity >= 0) && (requestQuantity > 0)) {
         if (inList == false) {
             createItem(y, description,content,type,actualQuantity,requestQuantity);
         } else if (inList == true) {
@@ -97,8 +97,8 @@ function removeItem(y) {
 }
 
 function displayList() {
-    var finalButton = "<input type=\"submit\" value=\"Aceptar\" class=\"btn btn-default\" onclick=\"sendRepositionList() \" autocomplete=\"off\" />";
-    var s = "<table class=\"table\"><thead><tr><th>Description</th><th>Content</th><th>Type</th><th>Inventory Quantity</th><th>Requested Quantity</th></tr></thead><tbody>";
+    var finalButton = "<input type=\"submit\" value=\"Enviar\" class=\"btn btn-default\" onclick=\"sendRepositionList() \" autocomplete=\"off\" />";
+    var s = "<table class=\"table\"><thead><tr><th>Descripcion</th><th>Contenido</th><th>Tipo</th><th>Cantidad Actual</th><th>Cantidad Solicitada</th></tr></thead><tbody>";
     for (var x = 0; x < list.length; x++) {
         s += "<tr>";
         s += "<td>" + list[x].Description + "</td><td>" + list[x].Content + "</td><td>" + list[x].Type + "</td><td>" + list[x].ActualQuantity + "</td><td>" + list[x].RequestQuantity + "</td>"+
@@ -106,12 +106,14 @@ function displayList() {
         s += "</tr>";
     }
     s += "</tbody></table > ";
-    document.getElementById("lista").innerHTML = "<h2>List of Medicaments</h2>" + s + finalButton;
+    document.getElementById("lista").innerHTML = "<h3>Medicamentos a solicitar</h3>" + s + finalButton;
 }
 
 function sendRepositionList() {
+    username = document.getElementById("username").value;
+    notes = document.getElementById("notes").value;
     var jsonListstring = JSON.stringify(list);
-    var postDataList = { values: jsonListstring,username };
+    var postDataList = { values: jsonListstring,username,notes };
 
     //POST
     $.ajax({

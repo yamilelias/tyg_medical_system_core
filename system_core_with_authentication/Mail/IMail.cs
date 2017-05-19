@@ -8,5 +8,6 @@ namespace Treshold_Mail.Mail
     public interface IMail : IDisposable
     {
         void SendToAdmin(String body, String subject);
+        void SendToSupervisor(String body, String subject);
     }
 }

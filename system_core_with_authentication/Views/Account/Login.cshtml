@@ -86,7 +86,69 @@
     </div>
 </div>*@
 
-<div class="app-container app-login">
+<div class="row">
+
+    <div style="width:1350px;" class="col-xs-12">
+
+        <div class="card card-table card-banner" style="width:300px; margin:auto; padding:30px; ">
+
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal">
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+                    <input asp-for="Email" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon2">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </span>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="text-center">
+                        <button class="btn btn-success btn-submit">Log in</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        <a hidden asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                    </p>
+                </div>
+            </form>
+
+        </div>
+
+
+
+    </div>
+
+</div> 
+
+
+
+
+@*<div class="app-container app-login">
     <div class="flex-center">
         <div class="app-header"></div>
         <div class="app-body">
@@ -106,7 +168,7 @@
                     <div class="form-header">
                         <div class="app-brand"><span class="highlight">TyG Medical</span> Admin</div>
                     </div>
-                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal">
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">
@@ -134,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <div class="text-center">
-                                <button class="btn btn-success btn-submit" >Log in</button>
+                                <button class="btn btn-success btn-submit">Log in</button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -149,7 +211,7 @@
         <div class="app-footer">
         </div>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

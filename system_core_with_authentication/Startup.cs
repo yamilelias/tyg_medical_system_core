@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Identity;
 using Treshold_Mail.Scheduler;
 using Hangfire;
 using Treshold_Mail.Mail;
+using system_core_with_authentication.Models.Alerts;
+using system_core_with_authentication.Scheduler;
 
 namespace system_core_with_authentication
 {
@@ -49,23 +51,21 @@ namespace system_core_with_authentication
                 */
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddHangfire(options =>
-                        options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddHangfire(options => options.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            
-
             services.AddTransient<IMail, MailService>();
-
-
             services.AddMvc();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>(); 
+            services.AddTransient<IScheduler, SchedulerOptions>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,8 +86,9 @@ namespace system_core_with_authentication
             }
 
             app.UseStaticFiles();
-            app.UseHangfireServer();
+            //app.UseHangfireServer();
             app.UseIdentity();
+            app.UseDeveloperExceptionPage();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -100,10 +101,12 @@ namespace system_core_with_authentication
 
             context.Database.EnsureCreated();
 
+
+
             DbInitializer.Initialize(context);
-            HangfireScheduler.Init(app);
-            await CreateRoles(serviceProvider);
-            
+            if (context.Roles.ToList().Count == 0)
+                await CreateRoles(serviceProvider);
+            //HangfireScheduler.Init(app);
 
         }
 
@@ -116,12 +119,13 @@ namespace system_core_with_authentication
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            string[] rolesNames = { "Admin", "Supervisor", "User" };
+            string[] rolesNames = { "Admin", "Supervisor", "Supervisor de RH", "Supervisor de Inventario" ,"Medico", "Enfermero" };
             IdentityResult result;
 
             foreach (var rolesName in rolesNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(rolesName);
+                int id = 1;
                 if (!roleExist)
                 {
                     result = await roleManager.CreateAsync(new IdentityRole(rolesName));
@@ -133,8 +137,15 @@ namespace system_core_with_authentication
              * WILL BE ASSIGNED THE ADMIN ROLE
              */
 
-            var user = await userManager.FindByIdAsync("1");
-            await userManager.AddToRoleAsync(user, "Admin");
+             var user = new ApplicationUser
+                {
+                    Id = "1",
+                    UserName = "asti@asti.com",
+                    Email = "asti@asti.com"
+                };
+
+             var result2 = await userManager.CreateAsync(user, "Asti2017.");
+             await userManager.AddToRoleAsync(user, "Admin");
         }
 
     }

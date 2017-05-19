@@ -1,0 +1,91 @@
+﻿@model system_core_with_authentication.Models.ShiftChange
+
+@{
+    ViewData["Title"] = "Solicitud de cambio de turno";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Usuario: @Html.DisplayFor(model => Model.Request.User)
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Fecha Inicio
+                            </th>
+                            <th>
+                                Fecha Final
+                            </th>
+                            <th>
+                                Fecha de Regreso
+                            </th>
+                            <th>
+                                Notas
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => model.Start_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.End_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Return_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Request.Note)
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <form asp-action="ChangeSolved_ShiftChange">
+                <div class="form-horizontal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <div class="col-md-offset-5 col-md-10">
+                            <div class="checkbox">
+                                <input asp-for="Solved" />
+                                <label asp-for="Solved"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-5 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@if ((User.IsInRole("Admin")) || (User.IsInRole("Supervisor")))
+{
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a asp-action="ShowAllRequests" class="btn btn-info btn-xs">Back to List</a>
+    </div>
+}
+else if (User.IsInRole("User"))
+{
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-info btn-xs">Back to List</a>
+    </div>
+
+}

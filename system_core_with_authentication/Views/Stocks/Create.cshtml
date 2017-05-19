@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create Stock";
+    ViewBag.Menu = "Stocks";
 }
 
 <div class="container col-sm-6 pull-right" style="width:1000px;">
@@ -24,7 +25,7 @@
                     <div class="form-group">
                         <label asp-for="Expiration" class="col-md-2 control-label"></label>
                         <div class="col-md-10">
-                            <input asp-for="Expiration" class="form-control" />
+                            <input type="date" asp-for="Expiration" class="form-control" />
                             <span asp-validation-for="Expiration" class="text-danger"></span>
                         </div>
                     </div>

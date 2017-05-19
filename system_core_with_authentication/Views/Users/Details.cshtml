@@ -1,77 +1,178 @@
-@model system_core_with_authentication.Models.ApplicationUser
-
+@model system_core_with_authentication.Models.ViewModels.DetailsUserWithLocationViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del usuario";
+    ViewBag.Menu = "User";
 }
-
-
 <div class="row">
+    <div class="col-xs-3 pull-left">
+        <div class="form-actions no-color">
+            <a asp-action="Index" class="btn btn-info btn-xs">Regresar a &Iacute;ndice</a>
+        </div>
+    </div>
     <div class="col-xs-4 small">
         <div class="card card-table">
-            <div class="container">
-
-                <h4> Details for @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.LastName) </h4>
-
+            <div class="card-body">
+                <h4> Detalles de @Html.DisplayFor(model => model.user.Name) @Html.DisplayFor(model => model.user.LastName) </h4>
                 <dl>
                     <dt>
-                       Name
+                        Nombre
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Name)
+                        @Html.DisplayFor(model => model.user.Name)
                     </dd>
                     <dt>
-                        Paternal Name
+                        Apellido Paterno
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.LastName)
+                        @Html.DisplayFor(model => model.user.LastName)
                     </dd>
                     <dt>
-                        Maternal Name
+                        Apellido Materno
                     </dt>
                     <dd>
-                       @Html.DisplayFor(model => model.SecondLastName)
+                        @Html.DisplayFor(model => model.user.SecondLastName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Telephone)
+                        Tel&eacute;fono
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Telephone)
+                        @Html.DisplayFor(model => model.user.Telephone)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.UserName)
+                        Nombre de Usuario
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.UserName)
+                        @Html.DisplayFor(model => model.user.UserName)
                     </dd>
                     <dt>
-                        @Html.DisplayNameFor(model => model.Email)
+                        Correo Electr&oacute;nico
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Email)
+                        @Html.DisplayFor(model => model.user.Email)
                     </dd>
-
+                    <dt>
+                        <br />
+                        Imagen Actual
+                    </dt>
+                    <dd>
+                        <br />
+                        @if ((Model.user.UserImage == null) || (Model.user.UserImage == ""))
+                        {
+                            <img src="~/users/uploads/nophoto.png"
+                                 style="max-height:60px; max-width:60px; padding-left:30px;" title="Este usuario no cuenta con fotografia.">
+                        }
+                        else
+                        {
+                            <img src="~/users/uploads/@Model.user.UserImage" style="max-height:300px; max-width:300px; padding-left:50px;" />
+                        }
+                    </dd>
                 </dl>
-               
-               
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-
-                        <a asp-action="Index" class="btn btn-info btn-xs">Back to Index</a>
-
-                    </div>
-
-                
-
-                </div>
-
-            <br />
-
+            </div>
         </div>
     </div>
 </div>
 
 
+<div class="col-xs-12">
+    <div class="card card-table">
+        <div class="card-header">
+            <div class="card-title">
+             <b>  Horario de @Html.DisplayFor(model => model.user.Name) @Html.DisplayFor(model => model.user.LastName) @Html.DisplayFor(model => model.user.SecondLastName) </b>   
+            </div>
+            <ul class="card-action">
+                <li>
+                <a asp-action="Create" asp-controller="LocationSchedules" asp-route-id="@Model.user.Id" class="btn btn-success btn-xs"> A&ntilde;adir Horario </a>
+                </li>
+            </ul>
+        </div>
+        @if (Model.ls.Count > 0)
+        {
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+
+                        <tr>
+                            <th>
+                                Lugar
+                            </th>
+                            <th>
+                                Lunes
+                            </th>
+                            <th>
+                                Martes
+                            </th>
+                            <th>
+                                Miercoles
+                            </th>
+                            <th>
+                                Jueves
+                            </th>
+                            <th>
+                                Viernes
+                            </th>
+                            <th>
+                                Sabado
+                            </th>
+                            <th>
+                                Domingo
+                            </th>
+                            <th>
+                                
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    @foreach (var item in Model.ls)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Monday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Tuesday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Wednesday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Thursday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Friday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Saturday)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Sunday)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-controller="LocationSchedules" asp-route-id="@item.Id" class="btn btn-info btn-xs"> Editar Horario </a>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+        }
+        else
+        {
+
+            <div class="card card-body">
+                <b> Este usuario no tiene un horario asignado. </b>
+            </div>
+        }
+            </div>
+    </div>
 
 
-        
- 
+
+
+
 

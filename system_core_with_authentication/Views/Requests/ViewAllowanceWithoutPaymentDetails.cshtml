@@ -1,0 +1,71 @@
+﻿@model system_core_with_authentication.Models.AllowanceWithoutPayment
+
+@{
+    ViewData["Title"] = "Solicitud de Permiso sin goce de sueldo";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Usuario: @Html.DisplayFor(model => Model.Request.User)
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Fecha Inicio
+                            </th>
+                            <th>
+                                Fecha Final
+                            </th>
+                            <th>
+                                Hora Regreso
+                            </th>
+                            <th>
+                                Notas
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => model.Start_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.End_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Comeback_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Request.Note)
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@if ((User.IsInRole("Admin")) || (User.IsInRole("Supervisor")))
+{
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a asp-action="ShowAllRequests" class="btn btn-info btn-xs">Back to List</a>
+    </div>
+}
+else if (User.IsInRole("User"))
+{
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-info btn-xs">Back to requests</a>
+    </div>
+
+}

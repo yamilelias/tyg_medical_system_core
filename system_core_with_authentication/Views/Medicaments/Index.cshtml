@@ -1,15 +1,15 @@
 @model IEnumerable<system_core_with_authentication.Models.Medicament>
 
 @{
-    ViewData["Title"] = "Medicaments";
+    ViewData["Title"] = "Indice de Medicamentos";
     ViewBag.Menu = "Medicaments";
 }
 
 <div class="container">
-    <a style="margin-left:40px;" asp-action="Create" class="btn btn-success btn-xs"> Create Medicament </a>
+    <a style="margin-left:40px;" asp-action="Create" class="btn btn-success btn-xs"> Crear Medicamento </a>
 
 
-    <a style="margin-left:40px;" asp-area="" asp-controller="Stocks" asp-action="Index" class="btn btn-info btn-xs">Go to Stocks</a>
+    <a style="margin-left:40px;" asp-area="" asp-controller="Stocks" asp-action="Index" class="btn btn-info btn-xs">Ir a Stocks</a>
 </div>
 
 
@@ -25,28 +25,28 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Description)
+                            Descripci&oacute;n
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Content)
+                            Contenido
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Type)
+                            Tipo
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Price)
+                            Precio
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Priority)
+                            Prioridad
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.MinimumStock)
+                            Stock Minimo
                         </th>
                         <th>
-                            Image
+                            Imagen
                         </th>
 
-                        <th></th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -72,19 +72,29 @@
                                 @Html.DisplayFor(modelItem => item.MinimumStock)
                             </td>
                             <td>
-                                <img src="~/images/uploads/@item.MedicamentImage" 
-                                     
-                                     style="max-height:150px; max-width:150px;" />
+                                @if ((@item.MedicamentImage == null) || (@item.MedicamentImage == ""))
+                                {
+                                    <img src="~/users/uploads/nophoto.png"
+                                         style="max-height:60px; max-width:60px; padding-left:30px;" title="Este medicamento no cuenta con fotografia.">
+                                }
+                                else
+                                {
+                                    <img src="~/images/uploads/@item.MedicamentImage"
+                                         style="max-height:150px; max-width:150px;" />
+                                }
+
+
+                                
                             </td>
                             <td>
-                                <a asp-action="Edit" style="width:70px;" class="btn btn-default btn-xs" asp-route-id="@item.Id">Edit</a> 
+                                <a asp-action="Edit" style="width:70px;" class="btn btn-default btn-xs" asp-route-id="@item.Id">Editar</a> 
 
                                 <br />
 
-                                <a asp-action="Details" style="width:70px;" class="btn btn-info btn-xs" asp-route-id="@item.Id">Details</a> 
+                                <a asp-action="Details" style="width:70px;" class="btn btn-info btn-xs" asp-route-id="@item.Id">Detalles</a> 
                                 
                                 <br />
-                                <a asp-action="Delete" style="width:70px;" class="btn btn-danger btn-xs" asp-route-id="@item.Id">Delete</a>
+                                <a asp-action="Delete" style="width:70px;" class="btn btn-danger btn-xs" asp-route-id="@item.Id">Borrar</a>
                             </td>
                         </tr>
                     }

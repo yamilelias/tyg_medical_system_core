@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
+using system_core_with_authentication.Models.Alerts;
+using system_core_with_authentication.Scheduler;
 using Treshold_Mail.Mail;
 
 namespace Treshold_Mail.Scheduler
@@ -22,35 +24,37 @@ namespace Treshold_Mail.Scheduler
         public static void Init(IApplicationBuilder app)
         {
             _app = app;
-            RecurringJob.AddOrUpdate("1", () => CheckMinimumStock(), Cron.Daily);
+            var context = _app.ApplicationServices.GetRequiredService<ApplicationDbContext>();
+            var result = context.AlertSettings.FirstOrDefault();
+
+            switch (result.NotificationReminderPeriodPOne)
+            {
+                case Periods.Cada_semana:
+                    RecurringJob.AddOrUpdate("1", () => CheckMinimumStock(), Cron.Weekly);
+                    break;
+                case Periods.Cada_tres_días:
+                    RecurringJob.AddOrUpdate("1", () => CheckMinimumStock(), Cron.DayInterval(3));
+                    break;
+                case Periods.Cada_dos_días:
+                    RecurringJob.AddOrUpdate("1", () => CheckMinimumStock(), Cron.DayInterval(2));
+                    break;
+                case Periods.Todos_los_días:
+                    RecurringJob.AddOrUpdate("1", () => CheckMinimumStock(), Cron.Daily);
+                    break;
+            }
         }
 
         public static void CheckMinimumStock()
-        {     
+        {
             try
             {
-                var _context = _app.ApplicationServices.GetService<ApplicationDbContext>();
-                var x = _context.MedicamentsBelowThreshold.Any();
-                if (x)
-                {
-                    String message = "Se necesita resuplir los siguientes medicamentos: \n";
-                    _context.MedicamentsBelowThreshold.ToList().ForEach(e => {
-                        String medicineName = "";
-                        medicineName = _context.Medicaments.Where(g => g.Id == e.Id)
-                                                   .Select(g => g.Description).FirstOrDefault();
-
-                        message += $"Medicamento: {medicineName} - Unidades actuales: {e.CurrentStock}\n";
-                    });
-                    var _mail = _app.ApplicationServices.GetService<IMail>();
-                        _mail.SendToAdmin(message, "Recordatorio");
-                    Debug.WriteLine("Message sent CheckMinimumStock()");
-                }
-            }
-            catch (Exception e)
+                var scheduler = _app.ApplicationServices.GetRequiredService<IScheduler>();
+                scheduler.CheckMinimumStock();
+            }catch(Exception e)
             {
-                Debug.WriteLine(e.ToString());
+                Debug.WriteLine(e);
             }
-              
+            
         }
     }
 }

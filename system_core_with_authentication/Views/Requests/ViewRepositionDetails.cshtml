@@ -1,0 +1,82 @@
+@model system_core_with_authentication.Models.ViewModels.RepositionStockDetailedWithCostViewModel
+
+@{
+    ViewData["Title"] = "ViewRepositionDetails";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Usuario: @Html.DisplayFor(model => Model.RsList.Request.User)
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Medicamento
+                            </th>
+                            <th>
+                                Cantidad Actual
+                            </th>
+                            <th>
+                                Cantidad Solicitada
+                            </th>
+                            <th>
+                                Precio
+                            </th>
+                            <th>
+                                Notas
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var a in Model.RsList.RepositionStockDetailed)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => a.Medicament.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.CurrentStock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.RequestStock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => a.Medicament.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.RsList.Request.Note)
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @if ((User.IsInRole("Admin")) || (User.IsInRole("Supervisor"))) {
+                    <div class="col-md-offset-4 col-md-10">El costo de esta lista es de $@Model.cost</div>
+                }
+                </div>
+            </div>
+    </div>
+</div>
+
+@if ((User.IsInRole("Admin")) || (User.IsInRole("Supervisor")))
+{
+<div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+    <a asp-action="ShowAllRequests" class="btn btn-info btn-xs">Back to List</a>
+</div>
+}
+else if (User.IsInRole("User"))
+{
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-info btn-xs">Back to List</a>
+    </div>
+
+}

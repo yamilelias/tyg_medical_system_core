@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
-    [Authorize(Roles = "Admin,Supervisor")]
+    [Authorize(Roles = "Admin, Supervisor, Supervisor de Inventario")]
     public class MedicamentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -85,6 +85,7 @@ namespace system_core_with_authentication.Controllers
 
                 _context.Add(medicament);
                 await _context.SaveChangesAsync();
+                checkMedicamentBelowThershold(medicament);
                 return RedirectToAction("Index");
             }
             return View(medicament);
@@ -130,8 +131,6 @@ namespace system_core_with_authentication.Controllers
 
                         string fileName = Path.GetFileName(imageFile.FileName);
 
-                        Debug.WriteLine("Accepted image");
-
                         using (FileStream fs = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
                         {
                             await imageFile.CopyToAsync(fs);
@@ -139,6 +138,12 @@ namespace system_core_with_authentication.Controllers
 
                         medicament.MedicamentImage = fileName;
 
+                    }
+                    else
+                    {
+                        Medicament medWithImage = new Medicament();
+                        medWithImage = medicament;
+                        medWithImage.MedicamentImage = _context.Medicaments.Where(a => a.Id == medicament.Id).Select(a => a.MedicamentImage).FirstOrDefault();
                     }
 
                     _context.Update(medicament);
@@ -155,6 +160,7 @@ namespace system_core_with_authentication.Controllers
                         throw;
                     }
                 }
+                checkMedicamentBelowThershold(medicament);
                 return RedirectToAction("Index");
             }
             return View(medicament);
@@ -186,12 +192,46 @@ namespace system_core_with_authentication.Controllers
             var medicament = await _context.Medicaments.SingleOrDefaultAsync(m => m.Id == id);
             _context.Medicaments.Remove(medicament);
             await _context.SaveChangesAsync();
+            checkMedicamentBelowThershold(medicament);
             return RedirectToAction("Index");
         }
 
         private bool MedicamentExists(int id)
         {
             return _context.Medicaments.Any(e => e.Id == id);
+        }
+
+        public void checkMedicamentBelowThershold(Medicament medicament)
+        {
+            if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == medicament.Id))
+            {
+                var sum = _context.Stocks.Where(e => e.MedicamentId == medicament.Id)
+                                            .Sum(e => e.Total);
+
+                if (sum >= _context.Medicaments.Where(e => e.Id == medicament.Id).Select(e => e.MinimumStock).FirstOrDefault())
+                {
+                    var toRemove = _context.MedicamentsBelowThreshold.FirstOrDefault(m => m.MedicamentId == medicament.Id);
+                    _context.MedicamentsBelowThreshold.Remove(toRemove);
+                    _context.SaveChanges();
+
+                }
+            }
+            else
+            {
+                var sum = _context.Stocks.Where(e => e.MedicamentId == medicament.Id)
+                                         .Sum(e => e.Total);
+                var minStock = _context.Medicaments.Where(e => e.Id == medicament.Id).Select(e => e.MinimumStock).FirstOrDefault();
+                if (sum < minStock)
+                {
+                    MedicamentBelowThreshold toadd = new MedicamentBelowThreshold();
+                    toadd.MedicamentId = _context.Medicaments.Where(a => a.Id == medicament.Id).Select(a => a.Id).FirstOrDefault();
+                    toadd.CurrentStock = sum;
+                    _context.MedicamentsBelowThreshold.Add(toadd);
+                    _context.SaveChanges();
+
+                }
+            }
+
         }
     }
 }

@@ -45,7 +45,7 @@ namespace system_core_with_authentication.Controllers
         }
 
         //[httppost]
-        public ActionResult MedicamentOut(string values)
+        public IActionResult MedicamentOut(string values)
         {
             JArray array = JArray.Parse(values);
             Dictionary<int, int> ToCheckMini = new Dictionary<int, int>();
@@ -66,7 +66,14 @@ namespace system_core_with_authentication.Controllers
                 }
                 Stock item = _context.Stocks.FirstOrDefault(s => s.Id == id);
                 item.Total = item.Total - quantity;
-                ToCheckMini.Add(item.MedicamentId, item.Total);
+                if (ToCheckMini.ContainsKey(item.MedicamentId))
+                {
+                    ToCheckMini[item.MedicamentId] += item.Total;
+                }
+                else
+                {
+                    ToCheckMini.Add(item.MedicamentId, item.Total);
+                }
                 _context.Update(item);
                 _context.SaveChanges();
 
@@ -79,19 +86,33 @@ namespace system_core_with_authentication.Controllers
 
                 var sumTotal = _context.Stocks.Where(f => f.MedicamentId == medId)
                                               .Sum(f => f.Total);
-                if (sumTotal <= e.Value)
+                var minStock = _context.Medicaments.Where(a => a.Id == medId).FirstOrDefault().MinimumStock;
+
+                if (sumTotal < minStock)
                 {
                     // Below Threshold
                     var name = _context.Medicaments.Where(a => a.Id == medId)
                                                    .Select(a => a.Description)
                                                    .FirstOrDefault();
-                    belowThreshold.Add(name, sumTotal);
-                    _context.MedicamentsBelowThreshold.Add(new MedicamentBelowThreshold()
+
+                    var alreadyInList = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key)
+                                                                          .FirstOrDefault();
+                    if (alreadyInList == null)
                     {
-                        MedicamentId = e.Key,
-                        CurrentStock = e.Value
-                    });
-                    _context.SaveChanges();
+                        belowThreshold.Add(name, sumTotal);
+                        _context.MedicamentsBelowThreshold.Add(new MedicamentBelowThreshold()
+                        {
+                            MedicamentId = e.Key,
+                            CurrentStock = e.Value
+                        });
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        MedicamentBelowThreshold medbelow = _context.MedicamentsBelowThreshold.Where(a => a.MedicamentId == e.Key).FirstOrDefault();
+                        medbelow.CurrentStock = e.Value;
+                        _context.SaveChanges();
+                    }
                 }
             });
             String medicineToSupply = "";

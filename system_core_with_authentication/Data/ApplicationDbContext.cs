@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Models;
+using system_core_with_authentication.Models.Alerts;
 
 namespace system_core_with_authentication.Data
 {
@@ -22,11 +23,21 @@ namespace system_core_with_authentication.Data
 
         public DbSet<RepositionStock> RepositionStocks { get; set; }
         public DbSet<RepositionStockDetailed> RepositionStockDetailed { get; set; }
+        public DbSet<ShiftChange> ShiftChange { get; set; }
+        public DbSet<BreastFeeding> BreastFeeding { get; set; }
+        public DbSet<Permit> Permit { get; set; }
+        public DbSet<AllowanceWithoutPayment> AllowanceWithoutPayment { get; set; }
+        public DbSet<Vacations> Vacations { get; set; }
+        public DbSet<Maternity_Leave> Maternity_Leave { get; set; }
+        public DbSet<Viatical> Viatical { get; set; }
         public DbSet<Request> Requests { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationSchedule> LocationSchedules { get; set; }
+
+        public DbSet<AlertSettings> AlertSettings { get; set; }
+        public DbSet<MaterialInventory> MaterialsInventory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +52,9 @@ namespace system_core_with_authentication.Data
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Location>().ToTable("Location");
             modelBuilder.Entity<LocationSchedule>().ToTable("LocationSchedule");
+            modelBuilder.Entity<AlertSettings>().ToTable("AlertSettings");
+            modelBuilder.Entity<MaterialInventory>().ToTable("MaterialsInventory");
+            //modelBuilder.Entity<Request>().ToTable("Request");
         }
 
         public DbSet<system_core_with_authentication.Models.ApplicationUser> ApplicationUser { get; set; }

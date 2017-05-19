@@ -1,0 +1,251 @@
+@model system_core_with_authentication.Models.ViewModels.AllRequestsViewModel
+
+@{
+    ViewData["Title"] = "Lista de todas las solicitudes";
+    ViewBag.Menu = "Requests";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-table">
+
+                <table class="table card-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tipo
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Notas
+                            </th>
+                            <th>
+                                Resuelto
+                            </th>
+                            <th>
+                                Usuario
+                            </th>
+                            <th>
+                                Detalles
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RepositionStock)
+                        {
+                            <tr>
+                                <td>
+                                    Medicamentos
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewRepositionDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="RepositionStockId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.ShiftChange)
+                        {
+                            <tr>
+                                <td>
+                                    Cambio de turno
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_ShiftChange" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewShiftChangeDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="ShiftChangeId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.BreastFeeding)
+                        {
+                            <tr>
+                                <td>
+                                    Periodo de Lactancia
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_BreastFeeding" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewBreastFeedingDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="BreastFeedingId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Permit)
+                        {
+                            <tr>
+                                <td>
+                                    Permiso
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_Permit" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewPermitDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="PermitId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.AllowanceWithoutPayment)
+                        {
+                            <tr>
+                                <td>
+                                    Permiso sin goce de sueldo
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_AllowanceWithoutPayment" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewAllowanceWithoutPaymentDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="AllowanceWithoutPaymentId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Vacations)
+                        {
+                            <tr>
+                                <td>
+                                    Vacaciones
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_Vacations" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewVacationsDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="VacationsId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Maternity_Leave)
+                        {
+                            <tr>
+                                <td>
+                                    Maternidad
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_Maternity_Leave" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewMaternity_LeaveDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="Maternity_LeaveId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Viatical)
+                        {
+                            <tr>
+                                <td>
+                                    Viaticos
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.Note)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Solved) <a asp-controller="Requests" asp-action="ChangeSolved_Viatical" asp-route-id="@item.Id" class="btn btn-success btn-xs">Cambiar</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Request.User)
+                                </td>
+                                <td>
+                                    <form asp-controller="Requests" asp-action="ViewViaticalDetails" method="get">
+                                        <input class="form-control" type="hidden" value="@item.Id" name="ViaticalId" id="id">
+                                        <input type="submit" value="Ver detalles" class="btn btn-info btn-xs" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+    </div>
+
+

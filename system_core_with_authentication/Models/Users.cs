@@ -28,6 +28,8 @@ namespace system_core_with_authentication.Models
 
         public string Telephone { get; set; }
 
+        public string UserImage { get; set; }
+
 
         public virtual int AccessFailedCount { get; set; }
       

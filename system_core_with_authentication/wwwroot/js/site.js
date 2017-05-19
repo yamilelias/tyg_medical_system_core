@@ -26,6 +26,7 @@ var secondLastName;
 var telephone;
 var selectRole;
 var role;
+var userImage;
 
 
 function getDataAjax(id, action)
@@ -168,7 +169,7 @@ function setDataUser(action) {
                                         //TODO: change window location
                                         if (response == "Save")
                                         {
-                                            window.location.href = "http://localhost:49956/Users";  
+                                            window.location.href = "http://localhost:49957/Users";  
                                         }
                                     }
                                 })

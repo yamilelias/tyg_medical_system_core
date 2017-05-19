@@ -166,6 +166,8 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
+                    b.Property<string>("UserImage");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
@@ -244,6 +246,8 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired();
+
+                    b.Property<string>("MedicamentImage");
 
                     b.Property<double>("Price");
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using system_core_with_authentication.Data;
 using system_core_with_authentication.Models;
+using system_core_with_authentication.Models.ViewModels;
 
 namespace system_core_with_authentication.Controllers
 {
@@ -22,7 +23,7 @@ namespace system_core_with_authentication.Controllers
         // GET: LocationSchedules
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LocationSchedules.ToListAsync());
+            return View(await _context.LocationSchedules.Include(a=>a.User).Include(b=>b.Location).ToListAsync());
         }
 
         // GET: LocationSchedules/Details/5
@@ -44,8 +45,23 @@ namespace system_core_with_authentication.Controllers
         }
 
         // GET: LocationSchedules/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
+            var selectedUser = _context.ApplicationUser.Where(m => m.Id.Equals(id)).FirstOrDefault();
+
+            var SelectListu = new SelectList(_context.ApplicationUser, "Id", "Email");
+            ViewData["Location"] = new SelectList(_context.Locations, "Id", "Name");
+
+            foreach (var user in SelectListu)
+            {
+                if (user.Value.Equals(selectedUser.Id))
+                {
+                    user.Selected = true;
+                }
+            }
+
+            ViewData["User"] = SelectListu;
+
             return View();
         }
 
@@ -54,13 +70,20 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdUser,IdLocation,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
+        public async Task<IActionResult> Create([Bind("Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule, string location, string user)
         {
             if (ModelState.IsValid)
             {
+
+                locationSchedule.Location = _context.Locations.Where(a => a.Id == Int32.Parse(location)).FirstOrDefault();
+                locationSchedule.User = _context.ApplicationUser.Where(a => a.Id.Equals(user)).FirstOrDefault();
+
+                var userId = locationSchedule.User.Id;
+
                 _context.Add(locationSchedule);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Users", new {id = userId });
+
             }
             return View(locationSchedule);
         }
@@ -73,12 +96,20 @@ namespace system_core_with_authentication.Controllers
                 return NotFound();
             }
 
-            var locationSchedule = await _context.LocationSchedules.SingleOrDefaultAsync(m => m.Id == id);
+            //ViewData["Location"] = new SelectList(_context.Locations, "Id", "Name");    
+            EditLocationScheduleViewModel vm = new EditLocationScheduleViewModel();
+
+            var locationSchedule = await _context.LocationSchedules.Include(m => m.Location).SingleOrDefaultAsync(m => m.Id == id);
+            vm.ls = locationSchedule;
+
+            var listOfLocations = _context.Locations.Select(m => m.Name).ToList();
+            vm.Locations = listOfLocations;
+
             if (locationSchedule == null)
             {
                 return NotFound();
             }
-            return View(locationSchedule);
+            return View(vm);
         }
 
         // POST: LocationSchedules/Edit/5
@@ -86,17 +117,21 @@ namespace system_core_with_authentication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdUser,IdLocation,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Location,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")] LocationSchedule locationSchedule, string location)
         {
             if (id != locationSchedule.Id)
             {
                 return NotFound();
             }
 
+            var userId = _context.LocationSchedules.Where(m => m.Id == locationSchedule.Id).Include(m => m.User).Select(m => m.User.Id).FirstOrDefault();
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    locationSchedule.Location = _context.Locations.Where(a => a.Name.Equals(location)).FirstOrDefault();
+
                     _context.Update(locationSchedule);
                     await _context.SaveChangesAsync();
                 }
@@ -111,7 +146,7 @@ namespace system_core_with_authentication.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Users", new { id = userId });
             }
             return View(locationSchedule);
         }
@@ -140,9 +175,12 @@ namespace system_core_with_authentication.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var locationSchedule = await _context.LocationSchedules.SingleOrDefaultAsync(m => m.Id == id);
+
+            var userId = _context.LocationSchedules.Where(m => m.Id == locationSchedule.Id).Include(m => m.User).Select(m => m.User.Id).FirstOrDefault();
+
             _context.LocationSchedules.Remove(locationSchedule);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Users", new {id = userId });
         }
 
         private bool LocationScheduleExists(int id)
