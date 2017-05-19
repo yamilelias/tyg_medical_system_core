@@ -1,0 +1,89 @@
+﻿@model system_core_with_authentication.Models.ViewModels.IndividualAndTotalBudget
+@{ 
+    ViewData["Title"] = "Lista completa de medicamentos con stock bajo";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card card-mini">
+            <div class="card-header">
+                <div class="card-title">
+                    Medicamentos con menos Stock
+                </div>
+            </div>
+            <div class="card card-body no-padding">
+
+                    <table class="table card-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Descripcion
+                                </th>
+                                <th>
+                                    Contenido
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Precio
+                                </th>
+                                <th>
+                                    Prioridad
+                                </th>
+                                <th>
+                                    Stock minimo
+                                </th>
+                                <th>
+                                    Stock Total Actual
+                                </th>
+                                <th>
+                                    %
+                                </th>
+                                <th>
+                                    Presupuesto
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.medicamentWBudget)
+                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Content)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.Priority)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.medicament.MinimumStock)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sumTotal)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.percentage)
+                                    </td>
+                                    <td>
+                                        $@Html.DisplayFor(modelItem => item.budget)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                <div class="col-md-offset-4 col-md-10">
+                    Presupuesto Total: $@Model.totalBudget
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

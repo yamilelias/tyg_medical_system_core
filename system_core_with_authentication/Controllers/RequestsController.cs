@@ -168,6 +168,10 @@ namespace system_core_with_authentication.Controllers
         /*
          * Methods for Request r_Shift_Change
          */
+         /// <summary>
+         ///  GET: r_Shift_Change view
+         /// </summary>
+         /// <returns>  view  </returns>
         public ActionResult r_Shift_Change()
         {
             return View();

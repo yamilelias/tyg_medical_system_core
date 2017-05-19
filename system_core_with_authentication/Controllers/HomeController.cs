@@ -48,11 +48,11 @@ namespace system_core_with_authentication.Controllers
                 list.Add(m);
             }
 
-            vhvm.MedicamentLow = list.OrderBy(a=>(Convert.ToDouble(a.sumTotal)/ Convert.ToDouble(a.medicament.MinimumStock))*100).Take(10).ToList();
+            vhvm.MedicamentLow = list.OrderBy(a=>(Convert.ToDouble(a.sumTotal)/ Convert.ToDouble(a.medicament.MinimumStock))*100).Take(5).ToList();
 
 
             //Most requested
-            var x = _context.Medicaments.ToList().OrderByDescending(m => m.Counter).Take(10);
+            var x = _context.Medicaments.ToList().OrderByDescending(m => m.Counter).Take(5);
             vhvm.MedicamentHigh = x.ToList();
 
             //user list
@@ -80,6 +80,32 @@ namespace system_core_with_authentication.Controllers
 
 
             return View(vhvm);
+        }
+
+        public IActionResult CompleteLowStockList()
+        {
+            IndividualAndTotalBudget iatb = new IndividualAndTotalBudget();
+            var y = _context.MedicamentsBelowThreshold.ToList();
+            List<MedicamentWithTotalStock> list = new List<MedicamentWithTotalStock>();
+
+            foreach (var item in y)
+            {
+                MedicamentWithTotalStock m = new MedicamentWithTotalStock();
+                m.medicament = _context.Medicaments.Where(a => a.Id == item.MedicamentId).FirstOrDefault();
+                m.sumTotal = _context.Stocks.Where(f => f.MedicamentId == item.MedicamentId)
+                                              .Sum(f => f.Total);
+                var minstock = m.medicament.MinimumStock;
+                var sum = m.sumTotal;
+                var percent = (double)sum / (double)minstock * 100;
+                m.percentage = percent;
+                m.budget = (m.medicament.MinimumStock - m.sumTotal) * m.medicament.Price;
+                list.Add(m);
+                iatb.totalBudget += m.budget;
+            }
+
+            iatb.medicamentWBudget = list.OrderBy(a => (Convert.ToDouble(a.sumTotal) / Convert.ToDouble(a.medicament.MinimumStock)) * 100).ToList();
+
+            return View(iatb);
         }
 
         public IActionResult About()
