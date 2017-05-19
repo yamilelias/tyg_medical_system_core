@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using system_core_with_authentication.Data;
 
-namespace system_core_with_authentication.Data.Migrations
+namespace system_core_with_authentication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170517021733_InitMigration")]
+    partial class InitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -206,10 +207,6 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<string>("Friday");
 
-                    b.Property<int>("IdLocation");
-
-                    b.Property<int>("IdUser");
-
                     b.Property<int?>("LocationId");
 
                     b.Property<string>("Monday");
@@ -222,7 +219,9 @@ namespace system_core_with_authentication.Data.Migrations
 
                     b.Property<string>("Tuesday");
 
-                    b.Property<int?>("UserId");
+                    b.Property<string>("UserId");
+
+                    b.Property<int?>("UserId1");
 
                     b.Property<string>("Wednesday");
 
@@ -231,6 +230,8 @@ namespace system_core_with_authentication.Data.Migrations
                     b.HasIndex("LocationId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("LocationSchedule");
                 });
@@ -436,9 +437,13 @@ namespace system_core_with_authentication.Data.Migrations
                         .WithMany()
                         .HasForeignKey("LocationId");
 
-                    b.HasOne("system_core_with_authentication.Models.User", "User")
-                        .WithMany("ls")
+                    b.HasOne("system_core_with_authentication.Models.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.HasOne("system_core_with_authentication.Models.User")
+                        .WithMany("ls")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("system_core_with_authentication.Models.RepositionStock", b =>
