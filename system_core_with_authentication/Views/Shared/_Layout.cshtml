@@ -90,10 +90,17 @@
                             </button>
                             <div class="toggle-content">
                                 <ul class="actions">
-                                    <li><a asp-controller="Medicaments" asp-action="Create">Medicament</a></li>
-                                    <li><a asp-controller="Requests" asp-action="CreateReposition">Request</a></li>
-                                    <li><a asp-controller="Stocks" asp-action="Create">Stock</a></li>
-                                    <li><a asp-controller="User" asp-action="Create">User</a></li>
+                                    
+                                    <li><a asp-controller="Requests" asp-action="CreateReposition">Crear Solucitud</a></li>
+                                    @if (User.IsInRole("Supervisor") || User.IsInRole("Supervisor de Inventario") || User.IsInRole("Admin"))
+                                    {
+                                        <li><a asp-controller="Medicaments" asp-action="Create">Crear Medicamento</a></li>
+                                        <li><a asp-controller="Stocks" asp-action="Create">Crear Stock</a></li>
+                                    }
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a asp-controller="Account" asp-action="Register">Crear Usuario</a></li>
+                                    }
                                 </ul>
                             </div>
                         </div>

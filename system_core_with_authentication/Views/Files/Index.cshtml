@@ -1,4 +1,6 @@
 @model IEnumerable<String>
+@inject SignInManager<ApplicationUser> SignInManager
+
 @{
     ViewData["Title"] = "Lista de Archivos";
 }
@@ -24,11 +26,16 @@
                     {
                         <tr>
                             <td>
-                                <a href="@file"> @file </a>
+                                <a href="@file"> @file.Substring(6) </a>
+                                    
+                                @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                                {
                                     <form asp-action="Delete" asp-controller="Files">
                                         <input type="submit" value="Borrar" class="btn btn-danger btn-xs" />
-                                        <input type="hidden" value="@file" name="fileName" id="@file"/>
+                                        <input type="hidden" value="@file" name="fileName" id="@file" />
                                     </form>
+                                }
+                                    
                             </td>
                         </tr>
 

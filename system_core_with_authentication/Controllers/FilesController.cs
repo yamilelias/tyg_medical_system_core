@@ -7,9 +7,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using system_core_with_authentication.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    /**
+     * The FilesController is the controller in charge 
+     * of managing all files and their actions, which include
+     * uploading and deleting files into and from a local folder of the project. 
+     * @author  Jonathan Torres
+     * @version 1.0
+     */
+
     public class FilesController : Controller
     {
 
@@ -23,6 +32,13 @@ namespace system_core_with_authentication.Controllers
             _context = context;
         }
 
+        /*
+         * This method displays the list of files uploaded in the
+         * /wwwroot/files/ folder of the project. The methods collects a list of Strings, 
+         * each bound to an existing file. This list is passed on to the Index view.
+         * @param   unused
+         * @return  Index view with list of Strings
+         */
         public IActionResult Index()
         {
             string path = "wwwroot/files/";
@@ -38,7 +54,18 @@ namespace system_core_with_authentication.Controllers
             return View(listOfFiles);
         }
 
+        /*
+         * This method uploads files into the /wwwroot/files/ folder of the project.
+         * The method gathers the file through an <input> tag in the Index view of AlertSettings,
+         * then uses a file stream to upload the files into the folder.
+         * Finally redirects the user to the same page after the upload has been successful.
+         * @param   IFormFile files - the file that will be uploaded
+         * @return  Index view of AlertSettings
+         */
+
+        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(ICollection<IFormFile> files)
         {
             var uploads = Path.Combine(_environment.WebRootPath, "files");
@@ -58,7 +85,16 @@ namespace system_core_with_authentication.Controllers
         }
 
 
+        /*
+         * This method deletes the selected file, displayed in the Index view of Files.
+         * A string parameter with the filename is used to look for the file and delete it.
+         * Afterwards, the user is redirected to the Index view of Files.
+         * @param   string filename - String which contains the name of the file that will be deleted
+         * @return  Index view of files
+         */
+
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(string fileName)
         {
