@@ -15,6 +15,16 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+
+    /**
+     * The MedicamentOutController is the controller in charge 
+     * of  managing  the exit of medicaments and also checking 
+     * if   the   total  amount  is  over  threshold  quantity
+     * otherwise it will insert them in belowthershold Table.
+     * 
+     * @author  Dilan Coss, Arturo Zamora
+     * @version 1.0
+     */
     [Authorize(Roles = "Admin,Supervisor")]
     public class MedicamentOutController : Controller
     {
@@ -27,6 +37,16 @@ namespace system_core_with_authentication.Controllers
             this.MailService = MailService;
         }
 
+        /*
+         * This method gathers the information from the database of all
+         * the stocks of  medicaments, filters with the string given if
+         * is different from null, and returns it to the Index View.
+         * 
+         * @param   stringsearchString - this string is sent from Index 
+         *                               View  and  filters stocks with 
+         *                               that description.
+         * @return  Index view with Stocks list
+         */
         public async Task<IActionResult> Index(string searchString)
         {
             var stock = _context.Stocks.Include(s => s.Medicament)
@@ -44,6 +64,23 @@ namespace system_core_with_authentication.Controllers
             return View(await stock.ToListAsync());
         }
 
+        /*
+         * This method receives a JSON string with the exit of medicaments,
+         * it  iterates  through  the  list  and substracts from a specific 
+         * medicament.
+         * 
+         * It creates a list of the medicaments passed in the JSON  string
+         * to check if any of those medicaments are below their threshold.
+         * If so, it adds to the BelowThreshold Table  the medicament, and 
+         * sends a mail to the corresponding users with a detailed list of
+         * medicaments that need more stock.
+         * 
+         * 
+         * 
+         * @param   string values - JSON    format   containing   all  the
+         *                          medicaments to substract from.
+         * @return  Json result to reload the page
+         */
         //[httppost]
         public IActionResult MedicamentOut(string values)
         {
@@ -115,6 +152,7 @@ namespace system_core_with_authentication.Controllers
                     }
                 }
             });
+
             String medicineToSupply = "";
             foreach (KeyValuePair<String, int> x in belowThreshold.ToList())
             {
@@ -126,7 +164,6 @@ namespace system_core_with_authentication.Controllers
             // taskA.Wait();
             return Json(new { success = true });
         }
-
 
         private bool StockExists(int id)
         {

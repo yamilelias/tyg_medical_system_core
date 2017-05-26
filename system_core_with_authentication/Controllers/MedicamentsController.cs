@@ -15,6 +15,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    /**
+     * The MedicamentsController is in charge of managing
+     * all  actions related to the creation, edition, and 
+     * deletion of Medicaments, as well validating if the
+     * medicaments are below their threshold.
+     * 
+     * @author  Dilan Coss
+     * @version 1.0
+     */
     [Authorize(Roles = "Admin, Supervisor, Supervisor de Inventario")]
     public class MedicamentsController : Controller
     {
@@ -27,12 +36,26 @@ namespace system_core_with_authentication.Controllers
             _environment = environment;
         }
 
+        /*
+         * This method gathers from the database of all
+         * the medicaments and returns a list of them
+         * 
+         * @param   unused
+         * @return  Index View with Medicaments list
+         */
         // GET: Medicaments
         public async Task<IActionResult> Index()
         {
             return View(await _context.Medicaments.ToListAsync());
         }
 
+        /*
+         * This method gathers all the information of a specific
+         * medicament searched with the id given
+         * 
+         * @param   int id - Medicament's id
+         * @return  Details View with one medicament
+         */
         // GET: Medicaments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -51,12 +74,26 @@ namespace system_core_with_authentication.Controllers
             return View(medicament);
         }
 
+        /*
+         * This method returns the Create View
+         * 
+         * @param   unused
+         * @return  Create View
+         */
         // GET: Medicaments/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        /*
+         * This method creates a medicament with the parameters passed
+         * 
+         * 
+         * @param   Medicament - Object with the parameters
+         * @param   IFormFile - Image file for the medicament
+         * @return  Index View if success, otherwise Create View
+         */
         // POST: Medicaments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -91,6 +128,14 @@ namespace system_core_with_authentication.Controllers
             return View(medicament);
         }
 
+        /*
+         * This method creates a medicament with the parameters passed
+         * 
+         * 
+         * @param   Medicament - Object with the parameters
+         * @param   IFormFile - Image file for the medicament
+         * @return  Index View if success, otherwise Create View
+         */
         // GET: Medicaments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -107,6 +152,14 @@ namespace system_core_with_authentication.Controllers
             return View(medicament);
         }
 
+        /*
+         * This method modifies a medicament with the parameters passed
+         * 
+         * 
+         * @param   Medicament - Object with the parameters
+         * @param   IFormFile - Image file for the medicament
+         * @return  Edit View if success, otherwise Create View
+         */
         // POST: Medicaments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -166,6 +219,13 @@ namespace system_core_with_authentication.Controllers
             return View(medicament);
         }
 
+        /*
+         * This method find the medicament in order to delete it
+         * 
+         * 
+         * @param   int id - Medicament's id
+         * @return  Delete View with the specifit medicament
+         */
         // GET: Medicaments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -184,6 +244,13 @@ namespace system_core_with_authentication.Controllers
             return View(medicament);
         }
 
+        /*
+         * This method deletes a medicament
+         * 
+         * 
+         * @param   int id - Medicament's Id
+         * @return  Index View
+         */
         // POST: Medicaments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -195,12 +262,27 @@ namespace system_core_with_authentication.Controllers
             checkMedicamentBelowThershold(medicament);
             return RedirectToAction("Index");
         }
-
+        /*
+         * Checks if a medicament exists
+         * 
+         * 
+         * @param   id - Medicament's id
+         * @return  boolean
+         */
         private bool MedicamentExists(int id)
         {
             return _context.Medicaments.Any(e => e.Id == id);
         }
 
+        /*
+         * This method checks if one of the other methods
+         * change the medicament condition of below threshold
+         * It can add it or remove from BelowThreshold Table
+         * 
+         * 
+         * @param   Medicament - Object with the parameters
+         * @return  nothing
+         */
         public void checkMedicamentBelowThershold(Medicament medicament)
         {
             if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == medicament.Id))
