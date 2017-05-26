@@ -129,12 +129,11 @@ namespace system_core_with_authentication.Controllers
         }
 
         /*
-         * This method creates a medicament with the parameters passed
+         * This method returns the Edit View
          * 
          * 
-         * @param   Medicament - Object with the parameters
-         * @param   IFormFile - Image file for the medicament
-         * @return  Index View if success, otherwise Create View
+         * @param   Id - Medicament's Id
+         * @return  Edit View with a medicament
          */
         // GET: Medicaments/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -158,7 +157,7 @@ namespace system_core_with_authentication.Controllers
          * 
          * @param   Medicament - Object with the parameters
          * @param   IFormFile - Image file for the medicament
-         * @return  Edit View if success, otherwise Create View
+         * @return  Index View if success, otherwise Edit View
          */
         // POST: Medicaments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -220,7 +219,7 @@ namespace system_core_with_authentication.Controllers
         }
 
         /*
-         * This method find the medicament in order to delete it
+         * This method finds the medicament in order to delete it
          * 
          * 
          * @param   int id - Medicament's id

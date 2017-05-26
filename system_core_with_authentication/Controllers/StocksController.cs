@@ -11,6 +11,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace system_core_with_authentication.Controllers
 {
+    /**
+     * The StocksController is in charge of managing
+     * all  actions related to the creation, edition, and 
+     * deletion of Stocks, as well validating if the
+     * medicaments are below their threshold.
+     * 
+     * @author  Dilan Coss
+     * @version 1.0
+     */
     [Authorize(Roles = "Admin,Supervisor")]
     public class StocksController : Controller
     {
@@ -21,6 +30,13 @@ namespace system_core_with_authentication.Controllers
             _context = context;    
         }
 
+        /*
+         * This method gathers from the database all
+         * the stocks and returns a list of them
+         * 
+         * @param   unused
+         * @return  Index View with Stocks list
+         */
         // GET: Stocks
         public async Task<IActionResult> Index()
         {
@@ -28,6 +44,13 @@ namespace system_core_with_authentication.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        /*
+         * This method gathers all the information of a specific
+         * stock searched with the id given
+         * 
+         * @param   int id - Stock's id
+         * @return  Details View with one stock
+         */
         // GET: Stocks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -47,6 +70,12 @@ namespace system_core_with_authentication.Controllers
             return View(stock);
         }
 
+        /*
+         * This method returns the Create View
+         * 
+         * @param   unused
+         * @return  Create View
+         */
         // GET: Stocks/Create
         public IActionResult Create()
         {
@@ -54,6 +83,13 @@ namespace system_core_with_authentication.Controllers
             return View();
         }
 
+        /*
+         * This method creates a stock with the parameters passed
+         * 
+         * 
+         * @param   Stock - Object with the parameters
+         * @return  Index View if success, otherwise Create View
+         */
         // POST: Stocks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -67,8 +103,7 @@ namespace system_core_with_authentication.Controllers
                 await _context.SaveChangesAsync();
 
                 // Check Minimum stock
-                // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
-                checkMedicamentBelowThershold(stock);
+                checkMedicamentBelowThreshold(stock);
 
                 return RedirectToAction("Index");
             }
@@ -76,6 +111,13 @@ namespace system_core_with_authentication.Controllers
             return View(stock);
         }
 
+        /*
+         * This method returns the Edit View
+         * 
+         * 
+         * @param   Id - Stock's Id
+         * @return  Edit View with a stock
+         */
         // GET: Stocks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -93,6 +135,13 @@ namespace system_core_with_authentication.Controllers
             return View(stock);
         }
 
+        /*
+         * This method modifies a stock with the parameters passed
+         * 
+         * 
+         * @param   Stock - Object with the parameters
+         * @return  Index View if success, Edit Create View
+         */
         // POST: Stocks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -113,7 +162,7 @@ namespace system_core_with_authentication.Controllers
                     await _context.SaveChangesAsync();
                     // Check Minimum stock
                     // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
-                    checkMedicamentBelowThershold(stock);
+                    checkMedicamentBelowThreshold(stock);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -132,6 +181,13 @@ namespace system_core_with_authentication.Controllers
             return View(stock);
         }
 
+        /*
+         * This method finds the stock in order to delete it
+         * 
+         * 
+         * @param   int id - Stock's id
+         * @return  Delete View with the specifit stock
+         */
         // GET: Stocks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -151,6 +207,13 @@ namespace system_core_with_authentication.Controllers
             return View(stock);
         }
 
+        /*
+         * This method deletes a stock
+         * 
+         * 
+         * @param   int id - Stock's Id
+         * @return  Index View
+         */
         // POST: Stocks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -161,17 +224,33 @@ namespace system_core_with_authentication.Controllers
             await _context.SaveChangesAsync();
             // Check Minimum stock
             // var IsBelowTreshold = _context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId);
-            checkMedicamentBelowThershold(stock);
+            checkMedicamentBelowThreshold(stock);
 
             return RedirectToAction("Index");
         }
 
+        /*
+         * Checks if a stock exists
+         * 
+         * 
+         * @param   id - Stock's id
+         * @return  boolean
+         */
         private bool StockExists(int id)
         {
             return _context.Stocks.Any(e => e.Id == id);
         }
 
-        public void checkMedicamentBelowThershold(Stock stock)
+        /*
+         * This method checks if one of the other methods
+         * change the medicament condition of below threshold
+         * It can add it or remove from BelowThreshold Table
+         * 
+         * 
+         * @param   Stock - Object with the parameters
+         * @return  nothing
+         */
+        public void checkMedicamentBelowThreshold(Stock stock)
         {
             if (_context.MedicamentsBelowThreshold.Any(e => e.MedicamentId == stock.MedicamentId))
             {
