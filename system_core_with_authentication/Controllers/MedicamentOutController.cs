@@ -45,7 +45,7 @@ namespace system_core_with_authentication.Controllers
         }
 
         //[httppost]
-        public IActionResult MedicamentOut(string values)
+        public async Task<IActionResult> MedicamentOut(string values)
         {
             JArray array = JArray.Parse(values);
             Dictionary<int, int> ToCheckMini = new Dictionary<int, int>();
@@ -64,8 +64,10 @@ namespace system_core_with_authentication.Controllers
                     if (name.Equals("Quantity"))
                         quantity = Int32.Parse(value);
                 }
-                Stock item = _context.Stocks.FirstOrDefault(s => s.Id == id);
+
+                Stock item = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
                 item.Total = item.Total - quantity;
+
                 if (ToCheckMini.ContainsKey(item.MedicamentId))
                 {
                     ToCheckMini[item.MedicamentId] += item.Total;
@@ -75,9 +77,10 @@ namespace system_core_with_authentication.Controllers
                     ToCheckMini.Add(item.MedicamentId, item.Total);
                 }
                 _context.Update(item);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
+
             // ToDo - Add Async method to check current stock
             //Task taskA = Task.Run(() => {
             Dictionary<String, int> belowThreshold = new Dictionary<String, int>();
@@ -114,7 +117,7 @@ namespace system_core_with_authentication.Controllers
                         _context.SaveChanges();
                     }
                 }
-            });
+            //});
             String medicineToSupply = "";
             foreach (KeyValuePair<String, int> x in belowThreshold.ToList())
             {
@@ -122,8 +125,8 @@ namespace system_core_with_authentication.Controllers
             }
             MailService.SendToAdmin("Se necesita resuplir los siguientes medicamentos \n" +
                                     medicineToSupply, "Medicamentos para resuplir");
-            //});
-            // taskA.Wait();
+            });
+            //taskA.Wait();
             return Json(new { success = true });
         }
 

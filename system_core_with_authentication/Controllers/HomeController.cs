@@ -68,13 +68,40 @@ namespace system_core_with_authentication.Controllers
             vhvm.sumBudget = totalBudget;
 
             //User requests
+            RequestFromUser rfu = new RequestFromUser();
             var userSigned = _context.ApplicationUser.Where(a => a.Id == _userManager.GetUserId(User)).Select(a=>a.Email).FirstOrDefault();
             var UserName = _context.RepositionStocks.Include(a => a.RepositionStockDetailed).Select(a => a.Request.User).FirstOrDefault();
-            var userRequestsList = _context.RepositionStocks.Include(a => a.RepositionStockDetailed)
+            rfu.RepositionStockList = _context.RepositionStocks.Include(a => a.RepositionStockDetailed)
                                                             .Where(a => a.Request.User.Equals(userSigned))
                                                             .ToList();
-            RequestFromUser rfu = new RequestFromUser();
-            rfu.RepositionStockList = userRequestsList;
+            rfu.ShiftChange = _context.ShiftChange.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.BreastFeeding = _context.BreastFeeding.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.Permit = _context.Permit.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.AllowanceWithoutPayment = _context.AllowanceWithoutPayment.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.Vacations = _context.Vacations.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.Maternity_Leave = _context.Maternity_Leave.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
+            rfu.Viatical = _context.Viatical.Include(r => r.Request)
+                                             .Where(a => a.Request.User.Equals(userSigned))
+                                             .OrderByDescending(r => r.Request.Date)
+                                             .ToList();
             vhvm.RequestFromUser = rfu;
             
 
