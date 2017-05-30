@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\TyG-Medical-System-Core - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\components\login\custom-login.sass" />
     <Content Include="wwwroot\js\MedsOut.js" />
     <Content Include="wwwroot\js\Reposition.js" />
