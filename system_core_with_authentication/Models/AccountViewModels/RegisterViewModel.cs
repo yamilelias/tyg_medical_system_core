@@ -18,6 +18,7 @@ namespace system_core_with_authentication.Models.AccountViewModels
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*(_|[^\\w])).+$", ErrorMessage = "La contraseña necesita almenos tener una letra mayuscula, una minuscula y un caracter especial")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
